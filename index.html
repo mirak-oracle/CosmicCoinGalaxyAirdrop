@@ -207,7 +207,7 @@
                 const urlToScan = document.getElementById('urlInput').value;
                 if (urlToScan) {
                     const urlScanResult = await shield.scanUrl(urlToScan);
-                    displayScanResult(urlScanResult);
+                    scanResultElement.textContent = JSON.stringify(urlScanResult, null, 2);
                 } else {
                     alert('Please enter a URL to scan.');
                 }
@@ -216,4 +216,14 @@
             document.getElementById('scanFileButton').addEventListener('click', async () => {
                 const fileInput = document.getElementById('fileInput');
                 if (fileInput.files.length > 0) {
-                    const fileToScan = fileInput.files[0
+                    const fileToScan = fileInput.files[0];
+                    const fileScanResult = await shield.scanFile(fileToScan);
+                    scanResultElement.textContent = JSON.stringify(fileScanResult, null, 2);
+                } else {
+                    alert('Please select a file to scan.');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
