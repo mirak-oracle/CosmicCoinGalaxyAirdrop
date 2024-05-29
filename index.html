@@ -154,7 +154,7 @@
         </a>.</p>
     </footer>
 
-    <script type="module">
+      <script type="module">
         class SecureOracleShield {
             constructor(apiKey) {
                 this.apiKey = apiKey;
@@ -217,25 +217,3 @@
                 const fileInput = document.getElementById('fileInput');
                 if (fileInput.files.length > 0) {
                     const fileToScan = fileInput.files[0
-        ];
-                    const fileScanResult = await shield.scanFile(fileToScan);
-                    displayScanResult(fileScanResult);
-                } else {
-                    alert('Please select a file to scan.');
-                }
-            });
-
-            function displayScanResult(result) {
-                if (result.data && result.data.id) {
-                    const analysisId = result.data.id;
-                    const analysisLink = `https://www.virustotal.com/gui/analyses/${analysisId}`;
-                    const message = result.data.attributes.stats.harmless > 0 ? 'URL is clean.' : 'Potential threats detected.';
-                    scanResultElement.innerHTML = `<p>${message}</p><p>For detailed analysis, <a href="${analysisLink}" target="_blank">click here</a>.</p>`;
-                } else {
-                    scanResultElement.textContent = 'Error: Failed to scan URL.';
-                }
-            }
-        });
-    </script>
-</body>
-</html>
