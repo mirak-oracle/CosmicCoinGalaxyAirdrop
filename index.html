@@ -151,10 +151,9 @@
     
     <footer>
         <p>© SecureOracleShield. All rights reserved.</p>
-        </a></p>
     </footer>
 
-         <script type="module">
+    <script type="module">
         class SecureOracleShield {
             constructor(apiKey) {
                 this.apiKey = apiKey;
@@ -233,8 +232,10 @@
                 if (result.data_id) {
                     const analysisId = result.data_id;
                     const analysisLink = `https://metadefender.opswat.com/results/file/${analysisId}`;
-                    const message = result.process_info.result === 'Clean' ? 'File is clean.' : 'Potential threats detected.';
+                    const message = result.scan_results.progress_percentage === 100 && result.scan_results.scan_all_result_a === 'No Threat Detected' ? 'File is clean.' : 'Potential threats detected.';
                     scanResultElement.innerHTML = `<p>${message}</p><p>For detailed analysis, <a href="${analysisLink}" target="_blank">click here</a>.</p>`;
+                } else if (result.error) {
+                    scanResultElement.textContent = `Error: ${result.error}`;
                 } else {
                     scanResultElement.textContent = 'Error: Failed to scan.';
                 }
