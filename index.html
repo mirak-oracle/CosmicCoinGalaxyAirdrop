@@ -151,24 +151,27 @@
     
     <footer>
         <p>© SecureOracleShield. All rights reserved.</p>
-        </a>.</p>
+        </a></p>
     </footer>
 
-      <script type="module">
+         <script type="module">
         class SecureOracleShield {
             constructor(apiKey) {
                 this.apiKey = apiKey;
-                this.baseUrl = 'https://www.virustotal.com/api/v3';
+                this.baseUrl = 'https://api.metadefender.com/v4';
                 this.headers = {
-                    'x-apikey': this.apiKey,
+                    'apikey': this.apiKey,
                 };
             }
 
             async scanUrl(url) {
-                const response = await fetch(`${this.baseUrl}/urls`, {
+                const response = await fetch(`${this.baseUrl}/url`, {
                     method: 'POST',
-                    headers: this.headers,
-                    body: new URLSearchParams({ url: url })
+                    headers: {
+                        ...this.headers,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url })
                 });
 
                 if (response.ok) {
@@ -183,9 +186,11 @@
                 const formData = new FormData();
                 formData.append('file', file);
 
-                const response = await fetch(`${this.baseUrl}/files`, {
+                const response = await fetch(`${this.baseUrl}/file`, {
                     method: 'POST',
-                    headers: this.headers,
+                    headers: {
+                        'apikey': this.apiKey,
+                    },
                     body: formData
                 });
 
@@ -199,7 +204,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const apiKey = 'ec9eaa60e910f584b5d29404726b6994cdbf2e0754321cfb4eab9b9700c075f6';
+            const apiKey = 'fdec9d63c159e0e786903904e3c1c6d5'; // Replace with your actual API key
             const shield = new SecureOracleShield(apiKey);
             const scanResultElement = document.getElementById('scanResult');
 
@@ -207,7 +212,7 @@
                 const urlToScan = document.getElementById('urlInput').value;
                 if (urlToScan) {
                     const urlScanResult = await shield.scanUrl(urlToScan);
-                    scanResultElement.textContent = JSON.stringify(urlScanResult, null, 2);
+                    displayScanResult(urlScanResult);
                 } else {
                     alert('Please enter a URL to scan.');
                 }
@@ -218,11 +223,22 @@
                 if (fileInput.files.length > 0) {
                     const fileToScan = fileInput.files[0];
                     const fileScanResult = await shield.scanFile(fileToScan);
-                    scanResultElement.textContent = JSON.stringify(fileScanResult, null, 2);
+                    displayScanResult(fileScanResult);
                 } else {
                     alert('Please select a file to scan.');
                 }
             });
+
+            function displayScanResult(result) {
+                if (result.data_id) {
+                    const analysisId = result.data_id;
+                    const analysisLink = `https://metadefender.opswat.com/results/file/${analysisId}`;
+                    const message = result.process_info.result === 'Clean' ? 'File is clean.' : 'Potential threats detected.';
+                    scanResultElement.innerHTML = `<p>${message}</p><p>For detailed analysis, <a href="${analysisLink}" target="_blank">click here</a>.</p>`;
+                } else {
+                    scanResultElement.textContent = 'Error: Failed to scan.';
+                }
+            }
         });
     </script>
 </body>
