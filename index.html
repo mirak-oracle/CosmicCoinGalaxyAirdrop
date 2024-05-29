@@ -164,46 +164,56 @@
             }
 
             async scanUrl(url) {
-                const response = await fetch(`${this.baseUrl}/url`, {
-                    method: 'POST',
-                    headers: {
-                        ...this.headers,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ url })
-                });
+                try {
+                    const response = await fetch(`${this.baseUrl}/url`, {
+                        method: 'POST',
+                        headers: {
+                            ...this.headers,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ url })
+                    });
 
-                if (response.ok) {
-                    const result = await response.json();
-                    return result;
-                } else {
-                    return { error: 'Failed to scan URL', statusCode: response.status };
+                    if (response.ok) {
+                        const result = await response.json();
+                        return result;
+                    } else {
+                        const errorResult = await response.json();
+                        return { error: errorResult, statusCode: response.status };
+                    }
+                } catch (error) {
+                    return { error: error.message };
                 }
             }
 
             async scanFile(file) {
-                const formData = new FormData();
-                formData.append('file', file);
+                try {
+                    const formData = new FormData();
+                    formData.append('file', file);
 
-                const response = await fetch(`${this.baseUrl}/file`, {
-                    method: 'POST',
-                    headers: {
-                        'apikey': this.apiKey,
-                    },
-                    body: formData
-                });
+                    const response = await fetch(`${this.baseUrl}/file`, {
+                        method: 'POST',
+                        headers: {
+                            'apikey': this.apiKey,
+                        },
+                        body: formData
+                    });
 
-                if (response.ok) {
-                    const result = await response.json();
-                    return result;
-                } else {
-                    return { error: 'Failed to scan file', statusCode: response.status };
+                    if (response.ok) {
+                        const result = await response.json();
+                        return result;
+                    } else {
+                        const errorResult = await response.json();
+                        return { error: errorResult, statusCode: response.status };
+                    }
+                } catch (error) {
+                    return { error: error.message };
                 }
             }
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const apiKey = 'fdec9d63c159e0e786903904e3c1c6d5'; // Replace with your actual API key
+            const apiKey = 'YOUR_API_KEY_HERE'; // Replace with your actual API key
             const shield = new SecureOracleShield(apiKey);
             const scanResultElement = document.getElementById('scanResult');
 
