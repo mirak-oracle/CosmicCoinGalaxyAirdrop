@@ -1,1 +1,1 @@
-# MirakleAi 
+SecureOracleShield is your all-in-one security solution, offering robust protection for your websites and files against online threats. Developed with advanced security features, SecureOracleShield empowers developers, businesses, and individual users to safeguard their digital assets effectively, Powered by MetaDefender.
