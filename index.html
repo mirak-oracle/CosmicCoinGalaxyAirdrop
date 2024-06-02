@@ -114,6 +114,12 @@
             font-size: 0.9rem;
             text-align: left;
         }
+
+        .holographic-text {
+            font-size: 1.1rem;
+            color: #fff;
+            text-shadow: 0 0 3px #00ffff, 0 0 6px #00ffff, 0 0 9px #00ffff, 0 0 12px #00ffff, 0 0 15px #00ffff;
+        }
     </style>
 </head>
 <body>
@@ -134,7 +140,8 @@
             </ul>
             <p>Get started by scanning a URL or uploading a file below:</p>
         </section>
-        
+        <p class="holographic-text">You will be redirected to our platform powered by MetaDefender, where you might be asked to create an account or input your URL or file again. Please bear in mind that we have to follow their policies and procedures.</p>
+   
         <section id="security">
             <h2>Security Check</h2>
             <div>
@@ -150,7 +157,7 @@
     </main>
     
     <footer>
-        <p>© SecureOracleShield. All rights reserved.</p>
+        <p>© SecureOracleShield. All rights reserved. Powered by MetaDefender.</p>
     </footer>
 
     <script>
@@ -159,7 +166,7 @@
                 const urlToScan = document.getElementById('urlInput').value;
                 if (urlToScan) {
                     const encodedUrl = encodeURIComponent(urlToScan);
-                    window.location.href = `https://metadefender.opswat.com/?lang=en&url=${encodedUrl}`;
+                    window.open(`https://metadefender.opswat.com/?lang=en&url=${encodedUrl}`, '_blank');
                 } else {
                     alert('Please enter a URL to scan.');
                 }
@@ -168,8 +175,8 @@
             document.getElementById('scanFileButton').addEventListener('click', () => {
                 const fileInput = document.getElementById('fileInput');
                 if (fileInput.files.length > 0) {
-                    // This will trigger the file upload dialog on MetaDefender
-                    window.location.href = 'https://metadefender.opswat.com/';
+                    alert('You will be redirected to MetaDefender to upload and scan your file.');
+                    window.open('https://metadefender.opswat.com/', '_blank');
                 } else {
                     alert('Please select a file to scan.');
                 }
