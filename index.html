@@ -3,185 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SecureOracleShield - Your Comprehensive Security Solution</title>
+    <title>WapPay Digital Vault</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDYok7j3QHR74ayE0RIzQxrWsoe_lxMnu4",
+            authDomain: "wappay-aa3e7.firebaseapp.com",
+            projectId: "wappay-aa3e7",
+            storageBucket: "wappay-aa3e7.appspot.com",
+            messagingSenderId: "511760274141",
+            appId: "1:511760274141:web:8bb5a627b1e3fb912d8134",
+            measurementId: "G-2024EDZZCY"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        async function register() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert('Registration successful. Please log in.');
+            } catch (error) {
+                console.error('Error registering: ', error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        async function login() {
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                document.getElementById('auth-container').style.display = 'none';
+                document.getElementById('vault-container').style.display = 'block';
+                displayAssets();
+            } catch (error) {
+                console.error('Error logging in: ', error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+
+        onAuthStateChanged(auth, user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('auth-container').style.display = 'none';
+                document.getElementById('vault-container').style.display = 'block';
+                displayAssets();
+            } else {
+                currentUser = null;
+                document.getElementById('auth-container').style.display = 'block';
+                document.getElementById('vault-container').style.display = 'none';
+            }
+        });
+
+        async function addAsset() {
+            const name = document.getElementById('asset-name').value;
+            const description = document.getElementById('asset-description').value;
+            const category = document.getElementById('asset-category').value;
+            const value = document.getElementById('asset-value').value;
+
+            if (name && description && category && value) {
+                try {
+                    await addDoc(collection(db, 'assets'), {
+                        name,
+                        description,
+                        category,
+                        value,
+                        owner: currentUser.uid,
+                        timestamp: new Date()
+                    });
+                    alert('Asset added successfully');
+                    displayAssets();
+                } catch (error) {
+                    console.error('Error adding asset: ', error);
+                    alert(`Error: ${error.message}`);
+                }
+            } else {
+                alert('Please fill in all fields.');
+            }
+        }
+
+        async function displayAssets() {
+            const assetList = document.getElementById('asset-list');
+            assetList.innerHTML = '<h3>Stored Assets</h3>'; // Reset list
+
+            try {
+                const assetsQuery = query(
+                    collection(db, 'assets'),
+                    where('owner', '==', currentUser.uid),
+                    orderBy('timestamp', 'desc')
+                );
+
+                const querySnapshot = await getDocs(assetsQuery);
+                querySnapshot.forEach((doc) => {
+                    const asset = doc.data();
+                    const assetItem = document.createElement('div');
+                    assetItem.classList.add('asset-item');
+                    assetItem.innerHTML = `
+                        <strong>${asset.name}</strong>
+                        <p>${asset.description}</p>
+                        <p>Category: ${asset.category}</p>
+                        <p>Value: ${asset.value}</p>
+                        <p><small>${asset.timestamp.toDate().toLocaleString()}</small></p>
+                    `;
+                    assetList.appendChild(assetItem);
+                });
+            } catch (error) {
+                console.error('Error getting assets: ', error);
+                alert(`Error: ${error.message}`);
+            }
+        }
+    </script>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
-            background-color: #f5f5f5;
-            color: #333;
-            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-
-        header {
-            background-color: #34495e;
-            color: #fff;
-            padding: 20px 0;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        .container {
+            background: #fff;
+            padding: 2em;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
         }
-
-        header h1 {
-            font-size: 2.5rem;
-            margin: 0;
-        }
-
-        header p {
-            font-size: 1.2rem;
-            margin: 10px 0 0;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        section {
-            margin-bottom: 30px;
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
         h2 {
-            font-size: 2rem;
-            color: #34495e;
-            margin-bottom: 15px;
+            margin-bottom: 1em;
         }
-
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            color: #333;
-        }
-
-        input[type="text"],
-        input[type="file"] {
+        input, button, select {
             padding: 10px;
-            margin-bottom: 15px;
-            width: 100%;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-
-        .button {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 5px;
-            text-decoration: none;
-            transition: background-color 0.3s;
-        }
-
-        .button:hover {
-            background-color: #2980b9;
-        }
-
-        footer {
-            background-color: #34495e;
-            color: #fff;
-            padding: 10px 0;
-            position: fixed;
+            border-radius: 4px;
             width: 100%;
-            bottom: 0;
-            font-size: 0.9rem;
+            margin: 0.5em 0;
         }
-
-        footer p {
-            margin: 0;
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
         }
-
-        footer a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
+        button:disabled {
+            background-color: #ccc;
         }
-
-        footer a:hover {
-            text-decoration: underline;
+        .asset-list {
+            margin-top: 1em;
         }
-
-        pre {
-            overflow: auto;
-            background-color: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 0.9rem;
-            text-align: left;
-        }
-
-        .holographic-text {
-            font-size: 1.1rem;
-            color: #fff;
-            text-shadow: 0 0 3px #00ffff, 0 0 6px #00ffff, 0 0 9px #00ffff, 0 0 12px #00ffff, 0 0 15px #00ffff;
+        .asset-item {
+            background: #f9f9f9;
+            padding: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin: 0.5em 0;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>SecureOracleShield</h1>
-        <p>Your Comprehensive Security Solution</p>
-    </header>
-    
-    <main>
-        <section id="introduction">
-            <h2>Welcome to SecureOracleShield</h2>
-            <p>SecureOracleShield is your all-in-one security solution to protect your websites and files from online threats. Whether you're a developer, business owner, or individual user, SecureOracleShield has you covered.</p>
-            <p>With SecureOracleShield, you can:</p>
-            <ul>
-                <li>Scan URLs and files for viruses and malware.</li>
-                <li>Get detailed reports on potential security threats.</li>
-                <li>Stay informed about the security status of your online assets.</li>
-            </ul>
-            <p>Get started by scanning a URL or uploading a file below:</p>
-        </section>
-        <p class="holographic-text">You will be redirected to our platform powered by MetaDefender, where you might be asked to create an account or input your URL or file again. Please bear in mind that we have to follow their policies and procedures.</p>
-   
-        <section id="security">
-            <h2>Security Check</h2>
-            <div>
-                <input type="text" id="urlInput" placeholder="Enter URL to scan">
-                <button id="scanUrlButton" class="button">Scan URL</button>
+    <div class="container">
+        <h2>WapPay Digital Vault</h2>
+        <div id="auth-container">
+            <h3>Login</h3>
+            <input type="email" id="login-email" placeholder="Email" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+            <button onclick="register()">Register</button>
+        </div>
+        <div id="vault-container" style="display:none;">
+            <h3>Add Digital Asset</h3>
+            <input type="text" id="asset-name" placeholder="Asset Name" required>
+            <input type="text" id="asset-description" placeholder="Asset Description" required>
+            <input type="text" id="asset-category" placeholder="Asset Category" required>
+            <input type="number" id="asset-value" placeholder="Asset Value" required>
+            <button onclick="addAsset()">Add Asset</button>
+            <div class="asset-list" id="asset-list">
+                <h3>Stored Assets</h3>
             </div>
-            <div>
-                <input type="file" id="fileInput">
-                <button id="scanFileButton" class="button">Scan File</button>
-            </div>
-            <pre id="scanResult"></pre>
-        </section>
-    </main>
-    
-    <footer>
-        <p>© SecureOracleShield. All rights reserved. Powered by MetaDefender.</p>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('scanUrlButton').addEventListener('click', () => {
-                const urlToScan = document.getElementById('urlInput').value;
-                if (urlToScan) {
-                    const encodedUrl = encodeURIComponent(urlToScan);
-                    window.open(`https://metadefender.opswat.com/?lang=en&url=${encodedUrl}`, '_blank');
-                } else {
-                    alert('Please enter a URL to scan.');
-                }
-            });
-
-            document.getElementById('scanFileButton').addEventListener('click', () => {
-                const fileInput = document.getElementById('fileInput');
-                if (fileInput.files.length > 0) {
-                    alert('You will be redirected to MetaDefender to upload and scan your file.');
-                    window.open('https://metadefender.opswat.com/', '_blank');
-                } else {
-                    alert('Please select a file to scan.');
-                }
-            });
-        });
-    </script>
+        </div>
+    </div>
 </body>
 </html>
