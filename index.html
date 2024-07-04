@@ -3,202 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WapPay Digital Vault</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, collection, addDoc, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDYok7j3QHR74ayE0RIzQxrWsoe_lxMnu4",
-            authDomain: "wappay-aa3e7.firebaseapp.com",
-            projectId: "wappay-aa3e7",
-            storageBucket: "wappay-aa3e7.appspot.com",
-            messagingSenderId: "511760274141",
-            appId: "1:511760274141:web:8bb5a627b1e3fb912d8134",
-            measurementId: "G-2024EDZZCY"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const analytics = getAnalytics(app);
-        const auth = getAuth(app);
-        const db = getFirestore(app);
-
-        let currentUser = null;
-
-        async function register() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            try {
-                await createUserWithEmailAndPassword(auth, email, password);
-                alert('Registration successful. Please log in.');
-            } catch (error) {
-                console.error('Error registering: ', error);
-                alert(`Error: ${error.message}`);
-            }
-        }
-
-        async function login() {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-                document.getElementById('auth-container').style.display = 'none';
-                document.getElementById('vault-container').style.display = 'block';
-                displayAssets();
-            } catch (error) {
-                console.error('Error logging in: ', error);
-                alert(`Error: ${error.message}`);
-            }
-        }
-
-        onAuthStateChanged(auth, user => {
-            if (user) {
-                currentUser = user;
-                document.getElementById('auth-container').style.display = 'none';
-                document.getElementById('vault-container').style.display = 'block';
-                displayAssets();
-            } else {
-                currentUser = null;
-                document.getElementById('auth-container').style.display = 'block';
-                document.getElementById('vault-container').style.display = 'none';
-            }
-        });
-
-        async function addAsset() {
-            const name = document.getElementById('asset-name').value;
-            const description = document.getElementById('asset-description').value;
-            const category = document.getElementById('asset-category').value;
-            const value = document.getElementById('asset-value').value;
-
-            if (name && description && category && value) {
-                try {
-                    await addDoc(collection(db, 'assets'), {
-                        name,
-                        description,
-                        category,
-                        value,
-                        owner: currentUser.uid,
-                        timestamp: new Date()
-                    });
-                    alert('Asset added successfully');
-                    displayAssets();
-                } catch (error) {
-                    console.error('Error adding asset: ', error);
-                    alert(`Error: ${error.message}`);
-                }
-            } else {
-                alert('Please fill in all fields.');
-            }
-        }
-
-        async function displayAssets() {
-            const assetList = document.getElementById('asset-list');
-            assetList.innerHTML = '<h3>Stored Assets</h3>'; // Reset list
-
-            try {
-                const assetsQuery = query(
-                    collection(db, 'assets'),
-                    where('owner', '==', currentUser.uid),
-                    orderBy('timestamp', 'desc')
-                );
-
-                const querySnapshot = await getDocs(assetsQuery);
-                querySnapshot.forEach((doc) => {
-                    const asset = doc.data();
-                    const assetItem = document.createElement('div');
-                    assetItem.classList.add('asset-item');
-                    assetItem.innerHTML = `
-                        <strong>${asset.name}</strong>
-                        <p>${asset.description}</p>
-                        <p>Category: ${asset.category}</p>
-                        <p>Value: ${asset.value}</p>
-                        <p><small>${asset.timestamp.toDate().toLocaleString()}</small></p>
-                    `;
-                    assetList.appendChild(assetItem);
-                });
-            } catch (error) {
-                console.error('Error getting assets: ', error);
-                alert(`Error: ${error.message}`);
-            }
-        }
-    </script>
+    <title>Web App Marketplace</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background: #fff;
-            padding: 2em;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            width: 100%;
-        }
-        h2 {
-            margin-bottom: 1em;
-        }
-        input, button, select {
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 100%;
-            margin: 0.5em 0;
-        }
-        button {
-            background-color: #007bff;
-            color: white;
-            cursor: pointer;
-        }
-        button:disabled {
-            background-color: #ccc;
-        }
-        .asset-list {
-            margin-top: 1em;
-        }
-        .asset-item {
-            background: #f9f9f9;
-            padding: 1em;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin: 0.5em 0;
-        }
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        .hidden { display: none; }
+        .app { border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; }
+        iframe { width: 100%; height: 400px; border: 1px solid #ccc; }
+        .nav { display: flex; justify-content: space-between; margin-bottom: 20px; }
+        .nav a { padding: 10px; text-decoration: none; color: #333; }
+        .nav a.active { font-weight: bold; }
+        #publishedApps, #developersForm, #adminSection { display: none; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>WapPay Digital Vault</h2>
-        <div id="auth-container">
-            <h3>Login</h3>
-            <input type="email" id="login-email" placeholder="Email" required>
-            <input type="password" id="login-password" placeholder="Password" required>
-            <button onclick="login()">Login</button>
-            <button onclick="register()">Register</button>
-        </div>
-        <div id="vault-container" style="display:none;">
-            <h3>Add Digital Asset</h3>
-            <input type="text" id="asset-name" placeholder="Asset Name" required>
-            <input type="text" id="asset-description" placeholder="Asset Description" required>
-            <input type="text" id="asset-category" placeholder="Asset Category" required>
-            <input type="number" id="asset-value" placeholder="Asset Value" required>
-            <button onclick="addAsset()">Add Asset</button>
-            <div class="asset-list" id="asset-list">
-                <h3>Stored Assets</h3>
-            </div>
+
+<div class="container">
+    <h1>Web App Marketplace</h1>
+
+    <div class="nav">
+        <a href="#" id="navHome" onclick="showSection('home')">Published Apps</a>
+        <a href="#" id="navDevelopers" onclick="showSection('developers')">Submit Web App</a>
+        <a href="#" id="navAdmin" onclick="showSection('admin')">Admin Portal</a>
+    </div>
+
+    <div id="home">
+        <h2>Published Apps</h2>
+        <div id="publishedApps"></div>
+    </div>
+
+    <div id="developersForm">
+        <h2>Submit Your Web App</h2>
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdJT7K1HlGAOmlJXQer7KqvhKsjEkO1UtBGVtAhM1MDo9DUfQ/viewform?embedded=true" width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+    </div>
+
+    <div id="adminSection">
+        <h2>Admin Portal</h2>
+        <input type="password" id="adminPassword" placeholder="Enter admin password">
+        <button onclick="adminLogin()">Login</button>
+        <div id="submittedApps" class="hidden">
+            <h3>Paste URL to Publish</h3>
+            <input type="text" id="appUrl" placeholder="Enter web app URL">
+            <input type="text" id="appName" placeholder="Enter app name">
+            <button onclick="publishApp()">Publish</button>
         </div>
     </div>
+</div>
+
+<script>
+    const adminPassword = 'adminpassword';
+    const publishedApps = JSON.parse(localStorage.getItem('publishedApps')) || [];
+
+    function showSection(section) {
+        document.getElementById('home').style.display = section === 'home' ? 'block' : 'none';
+        document.getElementById('developersForm').style.display = section === 'developers' ? 'block' : 'none';
+        document.getElementById('adminSection').style.display = section === 'admin' ? 'block' : 'none';
+        document.querySelectorAll('.nav a').forEach(a => a.classList.remove('active'));
+        document.getElementById(`nav${capitalize(section)}`).classList.add('active');
+    }
+
+    function adminLogin() {
+        const password = document.getElementById('adminPassword').value;
+        if (password === adminPassword) {
+            document.getElementById('submittedApps').classList.remove('hidden');
+        } else {
+            alert('Incorrect password');
+        }
+    }
+
+    function publishApp() {
+        const appUrl = document.getElementById('appUrl').value;
+        const appName = document.getElementById('appName').value;
+        if (!appUrl || !appName) {
+            alert('Please fill in all fields');
+            return;
+        }
+
+        const app = { appName, appUrl };
+        publishedApps.push(app);
+        localStorage.setItem('publishedApps', JSON.stringify(publishedApps));
+        document.getElementById('appUrl').value = '';
+        document.getElementById('appName').value = '';
+        loadPublishedApps();
+    }
+
+    function loadPublishedApps() {
+        const container = document.getElementById('publishedApps');
+        container.innerHTML = '';
+        publishedApps.forEach(app => {
+            const appElement = document.createElement('div');
+            appElement.className = 'app';
+            appElement.innerHTML = `
+                <h3>${app.appName}</h3>
+                <iframe src="${app.appUrl}"></iframe>
+            `;
+            container.appendChild(appElement);
+        });
+    }
+
+    function capitalize(str) {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadPublishedApps();
+        showSection('home');
+    });
+</script>
+
 </body>
 </html>
