@@ -510,41 +510,38 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let userCoins = parseFloat(localStorage.getItem('userCoins')) || 0;
 
-    
-  function openGoogleForm() {
-    // Replace with your Google Form URL
-    var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?usp=sf_link';
-    
-    // Open Google Form in iframe within popup
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('src', formUrl);
-    iframe.setAttribute('width', '100%');
-    iframe.setAttribute('height', '400px');
-    iframe.setAttribute('frameborder', '0');
-    document.getElementById('popupForm').appendChild(iframe);
+    // Function to open Google Form in popup
+function openGoogleForm() {
+  // Replace with your Google Form URL
+  var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?usp=sf_link';
+  
+  // Open Google Form in iframe within popup
+  var iframe = document.createElement('iframe');
+  iframe.setAttribute('src', formUrl);
+  iframe.setAttribute('width', '100%');
+  iframe.setAttribute('height', '400px');
+  iframe.setAttribute('frameborder', '0');
+  document.getElementById('popupForm').appendChild(iframe);
 
-    document.getElementById('popupForm').style.display = 'block'; // Show popup
-  }
+  document.getElementById('popupForm').style.display = 'block'; // Show popup
+}
 
-  function cancelPopup() {
-    document.getElementById('popupForm').style.display = 'none'; // Hide popup
-  }
+// Function to close popup
+function cancelPopup() {
+  document.getElementById('popupForm').style.display = 'none'; // Hide popup
+}
 
-  // Show popup on specific days (Wednesday and Friday)
-  function showPopup() {
-    var currentDate = new Date();
-    var dayOfWeek = currentDate.getDay(); // Get current day (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
-    
-    // Check if it's Wednesday (dayOfWeek = 3) or Friday (dayOfWeek = 5)
-    if (dayOfWeek === 3 || dayOfWeek === 5) {
-      document.getElementById('popupForm').style.display = 'block'; // Show popup
-    }
-  }
+// Show popup every day
+function showPopup() {
+  document.getElementById('popupForm').style.display = 'block'; // Show popup
+}
 
-  // Call showPopup on page load
-  window.onload = function() {
-    showPopup();
-  };
+// Call showPopup on page load
+window.onload = function() {
+  showPopup();
+};
+
+  
 
 
     
