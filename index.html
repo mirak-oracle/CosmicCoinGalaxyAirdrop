@@ -247,6 +247,94 @@
 
 
 
+  <style>
+    /* Styles for the popup */
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 5px;
+      z-index: 1000;
+    }
+    .popup h2 {
+      margin-top: 0;
+      font-size: 20px;
+    }
+    .popup-content {
+      margin-bottom: 20px;
+    }
+    .popup button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .popup button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+<div class="popup" id="popupForm">
+  <div class="popup-content">
+    <h2>Fill out the Airdrop Form</h2>
+    <p>Help us improve our service by filling out this form.</p>
+    <button onclick="openGoogleForm()">Fill Form</button>
+    <button onclick="cancelPopup()">Cancel</button>
+  </div>
+</div>
+
+<script>
+  function openGoogleForm() {
+    // Replace with your Google Form URL
+    var formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?usp=sf_link';
+    
+    // Open Google Form in iframe within popup
+    var iframe = document.createElement('iframe');
+    iframe.setAttribute('src', formUrl);
+    iframe.setAttribute('width', '100%');
+    iframe.setAttribute('height', '400px');
+    iframe.setAttribute('frameborder', '0');
+    document.getElementById('popupForm').appendChild(iframe);
+
+    document.getElementById('popupForm').style.display = 'block'; // Show popup
+  }
+
+  function cancelPopup() {
+    document.getElementById('popupForm').style.display = 'none'; // Hide popup
+  }
+
+  // Show popup on specific days (Wednesday and Friday)
+  function showPopup() {
+    var currentDate = new Date();
+    var dayOfWeek = currentDate.getDay(); // Get current day (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+    
+    // Check if it's Wednesday (dayOfWeek = 3) or Friday (dayOfWeek = 5)
+    if (dayOfWeek === 3 || dayOfWeek === 5) {
+      document.getElementById('popupForm').style.display = 'block'; // Show popup
+    }
+  }
+
+  // Call showPopup on page load
+  window.onload = function() {
+    showPopup();
+  };
+</script>
+
+</body>
+</html>
+
 
 
 <body class="bg-gray-900 text-white text-center p-6">
