@@ -569,21 +569,41 @@ function updateMiningStatus() {
       document.getElementById(sectionId).classList.remove('hidden');
     }
 
-    function completeTask(taskId) {
-      alert(`Task ${taskId} completed!`);
-      // Add logic for completing tasks and boosting mining rate
-      const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-      localStorage.setItem('balance', currentBalance + 80); // Reward for task completion
-      updateBalanceDisplay();
-    }
+    
+// Function to check if daily reward is already claimed
+function claimDailyReward() {
+    const lastClaimTime = localStorage.getItem('lastClaimTime');
+    const currentTime = new Date().getTime();
+    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-    function claimDailyReward() {
-      alert('Daily reward claimed!');
-      // Add logic for claiming daily rewards
-      const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-      localStorage.setItem('balance', currentBalance + 50); // Daily reward amount
-      updateBalanceDisplay();
+    if (lastClaimTime && currentTime - lastClaimTime < oneDay) {
+        alert('You have already claimed your daily reward today. Come back tomorrow!');
+    } else {
+        alert('Daily reward claimed!');
+        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+        localStorage.setItem('balance', currentBalance + 50); // Daily reward amount
+        localStorage.setItem('lastClaimTime', currentTime);
+        updateBalanceDisplay();
     }
+}
+
+// Function to complete tasks and check if already completed
+function completeTask(taskId) {
+    const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
+
+    if (completedTasks[taskId]) {
+        alert('Task already completed! More tasks coming soon 😊');
+        // Optionally, display a meme or image here
+        document.getElementById('taskMeme').innerHTML = '<img src="path_to_your_meme.jpg" alt="Meme" />';
+    } else {
+        alert(`Task ${taskId} completed!`);
+        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+        localStorage.setItem('balance', currentBalance + 80); // Reward for task completion
+        completedTasks[taskId] = true;
+        localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+        updateBalanceDisplay();
+    }
+}
 
       
     function inviteFriend() {
@@ -625,7 +645,7 @@ function rewardReferrer(referralCode) {
   // Assuming referralCode can be used to identify the referrer
   const referrerBalanceKey = `balance_${referralCode}`;
   const currentBalance = parseFloat(localStorage.getItem(referrerBalanceKey)) || 0;
-  const newBalance = currentBalance + 40; // Reward amount
+  const newBalance = currentBalance + 30; // Reward amount
   localStorage.setItem(referrerBalanceKey, newBalance);
 
   console.log(`Referrer with code ${referralCode} now has a balance of ${newBalance} CosmicCoin`);
@@ -633,7 +653,7 @@ function rewardReferrer(referralCode) {
 
 function rewardNewUser() {
   const currentUserBalance = parseFloat(localStorage.getItem('balance')) || 0;
-  const newBalance = currentUserBalance + 60; // Reward for using referral code
+  const newBalance = currentUserBalance + 20; // Reward for using referral code
   localStorage.setItem('balance', newBalance);
 }
 
@@ -676,21 +696,34 @@ function joinSquad(squad) {
     'CMO_RESORTS': 850     // 
   };
 
-  let reward = rewards[squad] || 0;
-  userCoins += reward;
-  localStorage.setItem('userCoins', userCoins);
+  
+    let userCoins = parseFloat(localStorage.getItem('userCoins')) || 0;
+    let joinedSquads = JSON.parse(localStorage.getItem('joinedSquads')) || {};
 
-  alert(`Joined ${squad.replace(/_/g, ' ')}! Reward: ${reward.toLocaleString()} CosmicCoins. Total: ${userCoins.toLocaleString()} CosmicCoins.`);
+    if (joinedSquads[squad]) {
+        alert(`You've already joined ${squad.replace(/_/g, ' ')}! No additional rewards.`);
+        return;
+    }
 
-  const maxReward = Math.max(...Object.values(rewards));
-  if (reward === maxReward) {
-    alert('Congratulations! You joined the squad with the highest CosmicCoin amount. Extra reward granted!');
-    userCoins += 500;  // Extra reward for joining the highest squad
+    let reward = rewards[squad] || 0;
+    userCoins += reward;
     localStorage.setItem('userCoins', userCoins);
-  }
 
-  updateBalanceDisplay();
+    alert(`Joined ${squad.replace(/_/g, ' ')}! Reward: ${reward.toLocaleString()} CosmicCoins. Total: ${userCoins.toLocaleString()} CosmicCoins.`);
+
+    const maxReward = Math.max(...Object.values(rewards));
+    if (reward === maxReward) {
+        alert('Congratulations! You joined the squad with the highest CosmicCoin amount. Extra reward granted!');
+        userCoins += 100;  // Extra reward for joining the highest squad
+        localStorage.setItem('userCoins', userCoins);
+    }
+
+    joinedSquads[squad] = true;
+    localStorage.setItem('joinedSquads', JSON.stringify(joinedSquads));
+
+    updateBalanceDisplay();
 }
+
 
 function updateBalanceDisplay() {
   const balance = localStorage.getItem('userCoins') || '0';
