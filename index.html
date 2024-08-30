@@ -149,13 +149,13 @@
 
 .balance-container {
     text-align: center;
-    margin-top: 30px; /* Add some space between the circle and balance */
+    margin-top: 20px; /* Add some space between the circle and balance */
 }
 
 .balance {
     color: white;
     font-size: 1.5rem;
-    animation: pulse-animation 1s infinite;
+    font-weight: bold;
 }
 
 @keyframes pulse-animation {
@@ -297,7 +297,7 @@
     </div>
   </div>
 
-  <h1 class="text-3xl font-bold mb-6">CosmicCoin Galaxy Airdrop</h1>
+  <h1 class="text-3xl font-small mb-6">CosmicCoin Galaxy Airdrop</h1>
 
   <div id="mainSection">
     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(24)">Start 24-Hour Mining</button>
@@ -305,7 +305,9 @@
     <div id="miningStatus" class="text-lg mb-4"></div>
     <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
   </div>
-  
+  <div class="rotating-circle"></div>
+<div class="balance-container">
+    
 </div>
 
 
