@@ -142,12 +142,12 @@
     margin: auto;
 }
 
+@keyframes rotate-animation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+	    }
 
 
-.balance-container {
-    text-align: center;
-    margin-top: 20px; /* Add some space between the circle and balance */
-}
 
 .balance {
     color: white;
@@ -556,17 +556,17 @@ function updateMiningStatus() {
       const ratePerSecond = 0.0040; // Adjust mining rate per second
       const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
       const miningAmount = currentBalance + (ratePerSecond * (60 * 60 * 24 - secondsLeft)); // Total mined amount
-      document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} CosmicCoin`;
+      document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} CSC`;
     }
 
     function updateBalanceDisplay() {
       const balance = localStorage.getItem('balance') || '0';
-      document.getElementById('miningAmount').innerText = `Current Balance: ${balance} CosmicCoin`;
+      document.getElementById('miningAmount').innerText = `Current Balance: ${balance} CSC`;
     }
 
     function loadBalance() {
       const balance = localStorage.getItem('balance') || '0';
-      document.getElementById('miningAmount').innerText = `Current Balance: ${balance} CosmicCoin`;
+      document.getElementById('miningAmount').innerText = `Current Balance: ${balance} CSC`;
     }
 
     function loadMiningStatus() {
