@@ -97,116 +97,138 @@
         
 
     <style>
-        .hidden { display: none; }
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
-            background-size: 600% 600%;
-            animation: gradient-animation 10s ease infinite;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 9999;
-        }
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .holographic-text {
-            background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
-            background-size: 200% 200%;
-            color: transparent;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: gradient-animation 2s linear infinite, rotate-animation 2s linear infinite;
-        }
-        .rotating-circle {
-            position: relative;
-            width: 150px;
-            height: 150px;
-            border: 5px solid;
-            border-image: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046) 1;
-            border-radius: 50%;
-            animation: rotate-animation 4s linear infinite;
-            margin: auto;
-        }
-        @keyframes rotate-animation {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .rotating-circle .balance {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: white;
-            font-size: 1.5rem;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-        }
-        .task-button {
-            background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
-            color: white;
-            font-bold;
-            padding: 1rem;
-            border-radius: 1rem;
-            transition: background 0.3s ease;
-            display: block;
-            width: 100%;
-            margin-bottom: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .task-button:hover {
-            background-position: 100% 0;
-        }
-        .side-buttons {
-            position: fixed;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-        }
-        .airdrop-container {
-            max-width: 800px;
-            width: 100%;
-            padding: 20px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin-top: 20px;
-            text-align: center;
-        }
-        @media (max-width: 768px) {
-            .airdrop-container {
-                padding: 15px;
-            }
-        }
-        @media (max-width: 500px) {
-            .airdrop-container {
-                padding: 13px;
-            }
-        }
-    </style>
-</head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
-    <div class="loading-screen hidden">
-        <div class="holographic-text text-4xl">Loading CosmicCoin Galaxy...</div>
-    </div>
+    .hidden { display: none; }
+    .loading-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
+      background-size: 600% 600%;
+      animation: gradient-animation 10s ease infinite;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    @keyframes gradient-animation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .nav-button {
+      width: 20%;
+      text-align: center;
+      margin: 0 0.5rem;
+    }
+    .holographic-text {
+      background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
+      background-size: 200% 200%;
+      color: transparent;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: gradient-animation 2s linear infinite, rotate-animation 2s linear infinite;
+    }
+    .rotating-circle {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    border: 5px solid;
+    border-image: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046) 1;
+    border-radius: 50%;
+    animation: rotate-animation 4s linear infinite;
+    margin: auto;
+}
 
-    <div class="airdrop-container">
-        <h1 class="text-3xl font-bold mb-6">CosmicCoin Galaxy Airdrop</h1>
-        <div class="rotating-circle">
-            <div class="balance" id="miningBalance">0.00</div>
-        </div>
-        <button id="createUserButton" class="task-button mt-6">Generate User ID</button>
-        <div id="userId" class="mt-4 text-lg"></div>
+@keyframes rotate-animation {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.balance-container {
+    text-align: center;
+    margin-top: 20px; /* Add some space between the circle and balance */
+}
+
+.balance {
+    color: white;
+    font-size: 1.5rem;
+    animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+
+    }
+    .task-button {
+      background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
+      color: white;
+      font-bold;
+      padding: 1rem;
+      border-radius: 1rem;
+      transition: background 0.3s ease;
+      display: block;
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    .task-button:hover {
+      background-position: 100% 0;
+    }
+    .side-buttons {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+    }
+    		/* Add the following CSS to make the page responsive */
+		body {
+			width: 100%;
+			height: 100vh;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			font-family: Arial, sans-serif;
+			background-color: #f0f0f0; /* Optional */
+		}
+		.airdrop-container {
+			max-width: 800px; /* Adjust the max-width to your liking */
+			width: 100%;
+			padding: 20px;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+		/* Add media queries for different screen sizes */
+		@media (max-width: 788px) {
+			.airdrop-container {
+				padding: 15px;
+			}
+		}
+		@media (max-width: 499px) {
+			.airdrop-container {
+				padding: 13px;
+			}
+    }
+  </style>
+</head>
+  
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5320066196933944"
+     crossorigin="anonymous"></script>
+  
+  
+  <div id="user-info"></div>
+  <button id="createUserButton">Generate User ID</button>
+  <div id="userId"></div>
         
   <script>
     function generateUniqueId() {
@@ -283,6 +305,11 @@
     <div id="miningStatus" class="text-lg mb-4"></div>
     <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
   </div>
+  <div class="rotating-circle"></div>
+<div class="balance-container">
+    <div class="balance">100 COSMIC</div>
+</div>
+
 
   <div id="tasksSection" class="hidden">
     <h2 class="text-3xl font-bold mb-6 text-center">Complete Tasks to Boost Mining Rate</h2>
