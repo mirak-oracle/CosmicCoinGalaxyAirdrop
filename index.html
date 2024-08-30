@@ -143,7 +143,7 @@
 }
 
 @keyframes rotate-animation {
-    0% { transform: rotate(0deg); }
+  
     100% { transform: rotate(360deg); }
 	    }
 
@@ -157,7 +157,12 @@
     font-size: 1.5rem;
     font-weight: bold;
 }
+@keyframes pulse-animation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
 
+	    }
 
     .task-button {
       background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
