@@ -756,11 +756,25 @@ const NOTIFICATION_CONFIG = {
   reminderInterval: 3600000, // 1 hour in milliseconds
 };
 
+// Function to register a service worker
+async function registerServiceWorker() {
+  if ('serviceWorker' in navigator) {
+    try {
+      await navigator.serviceWorker.register('/sw.js');
+      console.log('Service Worker registered successfully.');
+    } catch (error) {
+      console.error('Service Worker registration failed:', error);
+    }
+  } else {
+    console.log('Service Worker not supported in this browser.');
+  }
+}
+
 // Function to request notification permission
 function requestNotificationPermission() {
   return new Promise((resolve, reject) => {
     if (!("Notification" in window)) {
-      reject("This browser does not support desktop notification");
+      reject("This browser does not support desktop notifications");
     } else {
       Notification.requestPermission().then(permission => {
         resolve(permission);
@@ -774,6 +788,8 @@ async function enableNotifications() {
   try {
     const permission = await requestNotificationPermission();
     if (permission === "granted") {
+      // Register the service worker
+      await registerServiceWorker();
       showNotification('CosmicCoin Mining', 'Notifications enabled for CosmicCoin mining updates.');
       startReminderSystem();
       return true;
@@ -790,10 +806,19 @@ async function enableNotifications() {
 // Function to show a notification
 function showNotification(title, body) {
   if (Notification.permission === "granted") {
-    new Notification(title, {
-      body: body,
-      icon: NOTIFICATION_CONFIG.icon
-    });
+    if (navigator.serviceWorker) {
+      navigator.serviceWorker.ready.then(function(registration) {
+        registration.showNotification(title, {
+          body: body,
+          icon: NOTIFICATION_CONFIG.icon
+        });
+      });
+    } else {
+      new Notification(title, {
+        body: body,
+        icon: NOTIFICATION_CONFIG.icon
+      });
+    }
   } else {
     console.log(`Notification not shown: ${title} - ${body}`);
   }
@@ -802,7 +827,9 @@ function showNotification(title, body) {
 // Function to start the reminder system
 function startReminderSystem() {
   setInterval(() => {
-    showNotification('CosmicCoin Mining Reminder', 'Come back to mine more CosmicCoin!');
+    if (Notification.permission === "granted") {
+      showNotification('CosmicCoin Mining Reminder', 'Come back to mine more CosmicCoin!');
+    }
   }, NOTIFICATION_CONFIG.reminderInterval);
 }
 
@@ -822,6 +849,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startReminderSystem();
   }
 });
+
   </script>
 </body>
 </html>
