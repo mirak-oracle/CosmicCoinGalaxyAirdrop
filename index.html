@@ -750,36 +750,78 @@ function updateBalanceDisplay() {
       }, 3000);  // Simulates a 3-second loading screen
     });
     
-function enableNotifications() {
-      if ("Notification" in window) {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            alert('Notifications enabled!');
-            new Notification('CosmicCoin Mining', {
-              body: 'Notifications enabled for CosmicCoin mining updates.',
-              icon: 'https://cdn.iconfinder.com/data/icons/essentials-9/128/__bell-512.png' // URL to icon image
-            });
-          } else {
-            alert('Notifications are blocked. Please enable them in your browser settings.');
-          }
-        });
-      } else {
-        alert('This browser does not support desktop notification');
-      }
-    }
+// Notification configuration
+const NOTIFICATION_CONFIG = {
+  icon: 'https://cdn.iconfinder.com/data/icons/essentials-9/128/__bell-512.png',
+  reminderInterval: 3600000, // 1 hour in milliseconds
+};
 
-    function sendReminder() {
-      setTimeout(function() {
-        if (Notification.permission === "granted") {
-          new Notification('CosmicCoin Mining Reminder', {
-            body: 'Reminder: Come back to mine more CosmicCoin!',
-            icon: 'https://cdn.iconfinder.com/data/icons/essentials-9/128/__bell-512.png' // URL to icon image
-          });
-        } else {
-          alert('Reminder: Come back to mine more CosmicCoin!');
-        }
-      }, 1000); // Adjust the timing as necessary
+// Function to request notification permission
+function requestNotificationPermission() {
+  return new Promise((resolve, reject) => {
+    if (!("Notification" in window)) {
+      reject("This browser does not support desktop notification");
+    } else {
+      Notification.requestPermission().then(permission => {
+        resolve(permission);
+      });
     }
+  });
+}
+
+// Function to enable notifications
+async function enableNotifications() {
+  try {
+    const permission = await requestNotificationPermission();
+    if (permission === "granted") {
+      showNotification('CosmicCoin Mining', 'Notifications enabled for CosmicCoin mining updates.');
+      startReminderSystem();
+      return true;
+    } else {
+      alert('Notifications are blocked. Please enable them in your browser settings to receive CosmicCoin updates.');
+      return false;
+    }
+  } catch (error) {
+    alert(error);
+    return false;
+  }
+}
+
+// Function to show a notification
+function showNotification(title, body) {
+  if (Notification.permission === "granted") {
+    new Notification(title, {
+      body: body,
+      icon: NOTIFICATION_CONFIG.icon
+    });
+  } else {
+    console.log(`Notification not shown: ${title} - ${body}`);
+  }
+}
+
+// Function to start the reminder system
+function startReminderSystem() {
+  setInterval(() => {
+    showNotification('CosmicCoin Mining Reminder', 'Come back to mine more CosmicCoin!');
+  }, NOTIFICATION_CONFIG.reminderInterval);
+}
+
+// Function to check if notifications are enabled
+function areNotificationsEnabled() {
+  return Notification.permission === "granted";
+}
+
+// Example usage
+document.addEventListener('DOMContentLoaded', () => {
+  const enableNotificationsButton = document.getElementById('enableNotifications');
+  if (enableNotificationsButton) {
+    enableNotificationsButton.addEventListener('click', enableNotifications);
+  }
+
+  if (areNotificationsEnabled()) {
+    startReminderSystem();
+  }
+});
   </script>
 </body>
 </html>
