@@ -432,7 +432,10 @@
     <p id="inviteStatus" class="mt-2">
   </div>
 
-  
+  <div id="notificationsSection" class="hidden">
+    <h2 class="text-2xl mb-4">Enable Notifications</h2>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onclick="enableNotifications()">Enable Notifications</button>
+  </div>
 
   <div id="comingSoonSection" class="hidden">
     <h2 class="text-2xl mb-4">Wallet</h2>
@@ -445,6 +448,7 @@
       <button class="nav-button" onclick="showSection('tasksSection')">Tasks</button>
       <button class="nav-button text-lg" onclick="showSection('rewardsSection')">Rewards</button>
       <button class="nav-button text-lg" onclick="showSection('referralSection')">Referral</button>
+    <button class="nav-button text-lg" onclick="showSection('notificationsSection')">Alert</button>
      <button class="nav-button text-lg" onclick="showSection('comingSoonSection')">💰</button>
     </div>
   </div>
