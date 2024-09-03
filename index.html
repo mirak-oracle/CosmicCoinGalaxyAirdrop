@@ -419,23 +419,28 @@
     <button class="task-button" onclick="joinSquad('CMO_RESORTS')">Join CMO RESORTS (7.5B CosmicCoin)</button>
   </div>
 
-  <div id="rewardsSection" class="hidden">
-    <h2 class="text-2xl mb-4 cosmic-title">Daily Rewards</h2>
-    <p class="cosmic-subtitle">Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</p>
-
-    <!-- Daily reward list -->
-    <div id="rewardDays" class="reward-days-container">
-        <!-- Dynamic reward buttons will be injected here by JavaScript -->
+  
+<div id="rewardsSection" class="hidden">
+    <h2 class="text-2xl mb-4">Daily Rewards</h2>
+    <p>Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</p>
+    <div id="rewardDetails">
+        <div id="day1" class="reward-day">Day 1: 10K $COSMIC</div>
+        <div id="day2" class="reward-day">Day 2: 20K $COSMIC</div>
+        <div id="day3" class="reward-day">Day 3: 30K $COSMIC</div>
+        <div id="day4" class="reward-day">Day 4: 40K $COSMIC</div>
+        <div id="day5" class="reward-day">Day 5: 50K $COSMIC</div>
+        <div id="day6" class="reward-day">Day 6: 100K $COSMIC</div>
+        <div id="day7" class="reward-day">Day 7: 500K $COSMIC</div>
     </div>
-
-    <!-- Claim button -->
-    <button id="claimRewardBtn" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full claim-button">Claim Daily Reward</button>
-
-    <!-- Double rewards button (initially hidden) -->
-    <div id="doubleRewardsContainer" class="hidden double-rewards-container">
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full double-rewards-button" onclick="claimDoubleReward()">Claim 2x Reward by Watching Ad</button>
+    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" onclick="claimDailyReward()">Claim Daily Reward</button>
+    <div id="doubleRewardSection" class="hidden mt-4">
+        <p>Want to double your reward? Watch an ad!</p>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onclick="watchAdForDoubleReward()">Watch Ad</button>
     </div>
 </div>
+
+<!-- Add the ad script -->
+<script type='text/javascript' src='//pl18945766.cpmrevenuegate.com/ae/ad/db/aeaddb9b58f23678550b7763cc0e6d32.js'></script>
 
 
   <div id="referralSection" class="hidden">
@@ -596,33 +601,10 @@ function updateMiningStatus() {
     }
 
     
-const rewards = [10000, 20000, 30000, 40000, 50000, 100000, 500000]; // Rewards for days 1 to 7
-const rewardsKey = 'rewardsProgress';
+// Daily reward amounts per day
+const dailyRewards = [10000, 20000, 30000, 40000, 50000, 100000, 500000];
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Initialize reward days display
-    const rewardDaysContainer = document.getElementById('rewardDays');
-    rewards.forEach((reward, index) => {
-        const day = index + 1;
-        rewardDaysContainer.innerHTML += `
-            <div class="reward-day ${getDayClass(day)}">
-                <p>Day ${day}</p>
-                <p>${reward.toLocaleString()} COSMIC</p>
-            </div>
-        `;
-    });
-
-    updateClaimButton();
-});
-
-function getDayClass(day) {
-    const claimedDays = JSON.parse(localStorage.getItem(rewardsKey)) || [];
-    if (claimedDays.includes(day)) {
-        return 'claimed'; // Style for claimed rewards
-    }
-    return '';
-}
-
+// Function to check if daily reward is already claimed
 function claimDailyReward() {
     const lastClaimTime = localStorage.getItem('lastClaimTime');
     const currentTime = new Date().getTime();
@@ -631,67 +613,55 @@ function claimDailyReward() {
     if (lastClaimTime && currentTime - lastClaimTime < oneDay) {
         alert('You have already claimed your daily reward today. Come back tomorrow!');
     } else {
-        const claimedDays = JSON.parse(localStorage.getItem(rewardsKey)) || [];
-        const currentDay = claimedDays.length + 1;
+        // Calculate the current reward based on the day
+        const dayIndex = calculateDayIndex();
+        const rewardAmount = dailyRewards[dayIndex];
 
-        if (currentDay > 7) {
-            alert('All rewards claimed for the week! Come back next week.');
-        } else {
-            alert(`Day ${currentDay} reward of ${rewards[currentDay - 1].toLocaleString()} COSMIC claimed!`);
-            claimedDays.push(currentDay);
-            localStorage.setItem(rewardsKey, JSON.stringify(claimedDays));
-            localStorage.setItem('balance', (parseFloat(localStorage.getItem('balance')) || 0) + rewards[currentDay - 1]);
-            localStorage.setItem('lastClaimTime', currentTime);
-            updateClaimButton();
-            showDoubleRewardOption();
-        }
+        // Update the balance
+        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+        localStorage.setItem('balance', currentBalance + rewardAmount);
+        localStorage.setItem('lastClaimTime', currentTime);
+        localStorage.setItem('rewardClaimed', rewardAmount);
+
+        // Update the UI and show the option to double the reward
+        alert('Daily reward claimed!');
+        updateBalanceDisplay();
+        document.getElementById('doubleRewardSection').classList.remove('hidden');
     }
 }
 
-function updateClaimButton() {
-    const claimedDays = JSON.parse(localStorage.getItem(rewardsKey)) || [];
-    const currentDay = claimedDays.length + 1;
-    const claimRewardBtn = document.getElementById('claimRewardBtn');
-
-    if (currentDay > 7) {
-        claimRewardBtn.innerText = 'All rewards claimed! Come back next week.';
-        claimRewardBtn.disabled = true;
-    } else {
-        claimRewardBtn.innerText = `Claim Day ${currentDay} Reward`;
-        claimRewardBtn.disabled = false;
-    }
-}
-
-function showDoubleRewardOption() {
-    const doubleRewardsContainer = document.getElementById('doubleRewardsContainer');
-    doubleRewardsContainer.classList.remove('hidden');
-}
-
-function claimDoubleReward() {
-    // Simulate watching an ad
-    // In a real scenario, this would be an actual ad flow
-    alert('Ad watched! Your reward will be doubled.');
-
+// Function to calculate the current day index (0-6)
+function calculateDayIndex() {
     const lastClaimTime = localStorage.getItem('lastClaimTime');
-    const claimedDays = JSON.parse(localStorage.getItem(rewardsKey)) || [];
-    const currentDay = claimedDays.length;
-
-    if (currentDay <= 7 && lastClaimTime) {
-        const currentReward = rewards[currentDay - 1];
-        const newBalance = (parseFloat(localStorage.getItem('balance')) || 0) + currentReward;
-
-        // Double the reward
-        const doubledReward = currentReward * 2;
-        localStorage.setItem('balance', newBalance + currentReward);
-
-        // Update the UI and notify the user
-        alert(`Your reward has been doubled! You received ${doubledReward.toLocaleString()} COSMIC.`);
-        updateClaimButton();
-        document.getElementById('doubleRewardsContainer').classList.add('hidden');
-    } else {
-        alert('Unable to double the reward. Please claim your reward first or come back tomorrow.');
-    }
+    const startTime = localStorage.getItem('startTime') || new Date().getTime();
+    localStorage.setItem('startTime', startTime);
+    const elapsedDays = Math.floor((new Date().getTime() - startTime) / (24 * 60 * 60 * 1000));
+    return Math.min(elapsedDays % 7, 6); // To avoid exceeding array bounds
 }
+
+// Function to watch an ad for double reward
+function watchAdForDoubleReward() {
+    // Assume the ad was watched successfully
+    alert('Thank you for watching the ad! Your reward will be doubled.');
+    doubleReward();
+}
+
+// Function to double the reward after watching an ad
+function doubleReward() {
+    const rewardClaimed = parseFloat(localStorage.getItem('rewardClaimed')) || 0;
+    const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+    localStorage.setItem('balance', currentBalance + rewardClaimed);
+    updateBalanceDisplay();
+    document.getElementById('doubleRewardSection').classList.add('hidden');
+}
+
+// Function to update balance display
+function updateBalanceDisplay() {
+    const balance = localStorage.getItem('balance') || 0;
+    document.getElementById('balanceDisplay').textContent = `Balance: ${balance} $COSMIC`;
+}
+
+
 
 
 // Function to complete tasks and check if already completed
