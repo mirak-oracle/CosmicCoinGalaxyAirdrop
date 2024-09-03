@@ -420,23 +420,11 @@
   </div>
 
   
-<div id="rewardsSection">
-    <h2 class="text-2xl mb-4">Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</h2>
-    <p>Want to double your rewards? Watch an ad!</p>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onclick="watchAdForDoubleReward()">Watch Ad to ×2 Reward</button>
+<div id="rewardsSection" class="hidden">
+    <h2 class="text-2xl mb-4">Daily Rewards</h2>
+    <p>Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</p>
+    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" onclick="claimDailyReward()">Claim Daily Reward</button>
 </div>
-
-
-<!-- Direct ad link -->
-<script type="text/javascript">
-    function watchAdForDoubleReward() {
-        window.open("https://www.cpmrevenuegate.com/k9x5gnvg?key=aa658a45eee053af4a31f6853b94c782", "_blank");
-        // After the ad is "watched," double the reward
-        setTimeout(() => {
-            doubleReward();
-        }, 5000); // Simulate a 5-second ad watching duration
-    }
-</script>
 
 
 
