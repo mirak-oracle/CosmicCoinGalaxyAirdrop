@@ -600,7 +600,7 @@ function updateMiningStatus() {
     
  
 
-// Function to check if daily reward is already claimed
+// Function to check if the daily reward is already claimed
 function claimDailyReward() {
     const lastClaimTime = localStorage.getItem('lastClaimTime');
     const currentTime = new Date().getTime();
@@ -611,11 +611,22 @@ function claimDailyReward() {
     } else {
         alert('Daily reward claimed!');
         const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-        localStorage.setItem('balance', currentBalance + 50); // Daily reward amount
+        const newBalance = currentBalance + 50; // Daily reward amount
+        localStorage.setItem('balance', newBalance);
         localStorage.setItem('lastClaimTime', currentTime);
-        updateBalanceDisplay();
+        updateBalanceDisplay(); // Update the balance display after claiming
     }
-	      }
+}
+
+// Function to update balance display
+function updateBalanceDisplay() {
+    const balance = localStorage.getItem('balance') || 0;
+    document.getElementById('balanceDisplay').textContent = `Balance: ${balance} $COSMIC`;
+}
+
+// Initial balance display update on page load
+updateBalanceDisplay();
+
 
 
 
