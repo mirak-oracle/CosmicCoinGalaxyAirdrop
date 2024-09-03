@@ -753,7 +753,7 @@ function updateBalanceDisplay() {
 // Notification configuration
 const NOTIFICATION_CONFIG = {
   icon: 'https://cdn.iconfinder.com/data/icons/essentials-9/128/__bell-512.png',
-  reminderInterval: 3600000, // 1 hour in milliseconds
+  reminderInterval: 43200000 // 12 hours in milliseconds (86400000 for 24 hours)
 };
 
 // Function to register a service worker
@@ -788,7 +788,6 @@ async function enableNotifications() {
   try {
     const permission = await requestNotificationPermission();
     if (permission === "granted") {
-      // Register the service worker
       await registerServiceWorker();
       showNotification('CosmicCoin Mining', 'Notifications enabled for CosmicCoin mining updates.');
       startReminderSystem();
@@ -826,9 +825,9 @@ function showNotification(title, body) {
 
 // Function to start the reminder system
 function startReminderSystem() {
-  setInterval(() => {
-    if (Notification.permission === "granted") {
-      showNotification('CosmicCoin Mining Reminder', 'Come back to mine more CosmicCoin!');
+  setInterval(async () => {
+    if (Notification.permission === "granted" && await isMiningComplete()) {
+      showNotification('CosmicCoin Mining Reminder', 'Mining cycle complete! Come back to mine more CosmicCoin!');
     }
   }, NOTIFICATION_CONFIG.reminderInterval);
 }
@@ -836,6 +835,26 @@ function startReminderSystem() {
 // Function to check if notifications are enabled
 function areNotificationsEnabled() {
   return Notification.permission === "granted";
+}
+
+// Function to check if mining is complete
+async function isMiningComplete() {
+  // Replace with your logic to check mining status
+  // Example: API call or local storage check
+
+  // Example API-based implementation (replace with your actual API logic)
+  try {
+    const response = await fetch('/api/mining-status');
+    const data = await response.json();
+    return data.status === 'complete';
+  } catch (error) {
+    console.error('Error checking mining status:', error);
+    return false;
+  }
+
+  // Example local storage check
+  // const miningStatus = localStorage.getItem('miningStatus');
+  // return miningStatus === 'complete';
 }
 
 // Example usage
@@ -848,8 +867,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (areNotificationsEnabled()) {
     startReminderSystem();
   }
-});
-
+})
   </script>
 </body>
 </html>
+ 
