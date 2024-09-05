@@ -420,100 +420,15 @@
   </div>
 
 
-    <div class="rewards-container">
-        <div class="header">
-        </div>
-        <h2>Earn More!</h2>
-        <p>Start earning more coins.</p>
-        <div class="daily-checkout">
-            <h3>Daily checkout</h3>
-            <p>Accrue coins for logging into the game daily without skipping</p>
-            <div class="rewards-grid" id="rewardsGrid"></div>
-            <button id="claimButton" onclick="claimDailyReward()">Claim Daily Reward</button>
-            <button id="doubleRewardButton" class="hidden" onclick="watchAdForDouble()">Watch Ad for ×2 Reward</button>
-        </div>
-    </div>
+    
+        <div id="daily-reward">
+    <h2>Daily Rewards</h2>
+    <p>Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</p>
+    <button onclick="claimDailyReward()">Claim Daily Reward</button>
+    <button onclick="claimDoubleReward()">Claim ×2 Reward (Watch Ad)</button>
+</div>
 
-    <script>
-        const rewards = [10, 20, 30, 40, 50, 100, 500];
-        let currentDay = 0;
-        let balance = 0;
-
-        function initializeRewards() {
-            currentDay = parseInt(localStorage.getItem('currentDay') || '0');
-            balance = parseFloat(localStorage.getItem('balance') || '0');
-            updateUI();
-        }
-
-        function updateUI() {
-            document.getElementById('balance').textContent = balance.toLocaleString();
-            const claimButton = document.getElementById('claimButton');
-            const doubleRewardButton = document.getElementById('doubleRewardButton');
-            const rewardsGrid = document.getElementById('rewardsGrid');
-
-            rewardsGrid.innerHTML = '';
-            rewards.forEach((reward, index) => {
-                const dayElement = document.createElement('div');
-                dayElement.className = 'reward-day';
-                if (index < currentDay) dayElement.classList.add('claimed');
-                if (index === currentDay) dayElement.classList.add('current');
-                dayElement.innerHTML = `
-                    <div>${reward}K</div>
-                    <div>Day ${index + 1}</div>
-                `;
-                rewardsGrid.appendChild(dayElement);
-            });
-
-            if (canClaim()) {
-                claimButton.disabled = false;
-                claimButton.textContent = 'Claim Daily Reward';
-                doubleRewardButton.classList.add('hidden');
-            } else {
-                claimButton.disabled = true;
-                claimButton.textContent = 'Come back tomorrow';
-                if (currentDay > 0) {
-                    doubleRewardButton.classList.remove('hidden');
-                }
-            }
-        }
-
-        function canClaim() {
-            const lastClaimTime = localStorage.getItem('lastClaimTime');
-            if (!lastClaimTime) return true;
-            const now = new Date().getTime();
-            const oneDay = 24 * 60 * 60 * 1000;
-            return now - parseInt(lastClaimTime) >= oneDay;
-        }
-
-        function claimDailyReward() {
-            if (canClaim()) {
-                const reward = rewards[currentDay];
-                balance += reward;
-                currentDay = (currentDay + 1) % 7;
-                localStorage.setItem('balance', balance.toString());
-                localStorage.setItem('currentDay', currentDay.toString());
-                localStorage.setItem('lastClaimTime', new Date().getTime().toString());
-                alert(`Claimed ${reward}K coins! Your new balance is ${balance}K coins.`);
-                updateUI();
-            }
-        }
-
-        function watchAdForDouble() {
-            window.open('https://www.cpmrevenuegate.com/k9x5gnvg?key=aa658a45eee053af4a31f6853b94c782', '_blank');
-            const lastReward = rewards[(currentDay - 1 + 7) % 7];
-            balance += lastReward; // Double the last reward
-            localStorage.setItem('balance', balance.toString());
-            alert(`Reward doubled! Added another ${lastReward}K coins! Your new balance is ${balance}K coins.`);
-            updateUI();
-        }
-
-        initializeRewards();
-    </script>
-</body>
-</html>
-
-
-
+        
 
   <div id="referralSection" class="hidden">
     <h2 class="text-2xl mb-4">Referral Program</h2>
@@ -674,6 +589,36 @@ function updateMiningStatus() {
 
     
  
+
+
+
+function claimDailyReward() {
+    const lastClaimTime = localStorage.getItem('lastClaimTime');
+    const currentTime = new Date().getTime();
+    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    if (lastClaimTime && currentTime - lastClaimTime < oneDay) {
+        alert('Already claimed today. Come back tomorrow!');
+    } else {
+        alert('Daily reward claimed!');
+        updateBalance(50);
+        localStorage.setItem('lastClaimTime', currentTime);
+    }
+}
+
+function claimDoubleReward() {
+    // Simulating ad watch
+    alert('Ad watched. Claiming double reward!');
+    updateBalance(100);
+    localStorage.setItem('lastClaimTime', new Date().getTime());
+}
+
+function updateBalance(amount) {
+    const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+    localStorage.setItem('balance', currentBalance + amount);
+    // Assuming you have a function to update the balance display
+    // updateBalanceDisplay();
+}
 
 
 
