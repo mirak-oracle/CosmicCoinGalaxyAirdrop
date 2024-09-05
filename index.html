@@ -421,23 +421,20 @@
 
 
     
-        <div id="rewardsSection" class="hidden">
-    <h2 class="text-2xl mb-4">Daily Rewards</h2>
-    <p>Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</p>
-    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" onclick="claimDailyReward()">Claim Daily Reward</button>
-  <button id="doubleRewardButton" class="hidden" onclick="watchAdForDouble()">Watch Ad for ×2 Reward</button>
-	</div>
-	<!-- Direct ad link (open in a new tab to simulate watching an ad) -->
-<script type="text/javascript">
-    function watchAdForDoubleReward() {
-        window.open("https://www.cpmrevenuegate.com/k9x5gnvg?key=aa658a45eee053af4a31f6853b94c782", "_blank");
-        // After the ad is "watched," double the reward
-        setTimeout(() => {
-            doubleReward();
-        }, 5000); // Simulate a 5-second ad watching duration
-    }
-</script>
-	</div>
+        <div id="rewardsSection" class="bg-gray-100 p-6 rounded-lg shadow-lg max-w-md mx-auto mt-10">
+    <h2 class="text-3xl font-bold text-indigo-600 mb-4 text-center">Daily Cosmic Rewards</h2>
+    <p class="text-lg text-gray-700 text-center mb-6">
+        Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of <strong>$COSMIC</strong> tokens and fuel your intergalactic adventures.
+    </p>
+
+    <!-- Claim Daily Reward Button -->
+    <div class="flex justify-center mb-4">
+        <button 
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-full transition duration-300 transform hover:scale-105"
+            onclick="window.open('https://www.cpmrevenuegate.com/k9x5gnvg?key=aa658a45eee053af4a31f6853b94c782', '_blank'); doubleRewards()">
+            ×2 Watch Ads to Double Reward
+        </button>
+    </div>
 
 
         
@@ -604,14 +601,31 @@ function updateMiningStatus() {
 
 
 
-
 function claimDailyReward() {
-      alert('Daily reward claimed!');
-      // Add logic for claiming daily rewards
-      const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-      localStorage.setItem('balance', currentBalance + 50); // Daily reward amount
-      updateBalanceDisplay();
+    const lastClaimTime = localStorage.getItem('lastClaimTime');
+    const currentTime = new Date().getTime();
+    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    // Check if the user has already claimed the reward within the last 24 hours
+    if (lastClaimTime && currentTime - lastClaimTime < oneDay) {
+        alert('You have already claimed your daily reward today. Come back tomorrow!');
+    } else {
+        // If the user hasn't claimed within the last 24 hours, allow the claim
+        alert('Daily reward claimed!');
+        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+        localStorage.setItem('balance', currentBalance + 50); // Add daily reward amount
+        localStorage.setItem('lastClaimTime', currentTime);   // Store the time of the claim
+        updateBalanceDisplay();
+    }
 }
+
+// Function to update balance display
+function updateBalanceDisplay() {
+    const balance = localStorage.getItem('balance') || 0;
+    document.getElementById('balanceDisplay').textContent = `Balance: ${balance} $COSMIC`;
+}
+
+
 
 
 
