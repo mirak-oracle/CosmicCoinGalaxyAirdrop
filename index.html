@@ -421,12 +421,12 @@
 
 
     
-        <div id="daily-reward">
-    <h2>Daily Rewards</h2>
+        <div id="rewardsSection" class="hidden">
+    <h2 class="text-2xl mb-4">Daily Rewards</h2>
     <p>Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</p>
-    <button onclick="claimDailyReward()">Claim Daily Reward</button>
-    <button onclick="claimDoubleReward()">Claim ×2 Reward (Watch Ad)</button>
-</div>
+    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" onclick="claimDailyReward()">Claim Daily Reward</button>
+  </div>
+
 
         
 
@@ -592,34 +592,14 @@ function updateMiningStatus() {
 
 
 
+
 function claimDailyReward() {
-    const lastClaimTime = localStorage.getItem('lastClaimTime');
-    const currentTime = new Date().getTime();
-    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-    if (lastClaimTime && currentTime - lastClaimTime < oneDay) {
-        alert('Already claimed today. Come back tomorrow!');
-    } else {
-        alert('Daily reward claimed!');
-        updateBalance(50);
-        localStorage.setItem('lastClaimTime', currentTime);
-    }
+      alert('Daily reward claimed!');
+      // Add logic for claiming daily rewards
+      const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
+      localStorage.setItem('balance', currentBalance + 50); // Daily reward amount
+      updateBalanceDisplay();
 }
-
-function claimDoubleReward() {
-    // Simulating ad watch
-    alert('Ad watched. Claiming double reward!');
-    updateBalance(100);
-    localStorage.setItem('lastClaimTime', new Date().getTime());
-}
-
-function updateBalance(amount) {
-    const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-    localStorage.setItem('balance', currentBalance + amount);
-    // Assuming you have a function to update the balance display
-    // updateBalanceDisplay();
-}
-
 
 
 
