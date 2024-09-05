@@ -420,10 +420,18 @@
   </div>
 
   
-<div id="rewardsSection" class="hidden">
-    <h2 class="text-2xl mb-4">Daily Rewards</h2>
-    <p>Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</p>
-    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full" onclick="claimDailyReward()">Claim Daily Reward</button>
+<div class="rewards-container">
+    <div class="balance">
+        <div>NOT Balance</div>
+        <div id="balance" class="user-balance">0</div>
+    </div>
+    <div class="daily-checkout">
+        <h3>Daily checkout</h3>
+        <p>Accrue coins for logging into the game daily without skipping</p>
+        <div id="rewardsGrid" class="rewards-grid"></div>
+        <button id="claimButton" onclick="claimDailyReward()">Claim Daily Reward</button>
+        <button id="doubleRewardButton" class="hidden" onclick="watchAdForDouble()">Watch Ad for ×2 Reward</button>
+    </div>
 </div>
 
 
@@ -588,22 +596,128 @@ function updateMiningStatus() {
     
  
 
-// Function to check if daily reward is already claimed
-function claimDailyReward() {
-    const lastClaimTime = localStorage.getItem('lastClaimTime');
-    const currentTime = new Date().getTime();
-    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+// Rewards system to be integrated with your main application
 
-    if (lastClaimTime && currentTime - lastClaimTime < oneDay) {
-        alert('You have already claimed your daily reward today. Come back tomorrow!');
+// Constants
+const BALANCE_KEY = 'userBalance'; // Use the same key across your application
+const LAST_CLAIM_KEY = 'lastClaimTime';
+const CURRENT_DAY_KEY = 'currentRewardDay';
+const rewards = [10, 20, 30, 40, 50, 100, 500]; // in thousands (K)
+
+// Utility functions
+function getBalance() {
+    return parseFloat(localStorage.getItem(BALANCE_KEY)) || 0;
+}
+
+function setBalance(amount) {
+    localStorage.setItem(BALANCE_KEY, amount.toString());
+    updateBalanceDisplay(); // Call this function to update balance display across your app
+}
+
+function getCurrentDay() {
+    return parseInt(localStorage.getItem(CURRENT_DAY_KEY)) || 0;
+}
+
+function setCurrentDay(day) {
+    localStorage.setItem(CURRENT_DAY_KEY, day.toString());
+}
+
+function getLastClaimTime() {
+    return parseInt(localStorage.getItem(LAST_CLAIM_KEY)) || 0;
+}
+
+function setLastClaimTime(time) {
+    localStorage.setItem(LAST_CLAIM_KEY, time.toString());
+}
+
+function canClaim() {
+    const lastClaimTime = getLastClaimTime();
+    const now = new Date().getTime();
+    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    return now - lastClaimTime >= oneDay;
+}
+
+// Main functions
+function initializeRewards() {
+    updateRewardsUI();
+}
+
+function updateRewardsUI() {
+    const balance = getBalance();
+    const currentDay = getCurrentDay();
+    
+    // Update balance display
+    document.getElementById('balance').textContent = balance.toLocaleString();
+    
+    // Update rewards grid
+    const rewardsGrid = document.getElementById('rewardsGrid');
+    rewardsGrid.innerHTML = '';
+    rewards.forEach((reward, index) => {
+        const dayElement = document.createElement('div');
+        dayElement.className = 'reward-day';
+        if (index < currentDay) dayElement.classList.add('claimed');
+        if (index === currentDay) dayElement.classList.add('current');
+        dayElement.innerHTML = `
+            <div>${reward}K</div>
+            <div>Day ${index + 1}</div>
+        `;
+        rewardsGrid.appendChild(dayElement);
+    });
+
+    // Update claim button
+    const claimButton = document.getElementById('claimButton');
+    const doubleRewardButton = document.getElementById('doubleRewardButton');
+    
+    if (canClaim()) {
+        claimButton.disabled = false;
+        claimButton.textContent = 'Claim Daily Reward';
+        doubleRewardButton.classList.add('hidden');
     } else {
-        alert('Daily reward claimed!');
-        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-        localStorage.setItem('balance', currentBalance + 50); // Daily reward amount
-        localStorage.setItem('lastClaimTime', currentTime);
-        updateBalanceDisplay();
+        claimButton.disabled = true;
+        claimButton.textContent = 'Come back tomorrow';
+        if (currentDay > 0) {
+            doubleRewardButton.classList.remove('hidden');
+        }
     }
-	  }
+}
+
+function claimDailyReward() {
+    if (canClaim()) {
+        const currentDay = getCurrentDay();
+        const reward = rewards[currentDay] * 1000; // Convert K to actual value
+        const newBalance = getBalance() + reward;
+        setBalance(newBalance);
+        setCurrentDay((currentDay + 1) % 7);
+        setLastClaimTime(new Date().getTime());
+        
+        alert(`Claimed ${rewards[currentDay]}K coins! Your new balance is ${newBalance.toLocaleString()} coins.`);
+        updateRewardsUI();
+    }
+}
+
+function watchAdForDouble() {
+    window.open('https://www.cpmrevenuegate.com/k9x5gnvg?key=aa658a45eee053af4a31f6853b94c782', '_blank');
+    const currentDay = getCurrentDay();
+    const lastReward = rewards[(currentDay - 1 + 7) % 7] * 1000; // Convert K to actual value
+    const newBalance = getBalance() + lastReward;
+    setBalance(newBalance);
+    
+    alert(`Reward doubled! Added another ${lastReward.toLocaleString()} coins! Your new balance is ${newBalance.toLocaleString()} coins.`);
+    updateRewardsUI();
+}
+
+// Function to update balance display across your app (implement this)
+function updateBalanceDisplay() {
+    // Update balance display on all relevant pages
+    // For example:
+    const balanceElements = document.querySelectorAll('.user-balance');
+    balanceElements.forEach(element => {
+        element.textContent = getBalance().toLocaleString();
+    });
+}
+
+// Initialize rewards when the page loads
+document.addEventListener('DOMContentLoaded', initializeRewards);
 
 
 
