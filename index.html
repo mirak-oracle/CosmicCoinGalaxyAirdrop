@@ -420,18 +420,25 @@
   </div>
 
 
-    <div id="rewardsSection">
-    <h2 class="text-2xl mb-4">Daily Rewards</h2>
-    <p>Claim Your Daily Cosmic Loot! 🚀 Get your daily dose of $COSMIC tokens and fuel your intergalactic adventures</p>
+
+<div id="rewardsSection" class="p-6 max-w-md mx-auto bg-gradient-to-r from-purple-800 to-black text-white rounded-lg shadow-lg mt-10">
+    <h2 class="text-3xl font-bold text-center mb-6">🚀 Daily Cosmic Rewards</h2>
+    
+    <p class="text-lg text-center mb-4">Claim Your Daily Cosmic Loot and fuel your intergalactic adventures with $COSMIC tokens!</p>
     
     <!-- Claim Daily Reward Button -->
-    <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="claimDailyReward()">Claim Daily Reward</button>
+    <div class="flex justify-center mb-4">
+        <button class="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
+                onclick="claimDailyReward()">Claim Daily Reward</button>
+    </div>
     
     <!-- Double Reward Button (Watch Ads) -->
-    <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-full" 
-            onclick="window.open('https://www.cpmrevenuegate.com/k9x5gnvg?key=aa658a45eee053af4a31f6853b94c782', '_blank'); doubleRewards()">
-        ×2 Watch Ads to Double Reward
-    </button>
+    <div class="flex justify-center">
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
+                onclick="window.open('https://www.cpmrevenuegate.com/k9x5gnvg?key=aa658a45eee053af4a31f6853b94c782', '_blank'); doubleRewards()">
+            ×2 Watch Ads to Double Reward
+        </button>
+    </div>
 </div>
 
 
