@@ -783,124 +783,71 @@ function updateBalanceDisplay() {
       }, 3000);  // Simulates a 3-second loading screen
     });
     
-// Notification configuration
-const NOTIFICATION_CONFIG = {
-  icon: 'https://cdn.iconfinder.com/data/icons/essentials-9/128/__bell-512.png',
-  reminderInterval: 43200000 // 12 hours in milliseconds (86400000 for 24 hours)
-};
-
-// Function to register a service worker
-async function registerServiceWorker() {
-  if ('serviceWorker' in navigator) {
-    try {
-      await navigator.serviceWorker.register('/sw.js');
-      console.log('Service Worker registered successfully.');
-    } catch (error) {
-      console.error('Service Worker registration failed:', error);
-    }
-  } else {
-    console.log('Service Worker not supported in this browser.');
-  }
-}
-
-// Function to request notification permission
-function requestNotificationPermission() {
-  return new Promise((resolve, reject) => {
-    if (!("Notification" in window)) {
-      reject("This browser does not support desktop notifications");
+    // Function to enable notifications and set a mining reminder
+function enableNotifications() {
+    if ("Notification" in window) {
+        // Check if the browser supports notifications
+        if (Notification.permission === "granted") {
+            alert('Notifications are already enabled!');
+            setMiningReminder(); // Set the mining reminder
+        } else if (Notification.permission !== "denied") {
+            // Request permission from the user
+            Notification.requestPermission().then(function (permission) {
+                if (permission === "granted") {
+                    alert('Notifications enabled!');
+                    setMiningReminder(); // Set the mining reminder after enabling notifications
+                } else {
+                    alert('Notifications disabled. Please enable notifications in your browser settings.');
+                }
+            });
+        } else {
+            alert('You have denied notifications. Please change your settings to enable notifications.');
+        }
     } else {
-      Notification.requestPermission().then(permission => {
-        resolve(permission);
-      });
+        alert('This browser does not support notifications.');
     }
-  });
 }
 
-// Function to enable notifications
-async function enableNotifications() {
-  try {
-    const permission = await requestNotificationPermission();
-    if (permission === "granted") {
-      await registerServiceWorker();
-      showNotification('CosmicCoin Mining', 'Notifications enabled for CosmicCoin mining updates.');
-      startReminderSystem();
-      return true;
-    } else {
-      alert('Notifications are blocked. Please enable them in your browser settings to receive CosmicCoin updates.');
-      return false;
+// Function to set a mining reminder after a specified interval (12/24 hours)
+function setMiningReminder() {
+    const twelveHours = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+    // Schedule the notification to appear every 12 hours (can be changed to 24 hours)
+    setTimeout(function () {
+        showMiningNotification(); // Call the function to display notification
+        // You can recursively call the function if you want continuous reminders
+        setMiningReminder(); // Continue the reminder loop for the next 12/24 hours
+    }, twelveHours); // Change this to `twentyFourHours` for a 24-hour reminder
+}
+
+// Function to show the mining notification in the notifications bar
+function showMiningNotification() {
+    if (Notification.permission === "granted") {
+        const options = {
+            body: "⛏️ Time to continue mining your CosmicCoin! Click to return to the mining page.",
+            icon: "path_to_mining_icon.png", // Path to an icon (optional)
+            vibrate: [200, 100, 200], // Vibration pattern for mobile devices
+            requireInteraction: true // Keeps the notification visible until the user interacts with it
+        };
+
+        const notification = new Notification('🚀 Mining Reminder', options);
+
+        // Add a click event to the notification that brings the user back to the mining page
+        notification.onclick = function () {
+            window.focus(); // Brings the mining tab into focus
+            window.location.href = "your_mining_page_url"; // Replace with your actual mining page URL
+        };
     }
-  } catch (error) {
-    alert(error);
-    return false;
-  }
 }
 
-// Function to show a notification
-function showNotification(title, body) {
-  if (Notification.permission === "granted") {
-    if (navigator.serviceWorker) {
-      navigator.serviceWorker.ready.then(function(registration) {
-        registration.showNotification(title, {
-          body: body,
-          icon: NOTIFICATION_CONFIG.icon
-        });
-      });
-    } else {
-      new Notification(title, {
-        body: body,
-        icon: NOTIFICATION_CONFIG.icon
-      });
-    }
-  } else {
-    console.log(`Notification not shown: ${title} - ${body}`);
-  }
+// Manually trigger the reminder at page load (e.g., when mining starts)
+function startMiningProcess() {
+    enableNotifications(); // Ask for notification permission
+    setMiningReminder();   // Set a 12/24-hour reminder
 }
 
-// Function to start the reminder system
-function startReminderSystem() {
-  setInterval(async () => {
-    if (Notification.permission === "granted" && await isMiningComplete()) {
-      showNotification('CosmicCoin Mining Reminder', 'Mining cycle complete! Come back to mine more CosmicCoin!');
-    }
-  }, NOTIFICATION_CONFIG.reminderInterval);
-}
-
-// Function to check if notifications are enabled
-function areNotificationsEnabled() {
-  return Notification.permission === "granted";
-}
-
-// Function to check if mining is complete
-async function isMiningComplete() {
-  // Replace with your logic to check mining status
-  // Example: API call or local storage check
-
-  // Example API-based implementation (replace with your actual API logic)
-  try {
-    const response = await fetch('/api/mining-status');
-    const data = await response.json();
-    return data.status === 'complete';
-  } catch (error) {
-    console.error('Error checking mining status:', error);
-    return false;
-  }
-
-  // Example local storage check
-  // const miningStatus = localStorage.getItem('miningStatus');
-  // return miningStatus === 'complete';
-}
-
-// Example usage
-document.addEventListener('DOMContentLoaded', () => {
-  const enableNotificationsButton = document.getElementById('enableNotifications');
-  if (enableNotificationsButton) {
-    enableNotificationsButton.addEventListener('click', enableNotifications);
-  }
-
-  if (areNotificationsEnabled()) {
-    startReminderSystem();
-  }
-})
+	    
   </script>
 </body>
 </html>
