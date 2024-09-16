@@ -653,28 +653,68 @@ function completeTask(taskId) {
 }
 
       
+    
+    function generateReferralCode() {
+        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
     function inviteFriend() {
-  const referralCode = generateReferralCode();
-  const referralLink = `https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=ar0978585297?ref=${referralCode}`;
+        const referralCode = generateReferralCode();
+        const referralLink = `https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=ar0978585297?ref=${referralCode}`;
+        const shareText = 'Join me in earning CosmicCoin through the CosmicCoin Galaxy Airdrop. Use my referral link to get started!';
+        const shareTitle = 'Join the CosmicCoin Galaxy Airdrop!';
 
-  alert(`Invite a friend using this referral link: ${referralLink}`);
-  
-  // Share the referral link
-  if (navigator.share) {
-    navigator.share({
-      title: 'Join the CosmicCoin Galaxy Airdrop!',
-      text: 'Join me in earning CosmicCoin through the CosmicCoin Galaxy Airdrop. Use my referral link to get started!',
-      url: referralLink,
-    })
-    .then(() => console.log('Successful share'))
-    .catch((error) => console.log('Error sharing', error));
-  } else {
-    console.log('Web Share API is not supported in this browser.');
-  }
+        // Try Web Share API first
+        if (navigator.share) {
+            navigator.share({
+                title: shareTitle,
+                text: shareText,
+                url: referralLink,
+            })
+            .then(() => console.log('Successful share'))
+            .catch((error) => {
+                console.log('Error sharing', error);
+                fallbackShare();
+            });
+        } else {
+            fallbackShare();
+        }
 
-  // Reward the inviter (initial setup of referral code balance)
-  localStorage.setItem(`balance_${referralCode}`, '0');
-}
+        function fallbackShare() {
+            const shareOptions = document.createElement('div');
+            shareOptions.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
+            shareOptions.innerHTML = `
+                <div class="bg-white p-8 rounded-md shadow-xl max-w-md w-full">
+                    <h2 class="text-xl font-bold mb-4">Share Referral Link</h2>
+                    <p class="mb-4">Choose how you want to share your referral link:</p>
+                    <div class="space-y-4">
+                        <button onclick="copyToClipboard('${referralLink}')" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Copy Link</button>
+                        <a href="mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(shareText + ' ' + referralLink)}" class="block w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-center">Share via Email</a>
+                        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + ' ' + referralLink)}" target="_blank" rel="noopener noreferrer" class="block w-full px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 text-center">Share on Twitter</a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}" target="_blank" rel="noopener noreferrer" class="block w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center">Share on Facebook</a>
+                        <button onclick="closeShareOptions()" class="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Close</button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(shareOptions);
+        }
+    }
+
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Referral link copied to clipboard!');
+        }, (err) => {
+            console.error('Could not copy text: ', err);
+        });
+    }
+
+    function closeShareOptions() {
+        const shareOptions = document.querySelector('.fixed');
+        if (shareOptions) {
+            shareOptions.remove();
+        }
+    }
+    
 
 function generateReferralCode() {
   // Generate a simple and professional referral code
