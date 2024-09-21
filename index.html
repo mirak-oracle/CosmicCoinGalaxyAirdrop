@@ -569,7 +569,7 @@ function updateMiningStatus() {
 
 
     function updateMiningAmount(secondsLeft) {
-      const ratePerSecond = 0.0040; // Adjust mining rate per second
+      const ratePerSecond = 0.00060; // Adjust mining rate per second
       const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
       const miningAmount = currentBalance + (ratePerSecond * (60 * 60 * 24 - secondsLeft)); // Total mined amount
       document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} COS`;
