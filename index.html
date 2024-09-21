@@ -306,144 +306,96 @@
     <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
 </div>
 </div>
-
 	
+
   <div id="tasksSection" class="hidden">
-    <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg mt-10">
-        <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">Complete Tasks to Boost Mining Rate</h2>
-        
-        <div class="mb-6">
-            <div class="flex justify-between mb-2">
-                <span class="text-sm font-medium text-gray-700">Overall Progress</span>
-                <span id="progressText" class="text-sm font-medium text-gray-700">0/0 Tasks</span>
-            </div>
-            <div class="w-full bg-gray-200 rounded-full h-2.5">
-                <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
-            </div>
+    <h2 class="text-3xl font-small mb-6 text-center">Complete Tasks to Boost Mining Rate</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        <div class="task-item">
+            <a href="https://x.com/Miracleharbor?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ceo_x')">
+                    Follow CEO on X
+                </button>
+            </a>
         </div>
-
-        <div id="taskCategories"></div>
-    </div>
-
-    <script>
-        const taskCategories = [
-            {
-                name: "Social Media",
-                tasks: [
-                    { id: 'follow_ceo_x', label: 'Follow CEO on X', url: 'https://x.com/Miracleharbor?t=dqzzaDkR4c-ZDb55Msit8g&s=09' },
-                    { id: 'follow_group_x', label: 'Follow Mirakle Group on X', url: 'https://x.com/MirakleGroup?t=dqzzaDkR4c-ZDb55Msit8g&s=09' },
-                    { id: 'follow_ceo_ig', label: 'Follow CEO on Instagram', url: 'https://www.instagram.com/miracleharbor?igsh=MTRkcnF4ajV6cDl0Zw==' },
-                    { id: 'follow_group_tiktok', label: 'Follow Mirakle Group on TikTok', url: 'https://www.tiktok.com/@miraklegroup?_t=8lMgf55i0IP&_r=1' },
-                    { id: 'follow_ceo_fb', label: 'Follow Mirakle Group on Facebook', url: 'https://www.facebook.com/profile.php?id=61557787735701' },
-                    { id: 'follow_group_ig', label: 'Follow Mirakle Group on Instagram', url: 'https://www.instagram.com/mirakle.group?igsh=Yjg4cXhuc3VlbTRn' },
-                    { id: 'follow_cpo_ig', label: 'Follow CPO on Instagram', url: 'https://www.instagram.com/prime.blog14u?igsh=MTg1Z3V4bng0Z3BlNw==' },
-                    { id: 'follow_cpo_x', label: 'Follow CPO on X', url: 'https://x.com/tosinsodiya1?t=dqzzaDkR4c-ZDb55Msit8g&s=09' },
-                    { id: 'follow_cao_x', label: 'Follow CAO on X', url: 'https://x.com/Vickydiya1?t=dqzzaDkR4c-ZDb55Msit8g&s=09' },
-                ]
-            },
-            {
-                name: "Community",
-                tasks: [
-                    { id: 'join_tg_info', label: 'Join Our TG Info Channel', url: 'https://t.me/CosmicCoin11' },
-                    { id: 'join_tg_community', label: 'Join our community (TG)', url: 'https://t.me/CosmicCoinGalaxy1' },
-                ]
-            },
-            {
-                name: "Content",
-                tasks: [
-                    { id: 'subscribe_youtube', label: 'Subscribe to YouTube Channel', url: 'https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY' },
-                ]
-            }
-        ];
-
-        let completedTasks = [];
-        let expandedCategories = taskCategories.map(cat => cat.name);
-
-        function renderTasks() {
-            const taskCategoriesElement = document.getElementById('taskCategories');
-            taskCategoriesElement.innerHTML = '';
-
-            taskCategories.forEach(category => {
-                const categoryElement = document.createElement('div');
-                categoryElement.className = 'mb-6 border rounded-lg overflow-hidden';
-                categoryElement.innerHTML = `
-                    <button 
-                        class="w-full p-4 text-left bg-gray-100 hover:bg-gray-200 transition-colors duration-200 flex justify-between items-center"
-                        onclick="toggleCategory('${category.name}')"
-                    >
-                        <span class="text-lg font-semibold text-gray-800">${category.name}</span>
-                        <i data-lucide="${expandedCategories.includes(category.name) ? 'chevron-up' : 'chevron-down'}"></i>
-                    </button>
-                `;
-
-                if (expandedCategories.includes(category.name)) {
-                    const tasksContainer = document.createElement('div');
-                    tasksContainer.className = 'p-4 grid gap-4 sm:grid-cols-2';
-
-                    category.tasks.forEach(task => {
-                        const taskElement = document.createElement('div');
-                        taskElement.className = 'relative';
-                        taskElement.innerHTML = `
-                            <a 
-                                href="${task.url}" 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                class="block"
-                                onclick="completeTask('${task.id}')"
-                            >
-                                <button 
-                                    class="w-full text-left p-3 rounded-lg transition-colors duration-200 flex items-center justify-between ${
-                                        completedTasks.includes(task.id) 
-                                            ? 'bg-green-100 text-green-800' 
-                                            : 'bg-blue-100 hover:bg-blue-200 text-blue-800'
-                                    }"
-                                >
-                                    <span>${task.label}</span>
-                                    ${completedTasks.includes(task.id) ? '<i data-lucide="check-circle" class="text-green-600"></i>' : ''}
-                                </button>
-                            </a>
-                        `;
-                        tasksContainer.appendChild(taskElement);
-                    });
-
-                    categoryElement.appendChild(tasksContainer);
-                }
-
-                taskCategoriesElement.appendChild(categoryElement);
-            });
-
-            lucide.createIcons();
-            updateProgress();
-        }
-
-        function toggleCategory(categoryName) {
-            if (expandedCategories.includes(categoryName)) {
-                expandedCategories = expandedCategories.filter(cat => cat !== categoryName);
-            } else {
-                expandedCategories.push(categoryName);
-            }
-            renderTasks();
-        }
-
-        function completeTask(taskId) {
-            if (!completedTasks.includes(taskId)) {
-                completedTasks.push(taskId);
-                renderTasks();
-            }
-        }
-
-        function updateProgress() {
-            const totalTasks = taskCategories.reduce((sum, category) => sum + category.tasks.length, 0);
-            const progress = (completedTasks.length / totalTasks) * 100;
-
-            document.getElementById('progressBar').style.width = `${progress}%`;
-            document.getElementById('progressText').textContent = `${completedTasks.length}/${totalTasks} Tasks`;
-        }
-
-        renderTasks();
-    </script>
-</body>
-	    </html>
+        <div class="task-item">
+            <a href="https://x.com/MirakleGroup?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_group_x')">
+                    Follow Mirakle Group on X
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://www.instagram.com/miracleharbor?igsh=MTRkcnF4ajV6cDl0Zw==" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ceo_ig')">
+                    Follow CEO on Instagram
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://www.tiktok.com/@miraklegroup?_t=8lMgf55i0IP&_r=1" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_group_tiktok')">
+                    Follow Mirakle Group on TikTok
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://www.facebook.com/profile.php?id=61557787735701" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ceo_fb')">
+                    Follow Mirakle Group on Facebook
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://t.me/CosmicCoin11" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ai_ig')">
+                    Join Our TG Info Channel
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://www.instagram.com/mirakle.group?igsh=Yjg4cXhuc3VlbTRn" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_group_ig')">
+                    Follow Mirakle Group on Instagram
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('subscribe_youtube')">
+                    Subscribe to YouTube Channel
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://www.instagram.com/prime.blog14u?igsh=MTg1Z3V4bng0Z3BlNw==" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cpo_ig')">
+                    Follow CPO on Instagram
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://x.com/tosinsodiya1?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cpo_x')">
+                    Follow CPO on X
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://x.com/Vickydiya1?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cao_ig')">
+                    Follow CAO on X 
+                </button>
+            </a>
+        </div>
+        <div class="task-item">
+            <a href="https://t.me/CosmicCoinGalaxy1" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cao_x')">
+                   Join our community(TG)
+                </button>
+            </a>
+	</div>
+        
 
   <div id="boosterSection" class="hidden">
     <h2 class="text-2xl mb-4">Boosters</h2>
