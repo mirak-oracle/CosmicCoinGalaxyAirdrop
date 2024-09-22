@@ -306,200 +306,111 @@
     <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
 </div>
 </div>
+<div id="tasksSection" class="hidden">
+    <h2 class="text-3xl font-semibold mb-8 text-center text-gray-900">Complete Tasks to Boost Mining Rate</h2>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Complete Tasks to Boost Mining Rate</title>
-    <style>
-        :root {
-            --primary-color: #3498db;
-            --secondary-color: #2ecc71;
-            --background-color: #f4f4f4;
-            --text-color: #333;
-            --card-bg: #fff;
-        }
-
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            line-height: 1.6;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 2rem;
-            background-color: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 2rem;
-            font-size: 2.5rem;
-        }
-
-        .progress-container {
-            margin-bottom: 2rem;
-        }
-
-        .progress-bar {
-            height: 10px;
-            background-color: #e0e0e0;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .progress {
-            width: 33%;
-            height: 100%;
-            background-color: var(--primary-color);
-            transition: width 0.5s ease-in-out;
-        }
-
-        .progress-text {
-            text-align: center;
-            margin-top: 0.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-
-        .category {
-            margin-bottom: 1.5rem;
-            border: 1px solid #e0e0e0;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .category-header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 1rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .category-header:hover {
-            background-color: #2980b9;
-        }
-
-        .category-content {
-            display: none;
-            padding: 1rem;
-        }
-
-        .category-content.active {
-            display: block;
-        }
-
-        .task-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .task-item {
-            margin-bottom: 0.5rem;
-        }
-
-        .task-link {
-            display: block;
-            padding: 0.75rem 1rem;
-            background-color: var(--secondary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .task-link:hover {
-            background-color: #27ae60;
-        }
-
-        .toggle-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .category-header.active .toggle-icon {
-            transform: rotate(180deg);
-        }
-    </style>
-</head>
-<body>
-	<div id="tasksSection" class="hidden">
-    <div class="container">
-        <h1>Complete Tasks to Boost Mining Rate</h1>
-        
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div class="progress"></div>
-            </div>
-            <p class="progress-text">33% Complete</p>
-        </div>
-
-        <div class="category">
-            <div class="category-header">
-                <h2>Social Media</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="category-content">
-                <ul class="task-list">
-                    <li class="task-item"><a href="https://x.com/Miracleharbor?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank" class="task-link">Follow CEO on X</a></li>
-                    <li class="task-item"><a href="https://x.com/MirakleGroup?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank" class="task-link">Follow Mirakle Group on X</a></li>
-                    <li class="task-item"><a href="https://www.instagram.com/miracleharbor?igsh=MTRkcnF4ajV6cDl0Zw==" target="_blank" class="task-link">Follow CEO on Instagram</a></li>
-                    <li class="task-item"><a href="https://www.instagram.com/mirakle.group?igsh=Yjg4cXhuc3VlbTRn" target="_blank" class="task-link">Follow Mirakle Group on Instagram</a></li>
-                    <li class="task-item"><a href="https://www.facebook.com/profile.php?id=61557787735701" target="_blank" class="task-link">Follow Mirakle Group on Facebook</a></li>
-                </ul>
+    <div class="space-y-12">
+        <!-- Social Media Category -->
+        <div>
+            <h3 class="text-2xl font-medium text-gray-800 mb-4">Social Media</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="task-item">
+                    <a href="https://x.com/Miracleharbor?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('follow_ceo_x')">
+                            Follow CEO on X
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://x.com/MirakleGroup?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('follow_group_x')">
+                            Follow Mirakle Group on X
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://www.instagram.com/miracleharbor?igsh=MTRkcnF4ajV6cDl0Zw==" target="_blank">
+                        <button class="bg-pink-500 hover:bg-pink-600 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('follow_ceo_ig')">
+                            Follow CEO on Instagram
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="category">
-            <div class="category-header">
-                <h2>Community</h2>
-                <span class="toggle-icon">▼</span>
-            </div>
-            <div class="category-content">
-                <ul class="task-list">
-                    <li class="task-item"><a href="https://t.me/CosmicCoin11" target="_blank" class="task-link">Join Our TG Info Channel</a></li>
-                    <li class="task-item"><a href="https://t.me/CosmicCoinGalaxy1" target="_blank" class="task-link">Join Our Community (TG)</a></li>
-                </ul>
+        <!-- Community Category -->
+        <div>
+            <h3 class="text-2xl font-medium text-gray-800 mb-4">Community</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="task-item">
+                    <a href="https://t.me/CosmicCoin11" target="_blank">
+                        <button class="bg-blue-400 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('join_tg_info')">
+                            Join Our TG Info Channel
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://t.me/CosmicCoinGalaxy1" target="_blank">
+                        <button class="bg-blue-400 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('join_tg_community')">
+                            Join Our Community (TG)
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
 
-        <div class="category">
-            <div class="category-header">
-                <h2>Content</h2>
-                <span class="toggle-icon">▼</span>
+        <!-- Content Category -->
+        <div>
+            <h3 class="text-2xl font-medium text-gray-800 mb-4">Content</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="task-item">
+                    <a href="https://www.tiktok.com/@miraklegroup?_t=8lMgf55i0IP&_r=1" target="_blank">
+                        <button class="bg-black hover:bg-gray-800 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('follow_group_tiktok')">
+                            Follow Mirakle Group on TikTok
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY" target="_blank">
+                        <button class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('subscribe_youtube')">
+                            Subscribe to YouTube Channel
+                        </button>
+                    </a>
+                </div>
             </div>
-            <div class="category-content">
-                <ul class="task-list">
-                    <li class="task-item"><a href="https://www.tiktok.com/@miraklegroup?_t=8lMgf55i0IP&_r=1" target="_blank" class="task-link">Follow Mirakle Group on TikTok</a></li>
-                    <li class="task-item"><a href="https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY" target="_blank" class="task-link">Subscribe to YouTube Channel</a></li>
-                </ul>
+        </div>
+
+        <!-- Additional Tasks -->
+        <div>
+            <h3 class="text-2xl font-medium text-gray-800 mb-4">Additional Tasks</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                <div class="task-item">
+                    <a href="https://www.instagram.com/prime.blog14u?igsh=MTg1Z3V4bng0Z3BlNw==" target="_blank">
+                        <button class="bg-pink-500 hover:bg-pink-600 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('follow_cpo_ig')">
+                            Follow CPO on Instagram
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://x.com/tosinsodiya1?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('follow_cpo_x')">
+                            Follow CPO on X
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://x.com/Vickydiya1?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
+                        <button class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded w-full shadow-lg" onclick="completeTask('follow_cao_x')">
+                            Follow CAO on X
+                        </button>
+                    </a>
+                </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        document.querySelectorAll('.category-header').forEach(header => {
-            header.addEventListener('click', () => {
-                header.classList.toggle('active');
-                const content = header.nextElementSibling;
-                content.classList.toggle('active');
-            });
-        });
-    </script>
-</body>
-</html>
+
   
 
 
