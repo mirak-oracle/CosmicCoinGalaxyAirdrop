@@ -424,16 +424,61 @@
     <button class="task-button" onclick="activateBooster('yield')">Yield Booster</button>
   </div>
 
-  <div id="squadsSection" class="hidden">
-    <h2 class="text-2xl mb-4">Join Squads</h2>
-    <button class="task-button" onclick="joinSquad('CEO_CTO_CLAUNS')">Join CEO&CTO CLAUNS (25B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CAO_HUBS')">Join CAO HUBS (21B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CPO_VILLAGES')">Join CPO VILLAGES (19B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CMO_VILLAS')">Join CMO VILLAS (18B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CAO_CREWS')">Join CAO CREWS (10B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CPO_GUYS')">Join CPO GUYS (8.5B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CMO_RESORTS')">Join CMO RESORTS (7.5B CosmicCoin)</button>
+  <div id="leaderboardSection" class="hidden max-w-md mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Leaderboard</h2>
+  <div class="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+    <div class="p-4 bg-blue-500 text-white text-center">
+      <p class="text-lg font-semibold">Coming Soon</p>
+      <p class="text-sm">The Airdrop is yet to be launched</p>
+    </div>
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-gray-600 uppercase text-xs">
+          <th class="py-3 px-4 text-left font-semibold">Rank</th>
+          <th class="py-3 px-4 text-left font-semibold">User ID</th>
+          <th class="py-3 px-4 text-right font-semibold">Balance</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm">
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">1</td>
+          <td class="py-3 px-4 text-left font-medium">CEO_CTO_CLAUNS</td>
+          <td class="py-3 px-4 text-right">25B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">2</td>
+          <td class="py-3 px-4 text-left font-medium">CAO_HUBS</td>
+          <td class="py-3 px-4 text-right">21B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">3</td>
+          <td class="py-3 px-4 text-left font-medium">CPO_VILLAGES</td>
+          <td class="py-3 px-4 text-right">19B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">4</td>
+          <td class="py-3 px-4 text-left font-medium">CMO_VILLAS</td>
+          <td class="py-3 px-4 text-right">18B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">5</td>
+          <td class="py-3 px-4 text-left font-medium">CAO_CREWS</td>
+          <td class="py-3 px-4 text-right">10B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">6</td>
+          <td class="py-3 px-4 text-left font-medium">CPO_GUYS</td>
+          <td class="py-3 px-4 text-right">8.5B CosmicCoin</td>
+        </tr>
+        <tr class="hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">7</td>
+          <td class="py-3 px-4 text-left font-medium">CMO_RESORTS</td>
+          <td class="py-3 px-4 text-right">7.5B CosmicCoin</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
+		</div>
 
 
 
@@ -659,7 +704,7 @@ function updateMiningStatus() {
     }
 
     function showSection(sectionId) {
-      const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'squadsSection'];
+      const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection'];
       sections.forEach(id => document.getElementById(id).classList.add('hidden'));
       document.getElementById(sectionId).classList.remove('hidden');
     }
