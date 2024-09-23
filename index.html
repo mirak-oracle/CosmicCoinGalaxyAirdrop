@@ -259,7 +259,7 @@
       const userBalance = getUserBalance(userId);
       const userBalanceElement = document.createElement('p');
       userBalanceElement.className = 'userBalance';
-      userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(20)}`;
+      userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(0)}`;
       document.getElementById(elementId).appendChild(userBalanceElement);
     }
 
