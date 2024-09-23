@@ -240,7 +240,7 @@
       if (!userId) {
         userId = generateUniqueId();
         localStorage.setItem('userId', userId);
-        localStorage.setItem(userId + '_balance', '10');
+        localStorage.setItem(userId + '_balance', '0');
       }
       console.log('User ID:', userId);
       return userId;
@@ -259,7 +259,7 @@
       const userBalance = getUserBalance(userId);
       const userBalanceElement = document.createElement('p');
       userBalanceElement.className = 'userBalance';
-      userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(2)}`;
+      userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(20)}`;
       document.getElementById(elementId).appendChild(userBalanceElement);
     }
 
