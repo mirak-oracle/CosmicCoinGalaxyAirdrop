@@ -519,13 +519,67 @@
 </div>
 
 
-      <div id="referralSection" class="hidden">
-    <h2 class="text-2xl mb-4">Referral Program</h2>
-    <p>Invite friends to earn more CosmicCoin!</p>
-    <a href="https://mirak-oracle.github.io/InviteFriend.COS/" target="_blank" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full inline-block">Invite a Friend</a>
-    <p id="inviteStatus" class="mt-2"></p>
-</div>  
-		
+      <div id="referralSection" class="hidden bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
+    <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Referral Program</h2>
+    <p class="text-center mb-4 text-gray-600">Invite friends to earn more CosmicCoin!</p>
+    <div class="flex justify-center space-x-4 mb-6">
+        <div class="text-center">
+            <span id="inviteCount" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">0</span>
+            <p class="text-sm text-gray-500">Invites</p>
+        </div>
+        <div class="text-center">
+            <span id="totalEarned" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">0</span>
+            <p class="text-sm text-gray-500">CosmicCoins Earned</p>
+        </div>
+    </div>
+    <a href="https://mirak-oracle.github.io/InviteFriend.COS/" target="_blank" id="inviteButton" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full inline-block w-full text-center transition-colors duration-300">Invite a Friend</a>
+    <p id="inviteStatus" class="mt-4 text-sm text-center text-gray-500">Earn 10 CosmicCoins for each friend who joins!</p>
+</div>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+    const inviteButton = document.getElementById('inviteButton');
+    const inviteCountElement = document.getElementById('inviteCount');
+    const totalEarnedElement = document.getElementById('totalEarned');
+    const inviteStatusElement = document.getElementById('inviteStatus');
+
+    let inviteCount = parseInt(localStorage.getItem('inviteCount') || '0', 10);
+    let totalEarned = parseInt(localStorage.getItem('totalEarned') || '0', 10);
+
+    function updateDisplay() {
+        inviteCountElement.textContent = inviteCount;
+        totalEarnedElement.textContent = totalEarned;
+    }
+
+    updateDisplay();
+
+    inviteButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // Increment invite count
+        inviteCount++;
+        
+        // Calculate new earnings (10 CosmicCoins per invite)
+        const newEarnings = 10;
+        totalEarned += newEarnings;
+
+        // Save to localStorage
+        localStorage.setItem('inviteCount', inviteCount.toString());
+        localStorage.setItem('totalEarned', totalEarned.toString());
+
+        // Update display
+        updateDisplay();
+
+        // Update invite status
+        inviteStatusElement.textContent = `Great! You've invited ${inviteCount} friend${inviteCount !== 1 ? 's' : ''}. Keep it up!`;
+
+        // Here you would typically also send this data to your server
+        // For example: sendInviteDataToServer(inviteCount, totalEarned)
+
+        // Open the invite link in a new tab
+        window.open(this.href, '_blank');
+    });
+});
+	</script>
 
   
 
