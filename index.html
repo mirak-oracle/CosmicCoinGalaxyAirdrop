@@ -240,7 +240,7 @@
       if (!userId) {
         userId = generateUniqueId();
         localStorage.setItem('userId', userId);
-        localStorage.setItem(userId + '_balance', '0');
+        localStorage.setItem(userId + '_balance', '10');
       }
       console.log('User ID:', userId);
       return userId;
