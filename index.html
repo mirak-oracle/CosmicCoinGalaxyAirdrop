@@ -220,7 +220,12 @@
   </script>
 
   <div id="user-info"></div>
-  <button id="createUserButton">Generate User ID</button>
+  <button id="createUserButton" class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300">
+  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+  </svg>
+  Generate User ID
+  </button>
   <div id="userId"></div>
         
   <script>
@@ -402,15 +407,60 @@
     <button class="task-button" onclick="activateBooster('yield')">Yield Booster</button>
   </div>
 
-  <div id="squadsSection" class="hidden">
-    <h2 class="text-2xl mb-4">Join Squads</h2>
-    <button class="task-button" onclick="joinSquad('CEO_CTO_CLAUNS')">Join CEO&CTO CLAUNS (25B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CAO_HUBS')">Join CAO HUBS (21B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CPO_VILLAGES')">Join CPO VILLAGES (19B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CMO_VILLAS')">Join CMO VILLAS (18B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CAO_CREWS')">Join CAO CREWS (10B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CPO_GUYS')">Join CPO GUYS (8.5B CosmicCoin)</button>
-    <button class="task-button" onclick="joinSquad('CMO_RESORTS')">Join CMO RESORTS (7.5B CosmicCoin)</button>
+  <div id="leaderboardSection" class="hidden max-w-md mx-auto px-4 py-8">
+  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Leaderboard</h2>
+  <div class="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
+    <div class="p-4 bg-blue-500 text-white text-center">
+      <p class="text-lg font-semibold">Coming Soon</p>
+      <p class="text-sm">The Airdrop is yet to be launched(Test)</p>
+    </div>
+    <table class="w-full">
+      <thead>
+        <tr class="bg-gray-50 text-gray-600 uppercase text-xs">
+          <th class="py-3 px-4 text-left font-semibold">Rank</th>
+          <th class="py-3 px-4 text-left font-semibold">User ID</th>
+          <th class="py-3 px-4 text-right font-semibold">Balance</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm">
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">1</td>
+          <td class="py-3 px-4 text-left font-medium">CEO_CTO_CLAUNS</td>
+          <td class="py-3 px-4 text-right">25B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">2</td>
+          <td class="py-3 px-4 text-left font-medium">CAO_HUBS</td>
+          <td class="py-3 px-4 text-right">21B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">3</td>
+          <td class="py-3 px-4 text-left font-medium">CPO_VILLAGES</td>
+          <td class="py-3 px-4 text-right">19B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">4</td>
+          <td class="py-3 px-4 text-left font-medium">CMO_VILLAS</td>
+          <td class="py-3 px-4 text-right">18B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">5</td>
+          <td class="py-3 px-4 text-left font-medium">CAO_CREWS</td>
+          <td class="py-3 px-4 text-right">10B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">6</td>
+          <td class="py-3 px-4 text-left font-medium">CPO_GUYS</td>
+          <td class="py-3 px-4 text-right">8.5B CosmicCoin</td>
+        </tr>
+        <tr class="hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">7</td>
+          <td class="py-3 px-4 text-left font-medium">CMO_RESORTS</td>
+          <td class="py-3 px-4 text-right">7.5B CosmicCoin</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
   </div>
 
 
@@ -436,12 +486,68 @@
 </div>
 
 
-      <div id="referralSection" class="hidden">
-    <h2 class="text-2xl mb-4">Referral Program</h2>
-    <p>Invite friends to earn more CosmicCoin!</p>
-    <a href="https://mirak-oracle.github.io/InviteFriend.COS/" target="_blank" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full inline-block">Invite a Friend</a>
-    <p id="inviteStatus" class="mt-2"></p>
-</div>  
+      <div id="referralSection" class="hidden bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
+    <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Referral Program</h2>
+    <p class="text-center mb-4 text-gray-600">Invite friends to earn more CosmicCoin!</p>
+    <div class="flex justify-center space-x-4 mb-6">
+        <div class="text-center">
+            <span id="inviteCount" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">0</span>
+            <p class="text-sm text-gray-500">Invites</p>
+        </div>
+        <div class="text-center">
+            <span id="totalEarned" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">0</span>
+            <p class="text-sm text-gray-500">CosmicCoins Earned</p>
+        </div>
+    </div>
+    <a href="https://mirak-oracle.github.io/InviteFriend.COS/" target="_blank" id="inviteButton" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full inline-block w-full text-center transition-colors duration-300">Invite a Friend</a>
+    <p id="inviteStatus" class="mt-4 text-sm text-center text-gray-500">Earn 10 CosmicCoins for each friend who joins!</p>
+      </div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+    const inviteButton = document.getElementById('inviteButton');
+    const inviteCountElement = document.getElementById('inviteCount');
+    const totalEarnedElement = document.getElementById('totalEarned');
+    const inviteStatusElement = document.getElementById('inviteStatus');
+
+    let inviteCount = parseInt(localStorage.getItem('inviteCount') || '0', 10);
+    let totalEarned = parseInt(localStorage.getItem('totalEarned') || '0', 10);
+
+    function updateDisplay() {
+        inviteCountElement.textContent = inviteCount;
+        totalEarnedElement.textContent = totalEarned;
+    }
+
+    updateDisplay();
+
+    inviteButton.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // Increment invite count
+        inviteCount++;
+        
+        // Calculate new earnings (10 CosmicCoins per invite)
+        const newEarnings = 10;
+        totalEarned += newEarnings;
+
+        // Save to localStorage
+        localStorage.setItem('inviteCount', inviteCount.toString());
+        localStorage.setItem('totalEarned', totalEarned.toString());
+
+        // Update display
+        updateDisplay();
+
+        // Update invite status
+        inviteStatusElement.textContent = `Great! You've invited ${inviteCount} friend${inviteCount !== 1 ? 's' : ''}. Keep it up!`;
+
+        // Here you would typically also send this data to your server
+        // For example: sendInviteDataToServer(inviteCount, totalEarned)
+
+        // Open the invite link in a new tab
+        window.open(this.href, '_blank');
+    });
+});
+	</script>
 		
 
   
@@ -456,20 +562,69 @@
     <p>Coming soon...</p>
   </div>
 
-  <div class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
-    <div class="flex justify-around">
-      <button class="nav-button" onclick="showSection('mainSection')">Home</button>
-      <button class="nav-button" onclick="showSection('tasksSection')">Tasks</button>
-      <button class="nav-button text-lg" onclick="showSection('rewardsSection')">Rewards</button>
-      <button class="nav-button text-lg" onclick="showSection('referralSection')">Referral</button>
-    <button class="nav-button text-lg" onclick="showSection('notificationsSection')">Alert</button>
-     <button class="nav-button text-lg" onclick="showSection('comingSoonSection')">💰</button>
-    </div>
+  <nav class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
+  <div class="max-w-screen-xl mx-auto">
+    <ul class="flex justify-between items-center">
+      <li class="flex-1">
+        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('mainSection')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <span>Home</span>
+        </button>
+      </li>
+      <li class="flex-1">
+        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('tasksSection')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+          </svg>
+          <span>Tasks</span>
+        </button>
+      </li>
+      <li class="flex-1">
+        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('rewardsSection')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+          </svg>
+          <span>Rewards</span>
+        </button>
+      </li>
+      <li class="flex-1">
+        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('referralSection')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span>Invite</span>
+        </button>
+      </li>
+      <li class="flex-1">
+        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('notificationsSection')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span>Alert</span>
+        </button>
+      </li>
+      <li class="flex-1">
+        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('comingSoonSection')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+          </svg>
+          <span>Wallet</span>
+        </button>
+      </li>
+    </ul>
   </div>
+</nav>
+
 
   
-    <button class="task-button mb-4" onclick="showSection('squadsSection')">Squads</button>
-  </div>
+    <button class="task-button mb-4 flex items-center justify-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out" onclick="showSection('leaderboardSection')">
+  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+    <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+  </svg>
+  <span>Leaderboard</span>
+    </button>
   
 
   <script>
@@ -588,7 +743,7 @@ function updateMiningStatus() {
     }
 
     function showSection(sectionId) {
-      const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'squadsSection'];
+      const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection'];
       sections.forEach(id => document.getElementById(id).classList.add('hidden'));
       document.getElementById(sectionId).classList.remove('hidden');
     }
