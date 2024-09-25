@@ -809,7 +809,7 @@ function completeTask(taskId) {
     } else {
         alert(`Task ${taskId} completed!`);
         const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-        localStorage.setItem('balance', currentBalance + 80); // Reward for task completion
+        localStorage.setItem('balance', currentBalance + 30); // Reward for task completion
         completedTasks[taskId] = true;
         localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
         updateBalanceDisplay();
