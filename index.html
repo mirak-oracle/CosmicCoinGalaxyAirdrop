@@ -324,16 +324,25 @@
             </a>
         </div>
 	    <div class="task-item">
-    <a href="tg://msg_url?url=https%3A%2F%2Ft.me%2FHarbor1%2Fs%2F8" target="_blank">
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full flex items-center justify-center" onclick="completeTask('follow_group_x')">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                <polyline points="16 6 12 2 8 6"></polyline>
-                <line x1="12" y1="2" x2="12" y2="15"></line>
-            </svg>
-            Share $COS TG Story(link)
-        </button>
-    </a>
+    <button id="shareButton" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full flex items-center justify-center" onclick="shareTelegramStory()">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+            <polyline points="16 6 12 2 8 6"></polyline>
+            <line x1="12" y1="2" x2="12" y2="15"></line>
+        </svg>
+        Share $COS TG Story(link)
+    </button>
+    <div id="instructions" class="mt-2 text-sm hidden">
+        <ol class="list-decimal list-inside">
+            <li>Click the link to open Telegram: <a href="tg://msg_url?url=https%3A%2F%2Ft.me%2FHarbor1%2Fs%2F8" target="_blank" class="text-blue-500 hover:underline">Open Telegram</a></li>
+            <li>Forward the message to others or save it to Saved Messages</li>
+            <li>Return here and click "I've shared the story"</li>
+        </ol>
+    </div>
+    <button id="completionButton" class="mt-2 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded shadow-md w-full hidden" onclick="completeTask('share_cos_tg_story')">
+        I've shared the story
+    </button>
+	    </div>
 	    </div>
 	    </div>
         <div class="task-item">
