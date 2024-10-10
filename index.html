@@ -600,6 +600,29 @@
     <p>Coming soon...</p>
   </div>
 
+<body class="bg-slate-900 text-white min-h-screen flex flex-col items-center justify-center">
+    <div class="w-full max-w-2xl p-6 bg-slate-800 bg-opacity-90 rounded-xl shadow-2xl">
+        <h1 class="text-4xl font-bold text-center mb-6 text-indigo-400">Cosmic Games Hub</h1>
+        
+        <!-- Button to show the game section -->
+        <button 
+            onclick="showSection('gamesSection')" 
+            class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105">
+            <i class="fas fa-gamepad mr-2"></i>Play Galactic Gems
+        </button>
+        
+        <!-- Game Section (initially hidden) -->
+        <div id="gamesSection" class="hidden mt-6">
+            <h2 class="text-2xl font-bold mb-4 text-center">Galactic Gems</h2>
+            <iframe 
+                src="https://mirak-oracle.github.io/GalacticGems/" 
+                class="w-full h-96 rounded-lg border border-indigo-600"
+                title="Galactic Gems Game">
+            </iframe>
+        </div>
+    </div>
+	
+
   <nav class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
   <div class="max-w-screen-xl mx-auto">
     <ul class="flex justify-between items-center">
