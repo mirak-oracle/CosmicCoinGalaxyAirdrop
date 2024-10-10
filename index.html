@@ -801,7 +801,7 @@ function updateMiningStatus() {
     }
 
     function showSection(sectionId) {
-      const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection'];
+      const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection', 'gamesSection'];
       sections.forEach(id => document.getElementById(id).classList.add('hidden'));
       document.getElementById(sectionId).classList.remove('hidden');
     }
