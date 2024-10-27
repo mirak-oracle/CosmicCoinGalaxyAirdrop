@@ -737,6 +737,392 @@
   </script>
 
 
+<script>
+	// Anti-Cheat Detection System with Google Analytics Integration
+
+// Initialize Google Analytics (Make sure to replace with your GA ID)
+const initializeAnalytics = () => {
+  gtag('config', 'G-ES3NKKYCS7'', {
+    custom_map: {
+      dimension1: 'user_id',
+      dimension2: 'cheat_type',
+      dimension3: 'risk_score'
+    }
+  });
+};
+
+// 1. Multiple Account Detection
+class MultiAccountDetector {
+  constructor() {
+    this.deviceFingerprint = {
+      userAgent: navigator.userAgent,
+      language: navigator.language,
+      platform: navigator.platform,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+    };
+  }
+
+  async detectMultipleAccounts(userId) {
+    const fingerprint = await this.generateFingerprint();
+    const existingAccounts = JSON.parse(localStorage.getItem('known_devices') || '{}');
+    
+    if (existingAccounts[fingerprint] && 
+        existingAccounts[fingerprint].length > 0 && 
+        !existingAccounts[fingerprint].includes(userId)) {
+      
+      this.reportToAnalytics(userId, 'multiple_accounts', {
+        existing_accounts: existingAccounts[fingerprint],
+        fingerprint: fingerprint
+      });
+      return true; // Multiple accounts detected
+    }
+
+    // Update known devices
+    if (!existingAccounts[fingerprint]) {
+      existingAccounts[fingerprint] = [];
+    }
+    if (!existingAccounts[fingerprint].includes(userId)) {
+      existingAccounts[fingerprint].push(userId);
+    }
+    localStorage.setItem('known_devices', JSON.stringify(existingAccounts));
+    return false;
+  }
+
+  async generateFingerprint() {
+    const values = Object.values(this.deviceFingerprint);
+    const fingerprint = values.join('||');
+    return await this.hash(fingerprint);
+  }
+
+  async hash(string) {
+    const msgBuffer = new TextEncoder().encode(string);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  reportToAnalytics(userId, type, details) {
+    gtag('event', 'cheat_detected', {
+      event_category: 'security',
+      event_label: 'multiple_accounts',
+      user_id: userId,
+      cheat_type: type,
+      cheat_details: JSON.stringify(details)
+    });
+  }
+}
+
+// 2. Bot Detection
+class BotDetector {
+  constructor() {
+    this.movements = [];
+    this.clickPatterns = [];
+    this.keyPatterns = [];
+    this.startTracking();
+  }
+
+  startTracking() {
+    document.addEventListener('mousemove', (e) => this.trackMouseMovement(e));
+    document.addEventListener('click', (e) => this.trackClick(e));
+    document.addEventListener('keypress', (e) => this.trackKeypress(e));
+  }
+
+  trackMouseMovement(event) {
+    this.movements.push({
+      x: event.clientX,
+      y: event.clientY,
+      timestamp: Date.now()
+    });
+
+    // Keep only last 100 movements
+    if (this.movements.length > 100) {
+      this.movements.shift();
+    }
+  }
+
+  trackClick(event) {
+    this.clickPatterns.push({
+      x: event.clientX,
+      y: event.clientY,
+      timestamp: Date.now()
+    });
+  }
+
+  trackKeypress(event) {
+    this.keyPatterns.push({
+      key: event.key,
+      timestamp: Date.now()
+    });
+  }
+
+  detectBot() {
+    const botIndicators = {
+      linearMovement: this.checkLinearMovement(),
+      regularTiming: this.checkRegularTiming(),
+      unnaturalSpeed: this.checkUnnaturalSpeed(),
+      noMouseMovement: this.movements.length === 0,
+      perfectClicks: this.checkPerfectClicks()
+    };
+
+    const riskScore = this.calculateRiskScore(botIndicators);
+    
+    if (riskScore > 70) {
+      this.reportBotActivity(botIndicators, riskScore);
+      return true;
+    }
+    return false;
+  }
+
+  checkLinearMovement() {
+    if (this.movements.length < 3) return false;
+    
+    let linearPatterns = 0;
+    for (let i = 2; i < this.movements.length; i++) {
+      const p1 = this.movements[i-2];
+      const p2 = this.movements[i-1];
+      const p3 = this.movements[i];
+      
+      // Check if three points form a straight line
+      const slope1 = (p2.y - p1.y) / (p2.x - p1.x);
+      const slope2 = (p3.y - p2.y) / (p3.x - p2.x);
+      
+      if (Math.abs(slope1 - slope2) < 0.01) {
+        linearPatterns++;
+      }
+    }
+    
+    return (linearPatterns / (this.movements.length - 2)) > 0.8;
+  }
+
+  checkRegularTiming() {
+    const intervals = [];
+    for (let i = 1; i < this.movements.length; i++) {
+      intervals.push(this.movements[i].timestamp - this.movements[i-1].timestamp);
+    }
+    
+    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+    const regularIntervals = intervals.filter(interval => 
+      Math.abs(interval - avgInterval) < 10
+    ).length;
+    
+    return (regularIntervals / intervals.length) > 0.9;
+  }
+
+  checkUnnaturalSpeed() {
+    if (this.movements.length < 2) return false;
+    
+    const speeds = [];
+    for (let i = 1; i < this.movements.length; i++) {
+      const dx = this.movements[i].x - this.movements[i-1].x;
+      const dy = this.movements[i].y - this.movements[i-1].y;
+      const dt = this.movements[i].timestamp - this.movements[i-1].timestamp;
+      const speed = Math.sqrt(dx*dx + dy*dy) / dt;
+      speeds.push(speed);
+    }
+    
+    const avgSpeed = speeds.reduce((a, b) => a + b, 0) / speeds.length;
+    return avgSpeed > 2; // Threshold for unnatural speed
+  }
+
+  checkPerfectClicks() {
+    if (this.clickPatterns.length < 2) return false;
+    
+    const intervals = [];
+    for (let i = 1; i < this.clickPatterns.length; i++) {
+      intervals.push(this.clickPatterns[i].timestamp - this.clickPatterns[i-1].timestamp);
+    }
+    
+    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
+    const perfectClicks = intervals.filter(interval => 
+      Math.abs(interval - avgInterval) < 5
+    ).length;
+    
+    return (perfectClicks / intervals.length) > 0.95;
+  }
+
+  calculateRiskScore(indicators) {
+    let score = 0;
+    if (indicators.linearMovement) score += 30;
+    if (indicators.regularTiming) score += 25;
+    if (indicators.unnaturalSpeed) score += 20;
+    if (indicators.noMouseMovement) score += 15;
+    if (indicators.perfectClicks) score += 10;
+    return score;
+  }
+
+  reportBotActivity(indicators, riskScore) {
+    gtag('event', 'bot_detected', {
+      event_category: 'security',
+      event_label: 'bot_activity',
+      risk_score: riskScore,
+      indicators: JSON.stringify(indicators)
+    });
+  }
+}
+
+// 3. Rapid Update Detection
+class UpdatePatternDetector {
+  constructor() {
+    this.updateHistory = new Map();
+  }
+
+  trackUpdate(userId, updateData) {
+    if (!this.updateHistory.has(userId)) {
+      this.updateHistory.set(userId, []);
+    }
+    
+    const userHistory = this.updateHistory.get(userId);
+    userHistory.push({
+      timestamp: Date.now(),
+      data: updateData
+    });
+
+    // Keep only last 24 hours of updates
+    const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+    this.updateHistory.set(
+      userId, 
+      userHistory.filter(update => update.timestamp > oneDayAgo)
+    );
+
+    return this.detectSuspiciousUpdates(userId);
+  }
+
+  detectSuspiciousUpdates(userId) {
+    const updates = this.updateHistory.get(userId);
+    
+    // Check update frequency
+    if (this.isUpdateTooFrequent(updates)) {
+      this.reportSuspiciousActivity(userId, 'rapid_updates');
+      return true;
+    }
+
+    // Check for impossible progress
+    if (this.isProgressImpossible(updates)) {
+      this.reportSuspiciousActivity(userId, 'impossible_progress');
+      return true;
+    }
+
+    return false;
+  }
+
+  isUpdateTooFrequent(updates) {
+    if (updates.length < 2) return false;
+    
+    // Check if there are more than 5 updates in any 1-hour window
+    for (let i = 0; i < updates.length - 5; i++) {
+      const timeWindow = updates[i + 4].timestamp - updates[i].timestamp;
+      if (timeWindow < 60 * 60 * 1000) { // 1 hour in milliseconds
+        return true;
+      }
+    }
+    return false;
+  }
+
+  isProgressImpossible(updates) {
+    if (updates.length < 2) return false;
+
+    for (let i = 1; i < updates.length; i++) {
+      const progressRate = this.calculateProgressRate(
+        updates[i-1].data,
+        updates[i].data,
+        updates[i].timestamp - updates[i-1].timestamp
+      );
+      
+      if (progressRate > this.getMaxPossibleProgressRate()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  calculateProgressRate(previousData, currentData, timeInterval) {
+    // Implement based on your specific progress metrics
+    const progressDiff = currentData.progress - previousData.progress;
+    return progressDiff / timeInterval;
+  }
+
+  getMaxPossibleProgressRate() {
+    // Define maximum possible progress rate based on your game mechanics
+    return 0.001; // Example threshold
+  }
+
+  reportSuspiciousActivity(userId, type) {
+    gtag('event', 'suspicious_updates', {
+      event_category: 'security',
+      event_label: type,
+      user_id: userId,
+      update_history: JSON.stringify(this.updateHistory.get(userId))
+    });
+  }
+}
+
+// Main Anti-Cheat Controller
+class AntiCheatController {
+  constructor() {
+    this.multiAccountDetector = new MultiAccountDetector();
+    this.botDetector = new BotDetector();
+    this.updateDetector = new UpdatePatternDetector();
+    this.initializeAnalytics();
+  }
+
+  async validateUserActivity(userId, updateData) {
+    const checks = await Promise.all([
+      this.multiAccountDetector.detectMultipleAccounts(userId),
+      this.botDetector.detectBot(),
+      this.updateDetector.trackUpdate(userId, updateData)
+    ]);
+
+    const isCheatDetected = checks.some(result => result === true);
+    
+    if (isCheatDetected) {
+      this.enforceConsequences(userId);
+    }
+
+    return !isCheatDetected;
+  }
+
+  enforceConsequences(userId) {
+    // Implement your consequence logic here
+    // For example: temporary ban, progress reset, etc.
+    localStorage.setItem(`user_${userId}_restricted`, 'true');
+    
+    gtag('event', 'cheat_consequences', {
+      event_category: 'security',
+      event_label: 'account_restricted',
+      user_id: userId
+    });
+  }
+}
+
+// Usage Example
+const antiCheat = new AntiCheatController();
+
+// Integrate with your form submission
+async function handleFormSubmission(formData) {
+  const isValid = await antiCheat.validateUserActivity(
+    formData.userId,
+    {
+      progress: formData.progress,
+      timestamp: Date.now(),
+      // Add other relevant data
+    }
+  );
+
+  if (!isValid) {
+    return {
+      success: false,
+      message: 'Suspicious activity detected'
+    };
+  }
+
+  // Proceed with normal form submission
+  return submitToGoogleForms(formData);
+	}
+</script>
+
+
+	
   
   <script>
     document.addEventListener("DOMContentLoaded", function() {
