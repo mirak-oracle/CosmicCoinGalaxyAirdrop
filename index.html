@@ -202,6 +202,41 @@
 				padding: 13px;
 			}
     }
+	    /* Notification Bar Styling */
+#notificationBar {
+    animation: slideDown 0.5s ease-in-out;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+/* Smooth Scrolling Animation */
+@keyframes scroll {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(-100%);
+    }
+}
+
+.animate-scroll {
+    display: inline-block;
+    white-space: nowrap;
+    animation: scroll 15s linear infinite;
+}
+
+/* Hidden Controls Styling */
+.hidden {
+    display: none;
+}
+
   </style>
 
 	
@@ -306,7 +341,76 @@
     </div>
 </div>
 
+<script>
+	let isScrolling = true;
+const messageQueue = [
+    {
+        text: "🌟 Special Offer: Get 20% off your first trade!",
+        link: "https://example.com/trade",
+    },
+    {
+        text: "🚀 CosmicCoin is now live on Jetpay and Cardvest!",
+        link: "https://example.com/partners",
+    },
+    {
+        text: "🎉 Don't miss our Airdrop event this weekend!",
+        link: "https://example.com/airdrop",
+    },
+    {
+        text: "🎁 Claim your daily rewards now!",
+        link: "https://example.com/rewards",
+    },
+];
 
+let currentIndex = 0;
+
+// Display Messages in Queue
+function displayNextMessage() {
+    const currentMessageElement = document.getElementById("currentMessage");
+    const { text, link } = messageQueue[currentIndex];
+
+    currentMessageElement.innerHTML = link
+        ? `<a href="${link}" target="_blank" class="underline hover:text-yellow-300">${text}</a>`
+        : text;
+
+    currentIndex = (currentIndex + 1) % messageQueue.length;
+}
+
+// Pause Scrolling
+function pauseScrolling() {
+    isScrolling = false;
+    document.getElementById("currentMessage").style.animationPlayState = "paused";
+    document.getElementById("pauseBtn").classList.add("hidden");
+    document.getElementById("resumeBtn").classList.remove("hidden");
+}
+
+// Resume Scrolling
+function resumeScrolling() {
+    isScrolling = true;
+    document.getElementById("currentMessage").style.animationPlayState = "running";
+    document.getElementById("resumeBtn").classList.add("hidden");
+    document.getElementById("pauseBtn").classList.remove("hidden");
+}
+
+// Hide Notification Bar
+function hideNotificationBar() {
+    document.getElementById("notificationBar").style.display = "none";
+}
+
+// Auto-Change Messages
+function startMessageRotation() {
+    displayNextMessage();
+    setInterval(() => {
+        if (isScrolling) {
+            displayNextMessage();
+        }
+    }, 15000); // Change message every 15 seconds
+}
+
+// Initialize
+startMessageRotation();
+
+</script>
 
 <body class="bg-gray-900 text-white text-center p-6">
   <div class="loading-screen" id="loadingScreen">
