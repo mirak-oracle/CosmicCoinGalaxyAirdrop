@@ -211,6 +211,15 @@
 	
 </head>
 	
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES3NKKYCS7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-ES3NKKYCS7');
+  </script>
 
   <div id="user-info"></div>
   <button id="createUserButton" class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300">
@@ -220,9 +229,6 @@
   Generate User ID
   </button>
   <div id="userId"></div>
-  
-
-    
         
   <script>
     function generateUniqueId() {
@@ -278,17 +284,8 @@
     };
   </script>
 
-	  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES3NKKYCS7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
 
-    gtag('config', 'G-ES3NKKYCS7');
-  </script>
 
-	
 <!-- Sticky Notification Bar -->
 <div id="notificationBar" class="fixed top-0 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-2 px-4 z-50 shadow-lg">
     <div class="flex items-center justify-between">
@@ -311,7 +308,6 @@
         </div>
     </div>
 </div>
-
 
 <script>
 	let isScrolling = true;
@@ -384,6 +380,27 @@ function startMessageRotation() {
 startMessageRotation();
 
 </script>
+
+<body class="bg-gray-900 text-white text-center p-6">
+<div class="loading-screen" id="loadingScreen">
+    <div>
+      <h1 class="text-4xl font-bold mb-4">CosmicCoin Galaxy Airdrop</h1>
+      <p class="text-lg">Powered By CosmicEcosystem..</p>
+    </div>
+  </div>
+    </div>
+  </div>
+</div>
+
+
+<div id="mainSection">
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(24)">Start 24-Hour Mining</button>
+    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(12)">Start 12-Hour Mining</button>
+    <div id="miningStatus" class="text-lg mb-4"></div>
+    <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
+</div>
+</div>
+
 
   <div id="tasksSection" class="hidden">
     <h2 class="text-3xl font-small mb-6 text-center"></h2>
@@ -515,7 +532,8 @@ startMessageRotation();
             </a>
 	    </div>
 	    
-
+		    </a>
+    </div>
 </div>
 
 
@@ -972,7 +990,9 @@ class BotDetector {
     }
     
     return (linearPatterns / (this.movements.length - 2)) > 0.8;
-  }checkRegularTiming() {
+  }
+
+  checkRegularTiming() {
     const intervals = [];
     for (let i = 1; i < this.movements.length; i++) {
       intervals.push(this.movements[i].timestamp - this.movements[i-1].timestamp);
