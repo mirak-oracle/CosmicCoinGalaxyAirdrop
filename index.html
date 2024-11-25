@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8">
 <meta name="google-adsense-account" content="ca-pub-5320066196933944">	
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.4.0/introjs.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.4.0/intro.min.js"></script>
+
 	<script type='text/javascript' src='//pl18945766.cpmrevenuegate.com/ae/ad/db/aeaddb9b58f23678550b7763cc0e6d32.js'></script>
 	<title>CosmicCoin Mining Airdrop</title>
   
@@ -284,6 +287,55 @@
     };
   </script>
 
+
+<!-- Onboarding Tour Component -->
+<div id="onboarding-tour">
+    <!-- Steps for the Onboarding Tour -->
+    <div id="generate-id" class="p-6 bg-white rounded shadow my-4">
+        <h2 class="text-lg font-bold">Step 1: Generate Your Unique ID</h2>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Generate ID</button>
+    </div>
+
+    <div id="choose-mining" class="p-6 bg-white rounded shadow my-4">
+        <h2 class="text-lg font-bold">Step 2: Choose Mining Duration</h2>
+        <button class="bg-green-500 text-white px-4 py-2 rounded">Mine for 12 Hours</button>
+        <button class="bg-green-500 text-white px-4 py-2 rounded ml-2">Mine for 24 Hours</button>
+    </div>
+
+    <!-- Additional Steps -->
+    <div id="complete-tasks" class="p-6 bg-white rounded shadow my-4">
+        <h2 class="text-lg font-bold">Step 3: Complete Tasks</h2>
+    </div>
+
+    <div id="claim-rewards" class="p-6 bg-white rounded shadow my-4">
+        <h2 class="text-lg font-bold">Step 4: Claim Rewards</h2>
+        <button class="bg-yellow-500 text-white px-4 py-2 rounded">Claim Rewards</button>
+    </div>
+
+    <!-- Tour Trigger -->
+    <div class="text-center mt-8">
+        <button onclick="startTour()" class="bg-blue-600 text-white px-6 py-3 rounded">
+            Start Onboarding Tour
+        </button>
+    </div>
+</div>
+
+<script>
+    // Start the Onboarding Tour
+    function startTour() {
+        introJs().setOptions({
+            steps: [
+                { element: '#generate-id', intro: "Step 1: Generate your unique ID to start." },
+                { element: '#choose-mining', intro: "Step 2: Choose your mining duration." },
+                { element: '#complete-tasks', intro: "Step 3: Complete tasks to earn rewards." },
+                { element: '#claim-rewards', intro: "Step 4: Claim your rewards here." }
+            ],
+            showProgress: true,
+            skipLabel: "Skip",
+            doneLabel: "Done"
+        }).start();
+    }
+</script>
 
 
 <!-- Sticky Notification Bar -->
