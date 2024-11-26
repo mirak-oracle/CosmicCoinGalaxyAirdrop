@@ -288,44 +288,56 @@
       }
     };
   </script>
-
-	<!-- Add this to your main HTML layout where you want the badge system -->
-<div id="side-menu" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-lg hidden p-4">
+	
+<!-- Side Menu -->
+<div id="side-menu" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-lg hidden p-4 overflow-y-auto">
     <h2 class="text-xl font-bold mb-4">Your Badge Levels</h2>
 
-    <div id="badge-info" class="mb-6">
-        <!-- Badge Info Will Be Dynamically Added Here -->
+    <!-- Badge Info -->
+    <div id="badge-info" class="mb-6 space-y-4">
+        <!-- Badges will be dynamically inserted here -->
     </div>
 
     <!-- Progress Bar -->
     <div class="mt-4">
         <p class="text-sm text-gray-600">Progress to Next Level:</p>
         <div class="w-full bg-gray-200 rounded-full h-2">
-            <div id="progress-bar" class="bg-blue-500 h-2 rounded-full" style="width: 0%"></div>
+            <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: 0%"></div>
         </div>
         <p id="progress-text" class="text-sm text-gray-500 mt-2">0% Progress</p>
     </div>
 
+    <!-- Close Menu Button -->
     <button id="close-menu" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mt-6">Close Menu</button>
 </div>
 
 <!-- Side Menu Button -->
-<button id="menu-button" class="fixed top-5 left-4 bg-blue-500 text-white px-2 py-2 rounded hover:bg-blue-600">View Badges</button>
+<button id="menu-button" class="fixed left-4 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+</button>
 
-	<script>
-	// Badge Data with Custom SVG Icons (Lucide Icons)
+    <script>
+// Badge Data for 12 Levels
 const badges = [
-    { level: 1, name: "Cosmic Newbie", info: "Welcome aboard! Keep interacting to level up.", icon: "star", duration: 1 },
+    { level: 1, name: "Cosmic Newbie", info: "Welcome aboard! Interact to level up.", icon: "star", duration: 1 },
     { level: 2, name: "Star Explorer", info: "Great! You've been consistent for 3 days.", icon: "rocket", duration: 3 },
     { level: 3, name: "Galaxy Miner", info: "Amazing! You've interacted for 7 days.", icon: "diamond", duration: 7 },
-    { level: 4, name: "Cosmic Master", info: "Incredible! You've reached the top level (30 days).", icon: "trophy", duration: 30 },
+    { level: 4, name: "Planet Pioneer", info: "Outstanding! You've leveled up for 15 days.", icon: "globe", duration: 15 },
+    { level: 5, name: "Solar Champion", info: "Incredible! You are now a 30-day achiever.", icon: "sun", duration: 30 },
+    { level: 6, name: "Galactic Legend", info: "Unstoppable! Reached 60 days.", icon: "trophy", duration: 60 },
+    { level: 7, name: "Cosmic Conqueror", info: "You're mastering the universe at 90 days!", icon: "medal", duration: 90 },
+    { level: 8, name: "Interstellar Voyager", info: "120 days of cosmic journey!", icon: "spaceship", duration: 120 },
+    { level: 9, name: "Nebula Navigator", info: "150 days of dedicated interaction.", icon: "planet", duration: 150 },
+    { level: 10, name: "Orbit Overlord", info: "180 days of unparalleled achievement.", icon: "moon", duration: 180 },
+    { level: 11, name: "Comet Commander", info: "210 days of intergalactic engagement.", icon: "comet", duration: 210 },
+    { level: 12, name: "Supernova Sage", info: "240 days of ultimate cosmic mastery.", icon: "supernova", duration: 240 },
 ];
 
-// Get Stored Data
+// Daily Interaction Logic (unchanged)
 const lastInteractionDate = localStorage.getItem("lastInteractionDate");
 let daysInteracted = parseInt(localStorage.getItem("daysInteracted")) || 0;
-
-// Check Daily Interaction
 const today = new Date().toISOString().split("T")[0];
 if (lastInteractionDate !== today) {
     daysInteracted++;
@@ -343,33 +355,32 @@ function getCurrentBadge() {
 // Update Badge Info and Progress Bar
 function updateBadgeInfo() {
     const badge = getCurrentBadge();
-    const badgeInfo = `
-        <div class="p-4 bg-gray-100 rounded shadow-lg mb-4">
-            <div class="flex items-center">
-                <!-- Displaying Lucide Icon -->
-                <span class="text-4xl mr-4">
-                    <svg class="lucide lucide-${badge.icon} w-8 h-8" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 17l4 4l4-4M12 7L8 3l-4 4m4-4V3a4 4 0 1 1-4 4h3m7 1a4 4 0 1 1-4 4v3a7 7 0 0 0-7-7h3"></path>
-                    </svg>
-                </span>
+    const badgeInfoHTML = `
+        <div class="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg shadow-lg border border-gray-200">
+            <div class="flex items-center space-x-4">
+                <!-- Lucide Icon -->
+                <div class="text-6xl text-gradient bg-gradient-to-r from-purple-500 to-blue-500">
+                    <i class="lucide lucide-${badge.icon} w-10 h-10"></i>
+                </div>
                 <div>
-                    <h3 class="text-lg font-bold">${badge.name}</h3>
+                    <h3 class="text-lg font-bold text-gray-800">${badge.name}</h3>
                     <p class="text-sm text-gray-600">${badge.info}</p>
                     <p class="text-xs text-gray-500 mt-2">Days Interacted: ${daysInteracted}</p>
                 </div>
             </div>
         </div>
     `;
-    document.getElementById("badge-info").innerHTML = badgeInfo;
-    
-    // Calculate Progress
+
+    document.getElementById("badge-info").innerHTML = badgeInfoHTML;
+
+    // Update Progress Bar
     const nextBadge = badges.find(b => b.duration > daysInteracted);
-    const progress = (daysInteracted / (nextBadge ? nextBadge.duration : 30)) * 100;
+    const progress = (daysInteracted / (nextBadge ? nextBadge.duration : badges[badges.length - 1].duration)) * 100;
     document.getElementById("progress-bar").style.width = `${progress}%`;
     document.getElementById("progress-text").innerText = `${Math.round(progress)}% Progress`;
 }
 
-// Event Listeners for Menu
+// Menu Event Listeners
 document.getElementById("menu-button").addEventListener("click", () => {
     updateBadgeInfo();
     document.getElementById("side-menu").classList.remove("hidden");
@@ -377,11 +388,6 @@ document.getElementById("menu-button").addEventListener("click", () => {
 
 document.getElementById("close-menu").addEventListener("click", () => {
     document.getElementById("side-menu").classList.add("hidden");
-});
-
-// Simulate Interaction
-document.getElementById("interact-button").addEventListener("click", () => {
-    alert("Interaction recorded! Keep it up to level up.");
 });
 
 // Initial Badge Update
