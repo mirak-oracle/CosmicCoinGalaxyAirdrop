@@ -417,7 +417,9 @@ updateBadgeInfo();
 
     <!-- Content of Your Airdrop Page -->
     <div class="p-6">
-        
+        <h1 class="text-2xl font-bold holographic-text galactic-style">
+  CosmicCoin Galaxy Airdrop
+</h1>
 
 
     <!-- Onboarding Steps Data -->
@@ -499,28 +501,7 @@ updateBadgeInfo();
 
 
 
-<!-- Sticky Notification Bar -->
-<div id="notificationBar" class="fixed top-0 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-2 px-4 z-50 shadow-lg">
-    <div class="flex items-center justify-between">
-        <!-- Scrolling Message Container -->
-        <div id="messageContainer" class="flex items-center space-x-4 overflow-hidden w-full">
-            <span id="currentMessage" class="animate-scroll text-sm font-medium whitespace-nowrap"></span>
-        </div>
 
-        <!-- Controls -->
-        <div class="flex items-center space-x-4">
-            <button onclick="pauseScrolling()" id="pauseBtn" class="text-white hover:text-yellow-300 text-sm">
-                ⏸ Pause
-            </button>
-            <button onclick="resumeScrolling()" id="resumeBtn" class="text-white hover:text-green-300 text-sm hidden">
-                ▶️ Resume
-            </button>
-            <button onclick="hideNotificationBar()" class="text-white hover:text-red-300 text-sm">
-                ✖ Close
-            </button>
-        </div>
-    </div>
-</div>
 
 <script>
 	let isScrolling = true;
