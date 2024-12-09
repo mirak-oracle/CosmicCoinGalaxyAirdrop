@@ -1409,229 +1409,206 @@ async function handleFormSubmission(formData) {
 	
   
   <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      setTimeout(function() {
-        document.getElementById('loadingScreen').style.display = 'none';
-      }, 2000);
-      loadBalance();
-      loadMiningStatus();
-    });
+    
+// Helper function to get and parse localStorage item
+function getLocalStorageItem(key, defaultValue) {
+  const item = localStorage.getItem(key);
+  return item ? JSON.parse(item) : defaultValue;
+}
 
-    function startMining(hours) {
-    const isMining = localStorage.getItem('isMining');
-    const miningEndTime = localStorage.getItem('miningEndTime');
-    const currentTime = new Date().getTime();
+// Helper function to set localStorage item
+function setLocalStorageItem(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
 
-    if (isMining === 'true' && currentTime < miningEndTime) {
-        // If mining is in progress, do not allow another mining session to start
-        alert('Mining is already in progress. Please wait until the current session is complete.');
-        return;
-    }
+document.addEventListener("DOMContentLoaded", function() {
+  setTimeout(function() {
+    document.getElementById('loadingScreen').style.display = 'none';
+  }, 2000);
+  loadBalance();
+  loadMiningStatus();
+  checkReferral();
+});
 
-    const endTime = currentTime + hours * 60 * 60 * 1000;
-    localStorage.setItem('miningEndTime', endTime);
-    localStorage.setItem('isMining', 'true');
-    updateMiningStatus();
+function startMining(hours) {
+  const isMining = getLocalStorageItem('isMining', false);
+  const miningEndTime = getLocalStorageItem('miningEndTime', 0);
+  const currentTime = new Date().getTime();
+
+  if (isMining && currentTime < miningEndTime) {
+    alert('Mining is already in progress. Please wait until the current session is complete.');
+    return;
+  }
+
+  const endTime = currentTime + hours * 60 * 60 * 1000;
+  setLocalStorageItem('miningEndTime', endTime);
+  setLocalStorageItem('isMining', true);
+  updateMiningStatus();
+  startMiningProcess(); // Start the notification process
 }
 
 function updateMiningStatus() {
-    const miningEndTime = localStorage.getItem('miningEndTime');
-    const currentTime = new Date().getTime();
+  const miningEndTime = getLocalStorageItem('miningEndTime', 0);
+  const currentTime = new Date().getTime();
 
-    if (currentTime < miningEndTime) {
-        const timeLeft = (miningEndTime - currentTime) / 1000;
-        const hours = Math.floor(timeLeft / 3600);
-        const minutes = Math.floor((timeLeft % 3600) / 60);
-        const seconds = Math.floor(timeLeft % 60);
+  if (currentTime < miningEndTime) {
+    const timeLeft = (miningEndTime - currentTime) / 1000;
+    const hours = Math.floor(timeLeft / 3600);
+    const minutes = Math.floor((timeLeft % 3600) / 60);
+    const seconds = Math.floor(timeLeft % 60);
 
-        document.getElementById('miningStatus').innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
-        updateMiningAmount((hours * 60 * 60) + (minutes * 60) + seconds);
-        setTimeout(updateMiningStatus, 1000);
-    } else {
-        document.getElementById('miningStatus').innerText = 'Mining complete!';
-        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-        localStorage.setItem('balance', currentBalance + 10); // Adjust the reward as necessary
-        localStorage.setItem('isMining', 'false');
-        updateBalanceDisplay();
-        sendReminder();
-    }
+    document.getElementById('miningStatus').innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
+    updateMiningAmount(timeLeft);
+    setTimeout(updateMiningStatus, 1000);
+  } else {
+    document.getElementById('miningStatus').innerText = 'Mining complete!';
+    const currentBalance = getLocalStorageItem('balance', 0);
+    setLocalStorageItem('balance', currentBalance + 10); // Adjust the reward as necessary
+    setLocalStorageItem('isMining', false);
+    updateBalanceDisplay();
+    showMiningNotification();
+  }
 }
 
+function updateMiningAmount(secondsLeft) {
+  const ratePerSecond = 0.00040; // Adjust mining rate per second
+  const currentBalance = getLocalStorageItem('balance', 0);
+  const miningAmount = currentBalance + (ratePerSecond * (24 * 60 * 60 - secondsLeft)); // Total mined amount
+  document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} COS`;
+}
 
-    function updateMiningAmount(secondsLeft) {
-      const ratePerSecond = 0.00040; // Adjust mining rate per second
-      const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-      const miningAmount = currentBalance + (ratePerSecond * (60 * 60 * 24 - secondsLeft)); // Total mined amount
-      document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} COS`;
-    }
+function updateBalanceDisplay() {
+  const balance = getLocalStorageItem('balance', 0);
+  document.getElementById('miningAmount').innerText = `Current Balance: ${parseFloat(balance).toFixed(4)} COS`;
+}
 
-    function updateBalanceDisplay() {
-      const balance = localStorage.getItem('balance') || '0';
-      document.getElementById('miningAmount').innerText = `Current Balance: ${balance} COS`;
-    }
+function loadBalance() {
+  updateBalanceDisplay();
+}
 
-    function loadBalance() {
-      const balance = localStorage.getItem('balance') || '0';
-      document.getElementById('miningAmount').innerText = `Current Balance: ${balance} COS`;
-    }
+function loadMiningStatus() {
+  const isMining = getLocalStorageItem('isMining', false);
+  if (isMining) {
+    updateMiningStatus();
+  } else {
+    document.getElementById('miningStatus').innerText = 'No mining in progress';
+  }
+}
 
-    function loadMiningStatus() {
-      const isMining = localStorage.getItem('isMining') === 'true';
-      if (isMining) {
-        updateMiningStatus();
-      } else {
-        document.getElementById('miningStatus').innerText = 'No mining in progress';
-      }
-    }
-
-    function showSection(sectionId) {
-      const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection', 'gamesSection'];
-      sections.forEach(id => document.getElementById(id).classList.add('hidden'));
-      document.getElementById(sectionId).classList.remove('hidden');
-    }
-
-    
- 
-
-
+function showSection(sectionId) {
+  const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection', 'gamesSection'];
+  sections.forEach(id => document.getElementById(id).classList.add('hidden'));
+  document.getElementById(sectionId).classList.remove('hidden');
+}
 
 function claimDailyReward() {
-    const lastClaimTime = localStorage.getItem('lastClaimTime');
-    const currentTime = new Date().getTime();
-    const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+  const lastClaimTime = getLocalStorageItem('lastClaimTime', 0);
+  const currentTime = new Date().getTime();
+  const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
-    // Check if the user has already claimed the reward within the last 24 hours
-    if (lastClaimTime && currentTime - lastClaimTime < oneDay) {
-        alert('You have already claimed your daily reward today. Come back tomorrow!');
-    } else {
-        // If the user hasn't claimed within the last 24 hours, allow the claim
-        alert('Daily reward claimed!');
-        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-        localStorage.setItem('balance', currentBalance + 50); // Add daily reward amount
-        localStorage.setItem('lastClaimTime', currentTime);   // Store the time of the claim
-        updateBalanceDisplay();
-    }
+  if (currentTime - lastClaimTime < oneDay) {
+    alert('You have already claimed your daily reward today. Come back tomorrow!');
+  } else {
+    alert('Daily reward claimed!');
+    const currentBalance = getLocalStorageItem('balance', 0);
+    setLocalStorageItem('balance', currentBalance + 50); // Add daily reward amount
+    setLocalStorageItem('lastClaimTime', currentTime);
+    updateBalanceDisplay();
+  }
 }
 
-// Function to update balance display
-function updateBalanceDisplay() {
-    const balance = localStorage.getItem('balance') || 0;
-    document.getElementById('balanceDisplay').textContent = `Balance: ${balance} $COSMIC`;
-}
-
-
-
-
-
-
-// Function to complete tasks and check if already completed
 function completeTask(taskId) {
-    const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
+  const completedTasks = getLocalStorageItem('completedTasks', {});
 
-    if (completedTasks[taskId]) {
-        alert('Task already completed! More tasks coming soon 😊');
-        // Optionally, display a meme or image here
-        document.getElementById('taskMeme').innerHTML = '<img src="path_to_your_meme.jpg" alt="Meme" />';
-    } else {
-        alert(`Task ${taskId} completed!`);
-        const currentBalance = parseFloat(localStorage.getItem('balance')) || 0;
-        localStorage.setItem('balance', currentBalance + 30); // Reward for task completion
-        completedTasks[taskId] = true;
-        localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
-        updateBalanceDisplay();
-    }
+  if (completedTasks[taskId]) {
+    alert('Task already completed! More tasks coming soon 😊');
+    // Optionally, display a meme or image here
+    document.getElementById('taskMeme').innerHTML = '<img src="path_to_your_meme.jpg" alt="Meme" />';
+  } else {
+    alert(`Task ${taskId} completed!`);
+    const currentBalance = getLocalStorageItem('balance', 0);
+    setLocalStorageItem('balance', currentBalance + 30); // Reward for task completion
+    completedTasks[taskId] = true;
+    setLocalStorageItem('completedTasks', completedTasks);
+    updateBalanceDisplay();
+  }
 }
-
-      
-    
-    function generateReferralCode() {
-        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    }
-
-    function inviteFriend() {
-        const referralCode = generateReferralCode();
-        const referralLink = `https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=ar0978585297?ref=${referralCode}`;
-        const shareText = 'Join me in earning CosmicCoin through the CosmicCoin Galaxy Airdrop. Use my referral link to get started!';
-        const shareTitle = 'Join the CosmicCoin Galaxy Airdrop!';
-
-        // Try Web Share API first
-        if (navigator.share) {
-            navigator.share({
-                title: shareTitle,
-                text: shareText,
-                url: referralLink,
-            })
-            .then(() => console.log('Successful share'))
-            .catch((error) => {
-                console.log('Error sharing', error);
-                fallbackShare();
-            });
-        } else {
-            fallbackShare();
-        }
-
-        function fallbackShare() {
-            const shareOptions = document.createElement('div');
-            shareOptions.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
-            shareOptions.innerHTML = `
-                <div class="bg-white p-8 rounded-md shadow-xl max-w-md w-full">
-                    <h2 class="text-xl font-bold mb-4">Share Referral Link</h2>
-                    <p class="mb-4">Choose how you want to share your referral link:</p>
-                    <div class="space-y-4">
-                        <button onclick="copyToClipboard('${referralLink}')" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Copy Link</button>
-                        <a href="mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(shareText + ' ' + referralLink)}" class="block w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-center">Share via Email</a>
-                        <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + ' ' + referralLink)}" target="_blank" rel="noopener noreferrer" class="block w-full px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 text-center">Share on Twitter</a>
-                        <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}" target="_blank" rel="noopener noreferrer" class="block w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center">Share on Facebook</a>
-                        <button onclick="closeShareOptions()" class="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Close</button>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(shareOptions);
-        }
-    }
-
-    function copyToClipboard(text) {
-        navigator.clipboard.writeText(text).then(() => {
-            alert('Referral link copied to clipboard!');
-        }, (err) => {
-            console.error('Could not copy text: ', err);
-        });
-    }
-
-    function closeShareOptions() {
-        const shareOptions = document.querySelector('.fixed');
-        if (shareOptions) {
-            shareOptions.remove();
-        }
-    }
-    
 
 function generateReferralCode() {
-  // Generate a simple and professional referral code
-  const timestamp = Date.now().toString(36); // Convert current timestamp to a base-36 string
-  const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase(); // Generate a random string and convert to uppercase
+  const timestamp = Date.now().toString(36);
+  const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
   return `${timestamp}-${randomPart}`;
 }
 
-function updateBalanceDisplay() {
-  const balance = localStorage.getItem('balance') || '0';
-  document.getElementById('miningAmount').innerText = `Current Balance: ${balance} CosmicCoin`;
+function inviteFriend() {
+  const referralCode = generateReferralCode();
+  const referralLink = `https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=ar0978585297?ref=${referralCode}`;
+  const shareText = 'Join me in earning CosmicCoin through the CosmicCoin Galaxy Airdrop. Use my referral link to get started!';
+  const shareTitle = 'Join the CosmicCoin Galaxy Airdrop!';
+
+  if (navigator.share) {
+    navigator.share({
+      title: shareTitle,
+      text: shareText,
+      url: referralLink,
+    })
+    .then(() => console.log('Successful share'))
+    .catch((error) => {
+      console.log('Error sharing', error);
+      fallbackShare();
+    });
+  } else {
+    fallbackShare();
+  }
+
+  function fallbackShare() {
+    const shareOptions = document.createElement('div');
+    shareOptions.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
+    shareOptions.innerHTML = `
+      <div class="bg-white p-8 rounded-md shadow-xl max-w-md w-full">
+        <h2 class="text-xl font-bold mb-4">Share Referral Link</h2>
+        <p class="mb-4">Choose how you want to share your referral link:</p>
+        <div class="space-y-4">
+          <button onclick="copyToClipboard('${referralLink}')" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Copy Link</button>
+          <a href="mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(shareText + ' ' + referralLink)}" class="block w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-center">Share via Email</a>
+          <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + ' ' + referralLink)}" target="_blank" rel="noopener noreferrer" class="block w-full px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 text-center">Share on Twitter</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}" target="_blank" rel="noopener noreferrer" class="block w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center">Share on Facebook</a>
+          <button onclick="closeShareOptions()" class="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Close</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(shareOptions);
+  }
+}
+
+function copyToClipboard(text) {
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Referral link copied to clipboard!');
+  }, (err) => {
+    console.error('Could not copy text: ', err);
+  });
+}
+
+function closeShareOptions() {
+  const shareOptions = document.querySelector('.fixed');
+  if (shareOptions) {
+    shareOptions.remove();
+  }
 }
 
 function rewardReferrer(referralCode) {
-  // Assuming referralCode can be used to identify the referrer
   const referrerBalanceKey = `balance_${referralCode}`;
-  const currentBalance = parseFloat(localStorage.getItem(referrerBalanceKey)) || 0;
+  const currentBalance = getLocalStorageItem(referrerBalanceKey, 0);
   const newBalance = currentBalance + 30; // Reward amount
-  localStorage.setItem(referrerBalanceKey, newBalance);
+  setLocalStorageItem(referrerBalanceKey, newBalance);
 
   console.log(`Referrer with code ${referralCode} now has a balance of ${newBalance} CosmicCoin`);
 }
 
 function rewardNewUser() {
-  const currentUserBalance = parseFloat(localStorage.getItem('balance')) || 0;
+  const currentUserBalance = getLocalStorageItem('balance', 0);
   const newBalance = currentUserBalance + 20; // Reward for using referral code
-  localStorage.setItem('balance', newBalance);
+  setLocalStorageItem('balance', newBalance);
 }
 
 function checkReferral() {
@@ -1642,141 +1619,120 @@ function checkReferral() {
     rewardNewUser();
     updateBalanceDisplay();
 
-    alert(`You've been rewarded for using a referral code! Your current balance is ${localStorage.getItem('balance')} CosmicCoin.`);
+    alert(`You've been rewarded for using a referral code! Your current balance is ${getLocalStorageItem('balance', 0)} CosmicCoin.`);
   }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  updateBalanceDisplay();
-  checkReferral();
-});
+function activateBooster(booster) {
+  alert(`${booster.charAt(0).toUpperCase() + booster.slice(1)} Booster activated!`);
+  document.querySelector('.balance').textContent = '10%';  // Placeholder for actual logic
+}
 
-  
-   function activateBooster(booster) {
-      alert(`${booster.charAt(0).toUpperCase() + booster.slice(1)} Booster activated!`);
-      document.querySelector('.balance').textContent = '10%';  // Placeholder for actual logic
-    }
-
-    let userCoins = parseFloat(localStorage.getItem('userCoins')) || 0;
-
-    
-
-    
 function joinSquad(squad) {
   const rewards = {
-    'CEO_CTO_CLAUNS': 5000,  // 
-    'CAO_HUBS': 2100,        // 
-    'CPO_VILLAGES': 1900,    // 
-    'CMO_VILLAS': 1800,      // 
-    'CAO_CREWS': 1009,       // 
-    'CPO_GUYS': 950,       // 
-    'CMO_RESORTS': 850     // 
+    'CEO_CTO_CLAUNS': 5000,
+    'CAO_HUBS': 2100,
+    'CPO_VILLAGES': 1900,
+    'CMO_VILLAS': 1800,
+    'CAO_CREWS': 1009,
+    'CPO_GUYS': 950,
+    'CMO_RESORTS': 850
   };
 
-  
-    let userCoins = parseFloat(localStorage.getItem('userCoins')) || 0;
-    let joinedSquads = JSON.parse(localStorage.getItem('joinedSquads')) || {};
+  let userCoins = getLocalStorageItem('userCoins', 0);
+  let joinedSquads = getLocalStorageItem('joinedSquads', {});
 
-    if (joinedSquads[squad]) {
-        alert(`You've already joined ${squad.replace(/_/g, ' ')}! No additional rewards.`);
-        return;
-    }
+  if (joinedSquads[squad]) {
+    alert(`You've already joined ${squad.replace(/_/g, ' ')}! No additional rewards.`);
+    return;
+  }
 
-    let reward = rewards[squad] || 0;
-    userCoins += reward;
-    localStorage.setItem('userCoins', userCoins);
+  let reward = rewards[squad] || 0;
+  userCoins += reward;
+  setLocalStorageItem('userCoins', userCoins);
 
-    alert(`Joined ${squad.replace(/_/g, ' ')}! Reward: ${reward.toLocaleString()} CosmicCoins. Total: ${userCoins.toLocaleString()} CosmicCoins.`);
+  alert(`Joined ${squad.replace(/_/g, ' ')}! Reward: ${reward.toLocaleString()} CosmicCoins. Total: ${userCoins.toLocaleString()} CosmicCoins.`);
 
-    const maxReward = Math.max(...Object.values(rewards));
-    if (reward === maxReward) {
-        alert('Congratulations! You joined the squad with the highest CosmicCoin amount. Extra reward granted!');
-        userCoins += 100;  // Extra reward for joining the highest squad
-        localStorage.setItem('userCoins', userCoins);
-    }
+  const maxReward = Math.max(...Object.values(rewards));
+  if (reward === maxReward) {
+    alert('Congratulations! You joined the squad with the highest CosmicCoin amount. Extra reward granted!');
+    userCoins += 100;  // Extra reward for joining the highest squad
+    setLocalStorageItem('userCoins', userCoins);
+  }
 
-    joinedSquads[squad] = true;
-    localStorage.setItem('joinedSquads', JSON.stringify(joinedSquads));
+  joinedSquads[squad] = true;
+  setLocalStorageItem('joinedSquads', joinedSquads);
 
-    updateBalanceDisplay();
+  updateBalanceDisplay();
 }
 
-
-function updateBalanceDisplay() {
-  const balance = localStorage.getItem('userCoins') || '0';
-  document.getElementById('miningAmount').innerText = `Current Balance: ${parseFloat(balance).toLocaleString()} CosmicCoin`;
-}
-
-
-    window.addEventListener('load', function() {
-      setTimeout(() => {
-        document.getElementById('loadingScreen').style.display = 'none';
-      }, 3000);  // Simulates a 3-second loading screen
-    });
-    
-    // Function to enable notifications and set a mining reminder
 function enableNotifications() {
-    if ("Notification" in window) {
-        // Check if the browser supports notifications
-        if (Notification.permission === "granted") {
-            alert('Notifications are already enabled!');
-            setMiningReminder(); // Set the mining reminder
-        } else if (Notification.permission !== "denied") {
-            // Request permission from the user
-            Notification.requestPermission().then(function (permission) {
-                if (permission === "granted") {
-                    alert('Notifications enabled!');
-                    setMiningReminder(); // Set the mining reminder after enabling notifications
-                } else {
-                    alert('Notifications disabled. Please enable notifications in your browser settings.');
-                }
-            });
-        } else {
-            alert('You have denied notifications. Please change your settings to enable notifications.');
-        }
-    } else {
-        alert('This browser does not support notifications.');
-    }
-}
-
-// Function to set a mining reminder after a specified interval (12/24 hours)
-function setMiningReminder() {
-    const twelveHours = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
-    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-    // Schedule the notification to appear every 12 hours (can be changed to 24 hours)
-    setTimeout(function () {
-        showMiningNotification(); // Call the function to display notification
-        // You can recursively call the function if you want continuous reminders
-        setMiningReminder(); // Continue the reminder loop for the next 12/24 hours
-    }, twelveHours); // Change this to `twentyFourHours` for a 24-hour reminder
-}
-
-// Function to show the mining notification in the notifications bar
-function showMiningNotification() {
+  if ("Notification" in window) {
     if (Notification.permission === "granted") {
-        const options = {
-            body: "⛏️ Time to continue mining your CosmicCoin! Click to return to the mining page.",
-            icon: "path_to_mining_icon.png", // Path to an icon (optional)
-            vibrate: [200, 100, 200], // Vibration pattern for mobile devices
-            requireInteraction: true // Keeps the notification visible until the user interacts with it
-        };
-
-        const notification = new Notification('🚀 Mining Reminder', options);
-
-        // Add a click event to the notification that brings the user back to the mining page
-        notification.onclick = function () {
-            window.focus(); // Brings the mining tab into focus
-            window.location.href = "your_mining_page_url"; // Replace with your actual mining page URL
-        };
+      alert('Notifications are already enabled!');
+      setMiningReminder();
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(function (permission) {
+        if (permission === "granted") {
+          alert('Notifications enabled!');
+          setMiningReminder();
+        } else {
+          alert('Notifications disabled. Please enable notifications in your browser settings.');
+        }
+      });
+    } else {
+      alert('You have denied notifications. Please change your settings to enable notifications.');
     }
+  } else {
+    alert('This browser does not support notifications.');
+  }
 }
 
-// Manually trigger the reminder at page load (e.g., when mining starts)
-function startMiningProcess() {
-    enableNotifications(); // Ask for notification permission
-    setMiningReminder();   // Set a 12/24-hour reminder
+function setMiningReminder() {
+  const twelveHours = 12 * 60 * 60 * 1000;
+  setTimeout(function () {
+    showMiningNotification();
+    setMiningReminder();
+  }, twelveHours);
 }
+
+function showMiningNotification() {
+  if (Notification.permission === "granted") {
+    const options = {
+      body: "⛏️ Time to continue mining your CosmicCoin! Click to return to the mining page.",
+      icon: "path_to_mining_icon.png",
+      vibrate: [200, 100, 200],
+      requireInteraction: true
+    };
+
+    const notification = new Notification('🚀 Mining Reminder', options);
+
+    notification.onclick = function () {
+      window.focus();
+      window.location.href = "your_mining_page_url";
+    };
+  }
+}
+
+function startMiningProcess() {
+  enableNotifications();
+  setMiningReminder();
+}
+
+// Call this function when the page loads
+window.addEventListener('load', function() {
+  setTimeout(() => {
+    document.getElementById('loadingScreen').style.display = 'none';
+  }, 3000);
+});
+
+console.log("Script loaded successfully!");
+
+
+
+
+  
+
 
 	    
   </script>
