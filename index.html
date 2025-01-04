@@ -1,499 +1,141 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CosmicCoin Mining Airdrop</title>
-    <meta name="google-adsense-account" content="ca-pub-5320066196933944">
-    <meta name="description" content="CosmicCoin Mining Airdrop offers a chance to earn CosmicCoin cryptocurrency.">
-    <meta name="keywords" content="CosmicCoin, Mining, Airdrop, Cryptocurrency">
-    <meta name="author" content="CosmicCoin Team">
-    <link rel="canonical" href="https://your-website-url.com">
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://your-website-url.com">
-    <meta property="og:title" content="CosmicCoin Mining Airdrop">
-    <meta property="og:description" content="Earn CosmicCoin cryptocurrency through our mining airdrop.">
-    <meta property="og:image" content="https://your-website-url.com/og-image.jpg">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://your-website-url.com">
-    <meta property="twitter:title" content="CosmicCoin Mining Airdrop">
-    <meta property="twitter:description" content="Earn CosmicCoin cryptocurrency through our mining airdrop.">
-    <meta property="twitter:image" content="https://your-website-url.com/twitter-image.jpg">
-
-    <!-- Additional SEO tags -->
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="English">
-    <meta name="revisit-after" content="7 days">
-    <meta name="generator" content="CosmicCoin Airdrop Platform">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.4.0/introjs.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.4.0/intro.min.js"></script>
-    <script type='text/javascript' src='//pl18945766.cpmrevenuegate.com/ae/ad/db/aeaddb9b58f23678550b7763cc0e6d32.js'></script>
-    <script type="text/javascript">
-        atOptions = {
-            'key' : '5ebb7556b69b8cc164a518f52ff751ab',
-            'format' : 'iframe',
-            'height' : 90,
-            'width' : 728,
-            'params' : {}
-        };
-    </script>
-    <script type="text/javascript" src="//www.topcpmcreativeformat.com/5ebb7556b69b8cc164a518f52ff751ab/invoke.js"></script>
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#3B82F6',
-                        secondary: '#10B981',
-                    }
-                }
-            }
-        }
-    </script>
-    <style type="text/tailwindcss">
-        @layer utilities {
-            .glow {
-                box-shadow: 0 0 5px theme('colors.primary'), 0 0 20px theme('colors.primary');
-            }
-            .glow:hover {
-                box-shadow: 0 0 10px theme('colors.primary'), 0 0 30px theme('colors.primary');
-            }
-            .holographic-text {
-                text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3), 0 0 30px rgba(0, 255, 255, 0.2);
-            }
-        }
-    </style>
+<title>User ID Generator</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
-    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10">
-        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl md:text-2xl font-bold text-primary">CosmicCoin Mining Airdrop</h1>
-            <div class="flex items-center space-x-4">
-                <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
-                    <i class="fas fa-moon dark:fas fa-sun"></i>
-                </button>
-                <button id="mobileMenuToggle" class="md:hidden p-2 rounded-full bg-gray-200 dark:bg-gray-700">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
-        </nav>
-        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-800 p-4">
-            <!-- Add mobile menu items here if needed -->
-        </div>
-    </header>
+<body class="bg-gray-100">
+<div class="container mx-auto p-8">
+    <h1 class="text-3xl font-bold mb-4">User ID Generator</h1>
+    <button id="createUserButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>Generate User ID
+    </button>
+    <div id="userId"></div>
+</div>
 
-    <main class="container mx-auto px-4 py-8">
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES3NKKYCS7"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-ES3NKKYCS7');
-        </script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
 
-        <div id="user-info"></div>
-        <button id="createUserButton" class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-            </svg>
-            Generate User ID
-        </button>
-        <div id="userId"></div>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyB_ALVZRrzoiCsO1PUbSDDNHClr-bjdTMA",
+    authDomain: "cosmiccoin-galaxy-airdrop.firebaseapp.com",
+    databaseURL: "https://cosmiccoin-galaxy-airdrop-default-rtdb.firebaseio.com",
+    projectId: "cosmiccoin-galaxy-airdrop",
+    storageBucket: "cosmiccoin-galaxy-airdrop.appspot.com",
+    messagingSenderId: "544564103496",
+    appId: "1:544564103496:web:8f866098ec96c9242a8b7d",
+    measurementId: "G-V2KBXHFY2D"
+  };
 
-        <!-- Firebase SDK -->
-        <script type="module">
-            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
-            import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
-            import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
-            import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 
-            const firebaseConfig = {
-                apiKey: "AIzaSyB_ALVZRrzoiCsO1PUbSDDNHClr-bjdTMA",
-                authDomain: "cosmiccoin-galaxy-airdrop.firebaseapp.com",
-                databaseURL: "https://cosmiccoin-galaxy-airdrop-default-rtdb.firebaseio.com",
-                projectId: "cosmiccoin-galaxy-airdrop",
-                storageBucket: "cosmiccoin-galaxy-airdrop.appspot.com",
-                messagingSenderId: "544564103496",
-                appId: "1:544564103496:web:8f866098ec96c9242a8b7d",
-                measurementId: "G-V2KBXHFY2D"
-            };
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
-            const app = initializeApp(firebaseConfig);
-            const analytics = getAnalytics(app);
-            const db = getFirestore(app);
-            const auth = getAuth(app);
+async function signInAnonymously(auth) {
+    return await signInAnonymously(auth);
+}
 
-            window.db = db;
-            window.auth = auth;
-            window.getDoc = getDoc;
-            window.doc = doc;
-            window.setDoc = setDoc;
-            window.updateDoc = updateDoc;
-        </script>
+async function createUser() {
+    try {
+        const userCredential = await signInAnonymously(auth);
+        const userId = userCredential.user.uid;
+        await createOrGetUser(userId);
+        console.log('User ID:', userId);
+        return userId;
+    } catch (error) {
+        console.error("Error creating user:", error);
+        let errorMessage = "An unexpected error occurred. Please try again.";
+        if (error.code === 'auth/operation-not-allowed') {
+            errorMessage = "Anonymous authentication is not enabled. Please contact support.";
+        } else if (error.code === 'auth/network-request-failed') {
+            errorMessage = "Network error. Please check your internet connection and try again.";
+        }
+        throw new Error(errorMessage);
+    }
+}
 
-        <script>
-            async function createOrGetUser(userId) {
-                const userRef = doc(window.db, "users", userId);
-                const userDoc = await getDoc(userRef);
-                if (!userDoc.exists()) {
-                    await setDoc(userRef, {
-                        balance: 0,
-                        lastInteractionDate: null,
-                        daysInteracted: 0,
-                        lastClaimTime: null,
-                        completedTasks: {}
-                    });
-                }
-                return userRef;
-            }
-
-            async function getUserBalance(userId) {
-                const userRef = await createOrGetUser(userId);
-                const userDoc = await getDoc(userRef);
-                return userDoc.data().balance;
-            }
-
-            async function updateUserBalance(userId, newBalance) {
-                const userRef = await createOrGetUser(userId);
-                await updateDoc(userRef, { balance: newBalance });
-            }
-
-            async function displayUserBalance(userId, elementId) {
-                const userBalance = await getUserBalance(userId);
-                const userBalanceElement = document.createElement('p');
-                userBalanceElement.className = 'userBalance';
-                userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(2)}`;
-                document.getElementById(elementId).appendChild(userBalanceElement);
-            }
-
-            async function createUser() {
-                try {
-                    const userCredential = await signInAnonymously(auth);
-                    const userId = userCredential.user.uid;
-                    await createOrGetUser(userId);
-                    console.log('User ID:', userId);
-                    return userId;
-                } catch (error) {
-                    console.error("Error creating user:", error);
-                    alert("Error creating user. Please try again.");
-                }
-            }
-
-            document.getElementById('createUserButton').addEventListener('click', async () => {
-                const userId = await createUser();
-                const userIdElement = document.createElement('p');
-                userIdElement.className = 'userId';
-                userIdElement.innerText = `Your User ID is: ${userId}`;
-                document.getElementById('userId').appendChild(userIdElement);
-                await displayUserBalance(userId, 'userId');
+async function createOrGetUser(userId) {
+    return retryOperation(async () => {
+        const userRef = doc(window.db, "users", userId);
+        const userDoc = await getDoc(userRef);
+        if (!userDoc.exists()) {
+            await setDoc(userRef, {
+                balance: 0,
+                lastInteractionDate: null,
+                daysInteracted: 0,
+                lastClaimTime: null,
+                completedTasks: {}
             });
-
-            onAuthStateChanged(auth, async (user) => {
-                if (user) {
-                    const userId = user.uid;
-                    const userIdElement = document.createElement('p');
-                    userIdElement.className = 'userId';
-                    userIdElement.innerText = `Your User ID is: ${userId}`;
-                    document.getElementById('userId').appendChild(userIdElement);
-                    await displayUserBalance(userId, 'userId');
-                }
-            });
-
-            async function startMining(hours) {
-                const user = auth.currentUser;
-                if (!user) {
-                    alert('Please create a user first');
-                    return;
-                }
-
-                const userId = user.uid;
-                const userRef = doc(db, "users", userId);
-                const userDoc = await getDoc(userRef);
-                const userData = userDoc.data();
-
-                const currentTime = new Date().getTime();
-                if (userData.isMining && currentTime < userData.miningEndTime) {
-                    alert('Mining is already in progress. Please wait until the current session is complete.');
-                    return;
-                }
-
-                const endTime = currentTime + hours * 60 * 60 * 1000;
-                await updateDoc(userRef, {
-                    miningEndTime: endTime,
-                    isMining: true
-                });
-
-                updateMiningStatus();
-                startMiningProcess();
-            }
-
-            async function updateMiningStatus() {
-                const user = auth.currentUser;
-                if (!user) return;
-
-                const userId = user.uid;
-                const userRef = doc(db, "users", userId);
-                const userDoc = await getDoc(userRef);
-                const userData = userDoc.data();
-
-                const currentTime = new Date().getTime();
-
-                if (currentTime < userData.miningEndTime) {
-                    const timeLeft = (userData.miningEndTime - currentTime) / 1000;
-                    const hours = Math.floor(timeLeft / 3600);
-                    const minutes = Math.floor((timeLeft % 3600) / 60);
-                    const seconds = Math.floor(timeLeft % 60);
-
-                    document.getElementById('miningStatus').innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
-                    updateMiningAmount(timeLeft);
-                    setTimeout(updateMiningStatus, 1000);
-                } else {
-                    document.getElementById('miningStatus').innerText = 'Mining complete!';
-                    const currentBalance = await getUserBalance(userId);
-                    await updateUserBalance(userId, currentBalance + 10); // Adjust the reward as necessary
-                    await updateDoc(userRef, { isMining: false });
-                    updateBalanceDisplay();
-                    showMiningNotification();
-                }
-            }
-
-            async function updateMiningAmount(secondsLeft) {
-                const user = auth.currentUser;
-                if (!user) return;
-
-                const userId = user.uid;
-                const ratePerSecond = 0.00040; // Adjust mining rate per second
-                const currentBalance = await getUserBalance(userId);
-                const miningAmount = currentBalance + (ratePerSecond * (24 * 60 * 60 - secondsLeft)); // Total mined amount
-                document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} COS`;
-            }
-
-            async function updateBalanceDisplay() {
-                const user = auth.currentUser;
-                if (!user) return;
-
-                const userId = user.uid;
-                const balance = await getUserBalance(userId);
-                document.getElementById('miningAmount').innerText = `Current Balance: ${parseFloat(balance).toFixed(4)} COS`;
-            }
-
-            async function loadBalance() {
-                await updateBalanceDisplay();
-            }
-
-            async function loadMiningStatus() {
-                const user = auth.currentUser;
-                if (!user) return;
-
-                const userId = user.uid;
-                const userRef = doc(db, "users", userId);
-                const userDoc = await getDoc(userRef);
-                const userData = userDoc.data();
-
-                if (userData.isMining) {
-                    updateMiningStatus();
-                } else {
-                    document.getElementById('miningStatus').innerText = 'No mining in progress';
-                }
-            }
-
-            function showSection(sectionId) {
-                const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection', 'gamesSection'];
-                sections.forEach(id => document.getElementById(id).classList.add('hidden'));
-                document.getElementById(sectionId).classList.remove('hidden');
-            }
-
-            async function claimDailyReward() {
-                const user = auth.currentUser;
-                if (!user) {
-                    alert('Please create a user first');
-                    return;
-                }
-
-                const userId = user.uid;
-                const userRef = doc(db, "users", userId);
-                const userDoc = await getDoc(userRef);
-                const userData = userDoc.data();
-
-                const currentTime = new Date().getTime();
-                const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-                if (userData.lastClaimTime && currentTime - userData.lastClaimTime < oneDay) {
-                    alert('You have already claimed your daily reward today. Come back tomorrow!');
-                } else {
-                    alert('Daily reward claimed!');
-                    const currentBalance = await getUserBalance(userId);
-                    await updateUserBalance(userId, currentBalance + 50); // Add daily reward amount
-                    await updateDoc(userRef, { lastClaimTime: currentTime });
-                    updateBalanceDisplay();
-                }
-            }
-
-            async function completeTask(taskId) {
-                const user = auth.currentUser;
-                if (!user) {
-                    alert('Please create a user first');
-                    return;
-                }
-
-                const userId = user.uid;
-                const userRef = doc(db, "users", userId);
-                const userDoc = await getDoc(userRef);
-                const userData = userDoc.data();
-
-                if (userData.completedTasks && userData.completedTasks[taskId]) {
-                    alert('Task already completed! More tasks coming soon 😊');
-                } else {
-                    alert(`Task ${taskId} completed!`);
-                    const currentBalance = await getUserBalance(userId);
-                    await updateUserBalance(userId, currentBalance + 30); // Reward for task completion
-                    await updateDoc(userRef, { [`completedTasks.${taskId}`]: true });
-                    updateBalanceDisplay();
-                }
-            }
-
-            function showMiningNotification() {
-                // Add your notification logic here
-                alert("Mining complete! Your balance has been updated.");
-            }
-
-            function startMiningProcess() {
-                // Add your mining process logic here
-                console.log("Mining process started...");
-            }
-
-            function checkReferral() {
-                // Add your referral check logic here
-                console.log("Checking referral...");
-            }
-
-
-            document.addEventListener("DOMContentLoaded", function() {
-                //setTimeout(function() {
-                //    document.getElementById('loadingScreen').style.display = 'none';
-                //}, 2000);
-                loadBalance();
-                loadMiningStatus();
-                checkReferral();
-            });
-        </script>
-
-        <div id="appGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- App cards will be dynamically inserted here -->
-        </div>
-
-        <div id="mainSection">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(24)">Start 24-Hour Mining</button>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(12)">Start 12-Hour Mining</button>
-            <div id="miningStatus" class="text-lg mb-4"></div>
-            <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
-        </div>
-
-        <div id="tasksSection" class="hidden">
-            <button onclick="completeTask('task1')">Complete Task 1</button>
-            <button onclick="completeTask('task2')">Complete Task 2</button>
-        </div>
-
-        <div id="rewardsSection" class="hidden">
-            <button onclick="claimDailyReward()">Claim Daily Reward</button>
-        </div>
-
-        <div id="referralSection" class="hidden">
-            <!-- Referral content -->
-        </div>
-
-        <div id="notificationsSection" class="hidden">
-            <!-- Notifications content -->
-        </div>
-
-        <div id="comingSoonSection" class="hidden">
-            <!-- Coming soon content -->
-        </div>
-
-        <div id="boosterSection" class="hidden">
-            <!-- Booster content -->
-        </div>
-
-        <div id="leaderboardSection" class="hidden">
-            <!-- Leaderboard content -->
-        </div>
-
-        <div id="gamesSection" class="hidden">
-            <!-- Games content -->
-        </div>
-
-
-    </main>
-
-    <footer class="bg-white dark:bg-gray-800 mt-12 py-6">
-        <div class="container mx-auto px-4 text-center">
-            <p>&copy; 2025 CosmicCoin Mining Airdrop. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <div id="cookieNotice" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 text-center hidden">
-        <p class="mb-2">This website uses cookies to ensure you get the best experience on our website.</p>
-        <button id="acceptCookies" class="bg-primary text-white font-bold py-2 px-4 rounded">Accept</button>
-    </div>
-
-    <script>
-        const apps = [
-            // ... (Your existing app data)
-        ];
-
-        function createStarRating(rating) {
-            // ... (Your existing star rating function)
         }
+        return userRef;
+    });
+}
 
-        function createAppCard(app) {
-            // ... (Your existing app card function)
+async function displayUserBalance(userId, elementId) {
+    const userRef = doc(db, "users", userId);
+    const userDoc = await getDoc(userRef);
+    if (userDoc.exists()) {
+        const balance = userDoc.data().balance;
+        const balanceElement = document.createElement('p');
+        balanceElement.innerText = `Your balance is: ${balance}`;
+        document.getElementById(elementId).appendChild(balanceElement);
+    }
+}
+
+async function retryOperation(operation, maxRetries = 3) {
+    for (let i = 0; i < maxRetries; i++) {
+        try {
+            return await operation();
+        } catch (error) {
+            if (i === maxRetries - 1) throw error;
+            await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, i))); // Exponential backoff
         }
+    }
+}
 
-        function attachDownloadListeners() {
-            // ... (Your existing download listener function)
-        }
+function setButtonLoading(isLoading) {
+    const button = document.getElementById('createUserButton');
+    if (isLoading) {
+        button.disabled = true;
+        button.innerHTML = '<svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>Creating...';
+    } else {
+        button.disabled = false;
+        button.innerHTML = '<svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>Generate User ID';
+    }
+}
 
-        function startDownload(appId, encodedUrl) {
-            // ... (Your existing download function)
-        }
+document.getElementById('createUserButton').addEventListener('click', async () => {
+    setButtonLoading(true);
+    try {
+        const userId = await createUser();
+        const userIdElement = document.createElement('p');
+        userIdElement.className = 'userId';
+        userIdElement.innerText = `Your User ID is: ${userId}`;
+        document.getElementById('userId').innerHTML = ''; // Clear previous content
+        document.getElementById('userId').appendChild(userIdElement);
+        await displayUserBalance(userId, 'userId');
+    } catch (error) {
+        alert(error.message);
+    } finally {
+        setButtonLoading(false);
+    }
+});
+</script>
 
-        function loadApps() {
-            // ... (Your existing loadApps function)
-        }
-
-        function toggleDarkMode() {
-            // ... (Your existing toggleDarkMode function)
-        }
-
-        function toggleMobileMenu() {
-            // ... (Your existing toggleMobileMenu function)
-        }
-
-        function initCookieNotice() {
-            // ... (Your existing initCookieNotice function)
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            //loadApps(); // Removed as this is not needed for this application
-            initCookieNotice();
-
-            const darkModeToggle = document.getElementById('darkModeToggle');
-            darkModeToggle.addEventListener('click', toggleDarkMode);
-
-            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-            mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-        });
-    </script>
 </body>
 </html>
