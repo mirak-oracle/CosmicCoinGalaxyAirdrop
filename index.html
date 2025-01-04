@@ -1,1759 +1,499 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-<meta name="google-adsense-account" content="ca-pub-5320066196933944">	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.4.0/introjs.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.4.0/intro.min.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://unpkg.com/lucide@latest"></script>
-<script type='text/javascript' src='//pl18945766.cpmrevenuegate.com/ae/ad/db/aeaddb9b58f23678550b7763cc0e6d32.js'></script>
-	<script type="text/javascript">
-	atOptions = {
-		'key' : '5ebb7556b69b8cc164a518f52ff751ab',
-		'format' : 'iframe',
-		'height' : 90,
-		'width' : 728,
-		'params' : {}
-	};
-</script>
-<script type="text/javascript" src="//www.topcpmcreativeformat.com/5ebb7556b69b8cc164a518f52ff751ab/invoke.js"></script>
-	
-	<title>CosmicCoin Mining Airdrop</title>
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmicCoin Mining Airdrop</title>
+    <meta name="google-adsense-account" content="ca-pub-5320066196933944">
+    <meta name="description" content="CosmicCoin Mining Airdrop offers a chance to earn CosmicCoin cryptocurrency.">
+    <meta name="keywords" content="CosmicCoin, Mining, Airdrop, Cryptocurrency">
+    <meta name="author" content="CosmicCoin Team">
+    <link rel="canonical" href="https://your-website-url.com">
 
-<div id="user-info"></div>
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://your-website-url.com">
+    <meta property="og:title" content="CosmicCoin Mining Airdrop">
+    <meta property="og:description" content="Earn CosmicCoin cryptocurrency through our mining airdrop.">
+    <meta property="og:image" content="https://your-website-url.com/og-image.jpg">
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    
-    authDomain: "cosmiccoin-galaxy-airdrop.firebaseapp.com",
-    databaseURL: "gs://cosmiccoin-galaxy-airdrop.appspot.com",
-    projectId: "cosmiccoin-galaxy-airdrop",
-    storageBucket: "cosmiccoin-galaxy-airdrop.appspot.com",
-    messagingSenderId: "544564103496",
-    appId: "1:544564103496:web:8f866098ec96c9242a8b7d",
-    measurementId: "G-V2KBXHFY2D"
-  };
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://your-website-url.com">
+    <meta property="twitter:title" content="CosmicCoin Mining Airdrop">
+    <meta property="twitter:description" content="Earn CosmicCoin cryptocurrency through our mining airdrop.">
+    <meta property="twitter:image" content="https://your-website-url.com/twitter-image.jpg">
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  
-    
+    <!-- Additional SEO tags -->
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="generator" content="CosmicCoin Airdrop Platform">
 
-    // Store User Data in Firestore
-    async function storeUserData(userId, balance) {
-      try {
-        await setDoc(doc(db, "users", userId), { balance: balance });
-        console.log("User data stored successfully");
-      } catch (error) {
-        console.error("Error storing user data: ", error);
-      }
-    }
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.4.0/introjs.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intro.js/5.4.0/intro.min.js"></script>
+    <script type='text/javascript' src='//pl18945766.cpmrevenuegate.com/ae/ad/db/aeaddb9b58f23678550b7763cc0e6d32.js'></script>
+    <script type="text/javascript">
+        atOptions = {
+            'key' : '5ebb7556b69b8cc164a518f52ff751ab',
+            'format' : 'iframe',
+            'height' : 90,
+            'width' : 728,
+            'params' : {}
+        };
+    </script>
+    <script type="text/javascript" src="//www.topcpmcreativeformat.com/5ebb7556b69b8cc164a518f52ff751ab/invoke.js"></script>
 
-    // Get User Data from Firestore
-    async function getUserData(userId) {
-      const docRef = doc(db, "users", userId);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        console.log("User data:", docSnap.data());
-        return docSnap.data();
-      } else {
-        console.log("No such user data!");
-        return null;
-      }
-    }
-
-    // Example usage
-    async function exampleUsage() {
-      console.log('Your User ID:', userId);
-
-      // Store balance (update as needed)
-      await storeUserData(userId, 100); // Set balance to 100 for example
-
-      // Get and display user info
-      const userData = await getUserData(userId);
-      if (userData) {
-        const userInfoDiv = document.getElementById('user-info');
-        userInfoDiv.innerHTML = `<p>Your User ID: ${userId}</p><p>Your Balance: ${userData.balance}</p>`;
-      }
-    }
-
-    exampleUsage();
-  </script>
-
-  
-
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
-        
-
-       
-  
-
-<style>
-    .hidden { display: none; }
-    .loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
-      background-size: 600% 600%;
-      animation: gradient-animation 10s ease infinite;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    @keyframes gradient-animation {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    .nav-button {
-      width: 20%;
-      text-align: center;
-      margin: 0 0.5rem;
-    }
-    .holographic-text {
-      background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
-      background-size: 200% 200%;
-      color: transparent;
-      -webkit-background-clip: text;
-      background-clip: text;
-      animation: gradient-animation 2s linear infinite, rotate-animation 2s linear infinite;
-    }
-    .rotating-circle {
-    position: relative;
-    width: 150px;
-    height: 150px;
-    border: 5px solid;
-    border-image: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046) 1;
-    border-radius: 50%;
-    animation: rotate-animation 4s linear infinite;
-    margin: auto;
-}
-
-
-
-.balance-container {
-    text-align: center;
-    margin-top: 20px; /* Add some space between the circle and balance */
-	    }
-
-.balance {
-    color: white;
-    font-size: 1.5rem;
-    font-weight: bold;
-}
-@keyframes pulse-animation {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-
-	    }
-
-    .task-button {
-      background: linear-gradient(45deg, #ff0099, #493240, #1CB5E0, #000046);
-      color: white;
-      font-bold;
-      padding: 1rem;
-      border-radius: 1rem;
-      transition: background 0.3s ease;
-      display: block;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-    .task-button:hover {
-      background-position: 100% 0;
-    }
-    .side-buttons {
-      position: fixed;
-      top: 50%;
-      right: 0;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-    }
-    		/* Add the following CSS to make the page responsive */
-		body {
-			width: 100%;
-			height: 100vh;
-			margin: 0;
-			padding: 0;
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			font-family: Arial, sans-serif;
-			background-color: #f0f0f0; /* Optional */
-		}
-		.airdrop-container {
-			max-width: 800px; /* Adjust the max-width to your liking */
-			width: 100%;
-			padding: 20px;
-			background-color: #fff;
-			border: 1px solid #ddd;
-			border-radius: 10px;
-			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-		}
-		/* Add media queries for different screen sizes */
-		@media (max-width: 788px) {
-			.airdrop-container {
-				padding: 15px;
-			}
-		}
-		@media (max-width: 499px) {
-			.airdrop-container {
-				padding: 13px;
-			}
-    }
-  </style>
-
-	
-	
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glow {
+                box-shadow: 0 0 5px theme('colors.primary'), 0 0 20px theme('colors.primary');
+            }
+            .glow:hover {
+                box-shadow: 0 0 10px theme('colors.primary'), 0 0 30px theme('colors.primary');
+            }
+            .holographic-text {
+                text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 20px rgba(0, 255, 255, 0.3), 0 0 30px rgba(0, 255, 255, 0.2);
+            }
+        }
+    </style>
 </head>
-	
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES3NKKYCS7"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-ES3NKKYCS7');
-  </script>
-
-  <div id="user-info"></div>
-  <button id="createUserButton" class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300">
-  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-  </svg>
-  Generate User ID
-  </button>
-  <div id="userId"></div>
-        
-  <script>
-    function generateUniqueId() {
-      return 'user-' + Math.random().toString(36).substr(2, 9);
-    }
-
-    function createUser() {
-      let userId = localStorage.getItem('userId');
-      if (!userId) {
-        userId = generateUniqueId();
-        localStorage.setItem('userId', userId);
-        localStorage.setItem(userId + '_balance', '0');
-      }
-      console.log('User ID:', userId);
-      return userId;
-    }
-
-    function getUserBalance(userId) {
-      let userBalance = localStorage.getItem(userId + '_balance');
-      if (userBalance === null) {
-        userBalance = '0';
-        localStorage.setItem(userId + '_balance', userBalance);
-      }
-      return parseFloat(userBalance);
-    }
-
-    function displayUserBalance(userId, elementId) {
-      const userBalance = getUserBalance(userId);
-      const userBalanceElement = document.createElement('p');
-      userBalanceElement.className = 'userBalance';
-      userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(2)}`;
-      document.getElementById(elementId).appendChild(userBalanceElement);
-    }
-
-    document.getElementById('createUserButton').addEventListener('click', () => {
-      const userId = createUser();
-      const userIdElement = document.createElement('p');
-      userIdElement.className = 'userId';
-      userIdElement.innerText = `Your User ID is: ${userId}`;
-      document.getElementById('userId').appendChild(userIdElement);
-      displayUserBalance(userId, 'userId');
-    });
-
-    window.onload = () => {
-      const userId = localStorage.getItem('userId');
-      if (userId) {
-        const userIdElement = document.createElement('p');
-        userIdElement.className = 'userId';
-        userIdElement.innerText = `Your User ID is: ${userId}`;
-        document.getElementById('userId').appendChild(userIdElement);
-        displayUserBalance(userId, 'userId');
-      }
-    };
-  </script>
-	
-<!-- Side Menu -->
-<div id="side-menu" class="fixed left-0 top-0 h-screen w-64 bg-white shadow-lg hidden p-4 overflow-y-auto">
-    <h2 class="text-xl font-bold mb-4">Your Badge Levels</h2>
-
-    <!-- Badge Info -->
-    <div id="badge-info" class="mb-6 space-y-4">
-        <!-- Badges will be dynamically inserted here -->
-    </div>
-
-    <!-- Progress Bar -->
-    <div class="mt-4">
-        <p class="text-sm text-gray-600">Progress to Next Level:</p>
-        <div class="w-full bg-gray-200 rounded-full h-2">
-            <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full" style="width: 0%"></div>
-        </div>
-        <p id="progress-text" class="text-sm text-gray-500 mt-2">0% Progress</p>
-    </div>
-
-    <!-- Close Menu Button -->
-    <button id="close-menu" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 mt-6">Close Menu</button>
-</div>
-
-<!-- Side Menu Button -->
-<button id="menu-button" class="fixed left-2 top-1/3 transform -translate-y-1/2 bg-gradient-to-r from-blue-500 to-purple-500 text-white p-4 rounded-full shadow-lg hover:shadow-xl">
-    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 mx-auto text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-</button>
-
-    <script>
-// Badge Data for 12 Levels
-const badges = [
-    { level: 1, name: "Cosmic Newbie", info: "Welcome aboard! Interact to level up.", icon: "star", duration: 1 },
-    { level: 2, name: "Star Explorer", info: "Great! You've been consistent for 3 days.", icon: "rocket", duration: 3 },
-    { level: 3, name: "Galaxy Miner", info: "Amazing! You've interacted for 7 days.", icon: "diamond", duration: 7 },
-    { level: 4, name: "Planet Pioneer", info: "Outstanding! You've leveled up for 15 days.", icon: "globe", duration: 15 },
-    { level: 5, name: "Solar Champion", info: "Incredible! You are now a 30-day achiever.", icon: "sun", duration: 30 },
-    { level: 6, name: "Galactic Legend", info: "Unstoppable! Reached 60 days.", icon: "trophy", duration: 60 },
-    { level: 7, name: "Cosmic Conqueror", info: "You're mastering the universe at 90 days!", icon: "medal", duration: 90 },
-    { level: 8, name: "Interstellar Voyager", info: "120 days of cosmic journey!", icon: "spaceship", duration: 120 },
-    { level: 9, name: "Nebula Navigator", info: "150 days of dedicated interaction.", icon: "planet", duration: 150 },
-    { level: 10, name: "Orbit Overlord", info: "180 days of unparalleled achievement.", icon: "moon", duration: 180 },
-    { level: 11, name: "Comet Commander", info: "210 days of intergalactic engagement.", icon: "comet", duration: 210 },
-    { level: 12, name: "Supernova Sage", info: "240 days of ultimate cosmic mastery.", icon: "supernova", duration: 240 },
-];
-
-// Daily Interaction Logic (unchanged)
-const lastInteractionDate = localStorage.getItem("lastInteractionDate");
-let daysInteracted = parseInt(localStorage.getItem("daysInteracted")) || 0;
-const today = new Date().toISOString().split("T")[0];
-if (lastInteractionDate !== today) {
-    daysInteracted++;
-    localStorage.setItem("lastInteractionDate", today);
-    localStorage.setItem("daysInteracted", daysInteracted);
-}
-
-// Determine Current Badge
-function getCurrentBadge() {
-    return badges.reduce((currentBadge, badge) => {
-        return daysInteracted >= badge.duration ? badge : currentBadge;
-    });
-}
-
-// Update Badge Info and Progress Bar
-function updateBadgeInfo() {
-    const badge = getCurrentBadge();
-    const badgeInfoHTML = `
-        <div class="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg shadow-lg border border-gray-200">
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10">
+        <nav class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-primary">CosmicCoin Mining Airdrop</h1>
             <div class="flex items-center space-x-4">
-                <!-- Lucide Icon -->
-                <div class="text-6xl text-gradient bg-gradient-to-r from-purple-500 to-blue-500">
-                    <i class="lucide lucide-${badge.icon} w-10 h-10"></i>
-                </div>
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800">${badge.name}</h3>
-                    <p class="text-sm text-gray-600">${badge.info}</p>
-                    <p class="text-xs text-gray-500 mt-2">Days Interacted: ${daysInteracted}</p>
-                </div>
-            </div>
-        </div>
-    `;
-
-    document.getElementById("badge-info").innerHTML = badgeInfoHTML;
-
-    // Update Progress Bar
-    const nextBadge = badges.find(b => b.duration > daysInteracted);
-    const progress = (daysInteracted / (nextBadge ? nextBadge.duration : badges[badges.length - 1].duration)) * 100;
-    document.getElementById("progress-bar").style.width = `${progress}%`;
-    document.getElementById("progress-text").innerText = `${Math.round(progress)}% Progress`;
-}
-
-// Menu Event Listeners
-document.getElementById("menu-button").addEventListener("click", () => {
-    updateBadgeInfo();
-    document.getElementById("side-menu").classList.remove("hidden");
-});
-
-document.getElementById("close-menu").addEventListener("click", () => {
-    document.getElementById("side-menu").classList.add("hidden");
-});
-
-// Initial Badge Update
-updateBadgeInfo();
-
-</script>
-	
-
-<body>
-    <!-- Popup Modal -->
-    <div id="onboarding-popup" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6">
-            <h2 id="popup-title" class="text-xl font-bold mb-4">Welcome to CosmicCoin Galaxy Airdrop</h2>
-            <p id="popup-content" class="text-gray-700 mb-4">
-                Step 1: Generate your unique ID to get started with the Airdrop.
-            </p>
-            <div class="flex justify-between">
-                <button id="skip-tour" class="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400">
-                    Skip
+                <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <i class="fas fa-moon dark:fas fa-sun"></i>
                 </button>
-                <button id="next-step" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                    Next
+                <button id="mobileMenuToggle" class="md:hidden p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <i class="fas fa-bars"></i>
                 </button>
             </div>
+        </nav>
+        <div id="mobileMenu" class="hidden md:hidden bg-white dark:bg-gray-800 p-4">
+            <!-- Add mobile menu items here if needed -->
         </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES3NKKYCS7"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ES3NKKYCS7');
+        </script>
+
+        <div id="user-info"></div>
+        <button id="createUserButton" class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            Generate User ID
+        </button>
+        <div id="userId"></div>
+
+        <!-- Firebase SDK -->
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js";
+            import { getFirestore, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore.js";
+            import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.10/firebase-auth.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyB_ALVZRrzoiCsO1PUbSDDNHClr-bjdTMA",
+                authDomain: "cosmiccoin-galaxy-airdrop.firebaseapp.com",
+                databaseURL: "https://cosmiccoin-galaxy-airdrop-default-rtdb.firebaseio.com",
+                projectId: "cosmiccoin-galaxy-airdrop",
+                storageBucket: "cosmiccoin-galaxy-airdrop.appspot.com",
+                messagingSenderId: "544564103496",
+                appId: "1:544564103496:web:8f866098ec96c9242a8b7d",
+                measurementId: "G-V2KBXHFY2D"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+            const db = getFirestore(app);
+            const auth = getAuth(app);
+
+            window.db = db;
+            window.auth = auth;
+            window.getDoc = getDoc;
+            window.doc = doc;
+            window.setDoc = setDoc;
+            window.updateDoc = updateDoc;
+        </script>
+
+        <script>
+            async function createOrGetUser(userId) {
+                const userRef = doc(window.db, "users", userId);
+                const userDoc = await getDoc(userRef);
+                if (!userDoc.exists()) {
+                    await setDoc(userRef, {
+                        balance: 0,
+                        lastInteractionDate: null,
+                        daysInteracted: 0,
+                        lastClaimTime: null,
+                        completedTasks: {}
+                    });
+                }
+                return userRef;
+            }
+
+            async function getUserBalance(userId) {
+                const userRef = await createOrGetUser(userId);
+                const userDoc = await getDoc(userRef);
+                return userDoc.data().balance;
+            }
+
+            async function updateUserBalance(userId, newBalance) {
+                const userRef = await createOrGetUser(userId);
+                await updateDoc(userRef, { balance: newBalance });
+            }
+
+            async function displayUserBalance(userId, elementId) {
+                const userBalance = await getUserBalance(userId);
+                const userBalanceElement = document.createElement('p');
+                userBalanceElement.className = 'userBalance';
+                userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(2)}`;
+                document.getElementById(elementId).appendChild(userBalanceElement);
+            }
+
+            async function createUser() {
+                try {
+                    const userCredential = await signInAnonymously(auth);
+                    const userId = userCredential.user.uid;
+                    await createOrGetUser(userId);
+                    console.log('User ID:', userId);
+                    return userId;
+                } catch (error) {
+                    console.error("Error creating user:", error);
+                    alert("Error creating user. Please try again.");
+                }
+            }
+
+            document.getElementById('createUserButton').addEventListener('click', async () => {
+                const userId = await createUser();
+                const userIdElement = document.createElement('p');
+                userIdElement.className = 'userId';
+                userIdElement.innerText = `Your User ID is: ${userId}`;
+                document.getElementById('userId').appendChild(userIdElement);
+                await displayUserBalance(userId, 'userId');
+            });
+
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    const userId = user.uid;
+                    const userIdElement = document.createElement('p');
+                    userIdElement.className = 'userId';
+                    userIdElement.innerText = `Your User ID is: ${userId}`;
+                    document.getElementById('userId').appendChild(userIdElement);
+                    await displayUserBalance(userId, 'userId');
+                }
+            });
+
+            async function startMining(hours) {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('Please create a user first');
+                    return;
+                }
+
+                const userId = user.uid;
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
+                const userData = userDoc.data();
+
+                const currentTime = new Date().getTime();
+                if (userData.isMining && currentTime < userData.miningEndTime) {
+                    alert('Mining is already in progress. Please wait until the current session is complete.');
+                    return;
+                }
+
+                const endTime = currentTime + hours * 60 * 60 * 1000;
+                await updateDoc(userRef, {
+                    miningEndTime: endTime,
+                    isMining: true
+                });
+
+                updateMiningStatus();
+                startMiningProcess();
+            }
+
+            async function updateMiningStatus() {
+                const user = auth.currentUser;
+                if (!user) return;
+
+                const userId = user.uid;
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
+                const userData = userDoc.data();
+
+                const currentTime = new Date().getTime();
+
+                if (currentTime < userData.miningEndTime) {
+                    const timeLeft = (userData.miningEndTime - currentTime) / 1000;
+                    const hours = Math.floor(timeLeft / 3600);
+                    const minutes = Math.floor((timeLeft % 3600) / 60);
+                    const seconds = Math.floor(timeLeft % 60);
+
+                    document.getElementById('miningStatus').innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
+                    updateMiningAmount(timeLeft);
+                    setTimeout(updateMiningStatus, 1000);
+                } else {
+                    document.getElementById('miningStatus').innerText = 'Mining complete!';
+                    const currentBalance = await getUserBalance(userId);
+                    await updateUserBalance(userId, currentBalance + 10); // Adjust the reward as necessary
+                    await updateDoc(userRef, { isMining: false });
+                    updateBalanceDisplay();
+                    showMiningNotification();
+                }
+            }
+
+            async function updateMiningAmount(secondsLeft) {
+                const user = auth.currentUser;
+                if (!user) return;
+
+                const userId = user.uid;
+                const ratePerSecond = 0.00040; // Adjust mining rate per second
+                const currentBalance = await getUserBalance(userId);
+                const miningAmount = currentBalance + (ratePerSecond * (24 * 60 * 60 - secondsLeft)); // Total mined amount
+                document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} COS`;
+            }
+
+            async function updateBalanceDisplay() {
+                const user = auth.currentUser;
+                if (!user) return;
+
+                const userId = user.uid;
+                const balance = await getUserBalance(userId);
+                document.getElementById('miningAmount').innerText = `Current Balance: ${parseFloat(balance).toFixed(4)} COS`;
+            }
+
+            async function loadBalance() {
+                await updateBalanceDisplay();
+            }
+
+            async function loadMiningStatus() {
+                const user = auth.currentUser;
+                if (!user) return;
+
+                const userId = user.uid;
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
+                const userData = userDoc.data();
+
+                if (userData.isMining) {
+                    updateMiningStatus();
+                } else {
+                    document.getElementById('miningStatus').innerText = 'No mining in progress';
+                }
+            }
+
+            function showSection(sectionId) {
+                const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection', 'gamesSection'];
+                sections.forEach(id => document.getElementById(id).classList.add('hidden'));
+                document.getElementById(sectionId).classList.remove('hidden');
+            }
+
+            async function claimDailyReward() {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('Please create a user first');
+                    return;
+                }
+
+                const userId = user.uid;
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
+                const userData = userDoc.data();
+
+                const currentTime = new Date().getTime();
+                const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+
+                if (userData.lastClaimTime && currentTime - userData.lastClaimTime < oneDay) {
+                    alert('You have already claimed your daily reward today. Come back tomorrow!');
+                } else {
+                    alert('Daily reward claimed!');
+                    const currentBalance = await getUserBalance(userId);
+                    await updateUserBalance(userId, currentBalance + 50); // Add daily reward amount
+                    await updateDoc(userRef, { lastClaimTime: currentTime });
+                    updateBalanceDisplay();
+                }
+            }
+
+            async function completeTask(taskId) {
+                const user = auth.currentUser;
+                if (!user) {
+                    alert('Please create a user first');
+                    return;
+                }
+
+                const userId = user.uid;
+                const userRef = doc(db, "users", userId);
+                const userDoc = await getDoc(userRef);
+                const userData = userDoc.data();
+
+                if (userData.completedTasks && userData.completedTasks[taskId]) {
+                    alert('Task already completed! More tasks coming soon 😊');
+                } else {
+                    alert(`Task ${taskId} completed!`);
+                    const currentBalance = await getUserBalance(userId);
+                    await updateUserBalance(userId, currentBalance + 30); // Reward for task completion
+                    await updateDoc(userRef, { [`completedTasks.${taskId}`]: true });
+                    updateBalanceDisplay();
+                }
+            }
+
+            function showMiningNotification() {
+                // Add your notification logic here
+                alert("Mining complete! Your balance has been updated.");
+            }
+
+            function startMiningProcess() {
+                // Add your mining process logic here
+                console.log("Mining process started...");
+            }
+
+            function checkReferral() {
+                // Add your referral check logic here
+                console.log("Checking referral...");
+            }
+
+
+            document.addEventListener("DOMContentLoaded", function() {
+                //setTimeout(function() {
+                //    document.getElementById('loadingScreen').style.display = 'none';
+                //}, 2000);
+                loadBalance();
+                loadMiningStatus();
+                checkReferral();
+            });
+        </script>
+
+        <div id="appGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- App cards will be dynamically inserted here -->
+        </div>
+
+        <div id="mainSection">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(24)">Start 24-Hour Mining</button>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(12)">Start 12-Hour Mining</button>
+            <div id="miningStatus" class="text-lg mb-4"></div>
+            <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
+        </div>
+
+        <div id="tasksSection" class="hidden">
+            <button onclick="completeTask('task1')">Complete Task 1</button>
+            <button onclick="completeTask('task2')">Complete Task 2</button>
+        </div>
+
+        <div id="rewardsSection" class="hidden">
+            <button onclick="claimDailyReward()">Claim Daily Reward</button>
+        </div>
+
+        <div id="referralSection" class="hidden">
+            <!-- Referral content -->
+        </div>
+
+        <div id="notificationsSection" class="hidden">
+            <!-- Notifications content -->
+        </div>
+
+        <div id="comingSoonSection" class="hidden">
+            <!-- Coming soon content -->
+        </div>
+
+        <div id="boosterSection" class="hidden">
+            <!-- Booster content -->
+        </div>
+
+        <div id="leaderboardSection" class="hidden">
+            <!-- Leaderboard content -->
+        </div>
+
+        <div id="gamesSection" class="hidden">
+            <!-- Games content -->
+        </div>
+
+
+    </main>
+
+    <footer class="bg-white dark:bg-gray-800 mt-12 py-6">
+        <div class="container mx-auto px-4 text-center">
+            <p>&copy; 2025 CosmicCoin Mining Airdrop. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="cookieNotice" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 text-center hidden">
+        <p class="mb-2">This website uses cookies to ensure you get the best experience on our website.</p>
+        <button id="acceptCookies" class="bg-primary text-white font-bold py-2 px-4 rounded">Accept</button>
     </div>
 
-    <!-- Content of Your Airdrop Page -->
-    <div class="p-6">
-        <h1 class="text-2xl font-bold holographic-text galactic-style">
-  CosmicCoin Galaxy Airdrop
-</h1>
-
-
-    <!-- Onboarding Steps Data -->
     <script>
-        const steps = [
-            {
-                title: "Step 1: Generate Your Unique ID",
-                content: "Click the 'Generate ID' button to create your unique Airdrop ID.",
-            },
-            {
-                title: "Step 2: Choose Mining Duration",
-                content: "Select whether you want to mine for 12 or 24 hours.",
-            },
-            {
-                title: "Step 3: Complete Tasks",
-                content: "Complete daily tasks to earn rewards faster.",
-            },
-            {
-                title: "Step 4: Claim Rewards",
-                content: "Claim your mined CosmicCoin rewards here.",
-            },
-            {
-                title: "Step 5: Enable Notifications",
-                content: "Enable notifications to stay updated on Airdrop progress.",
-            },
-            {
-                title: "Step 6: Invite Friends",
-                content: "Invite your friends to earn bonus rewards.",
-            },
-            {
-                title: "Step 7: Play Cosmic Games Hub",
-                content: "Play games to earn extra CosmicCoin and Galactic Gems.",
-            },
-            {
-		title: "Step 8: Click on the side-menu button",
-                content: "The Badge and Level system in the CosmicCoin Galaxy Airdrop rewards users for their daily engagement and activity. Click on the Side-menubutton. ",    
-	    },
-            {
-                
-                title: "Step 9: Complete Google Form",
-                content: "Fill out the form (Weekly) keep track of your progress.",
-            },
+        const apps = [
+            // ... (Your existing app data)
         ];
 
-        let currentStep = 0;
-
-        // Function to Show the Popup
-        function showPopup() {
-            document.getElementById("onboarding-popup").classList.remove("hidden");
-            updatePopupContent();
+        function createStarRating(rating) {
+            // ... (Your existing star rating function)
         }
 
-        // Function to Update the Popup Content
-        function updatePopupContent() {
-            document.getElementById("popup-title").innerText = steps[currentStep].title;
-            document.getElementById("popup-content").innerText = steps[currentStep].content;
+        function createAppCard(app) {
+            // ... (Your existing app card function)
         }
 
-        // Function to Handle Next Button
-        document.getElementById("next-step").addEventListener("click", () => {
-            currentStep++;
-            if (currentStep < steps.length) {
-                updatePopupContent();
-            } else {
-                // Close the Popup When Finished
-                document.getElementById("onboarding-popup").classList.add("hidden");
-            }
-        });
+        function attachDownloadListeners() {
+            // ... (Your existing download listener function)
+        }
 
-        // Function to Handle Skip Button
-        document.getElementById("skip-tour").addEventListener("click", () => {
-            document.getElementById("onboarding-popup").classList.add("hidden");
-        });
+        function startDownload(appId, encodedUrl) {
+            // ... (Your existing download function)
+        }
 
-        // Automatically Show Popup on Page Load
-        window.addEventListener("load", showPopup);
+        function loadApps() {
+            // ... (Your existing loadApps function)
+        }
+
+        function toggleDarkMode() {
+            // ... (Your existing toggleDarkMode function)
+        }
+
+        function toggleMobileMenu() {
+            // ... (Your existing toggleMobileMenu function)
+        }
+
+        function initCookieNotice() {
+            // ... (Your existing initCookieNotice function)
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            //loadApps(); // Removed as this is not needed for this application
+            initCookieNotice();
+
+            const darkModeToggle = document.getElementById('darkModeToggle');
+            darkModeToggle.addEventListener('click', toggleDarkMode);
+
+            const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+            mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+        });
     </script>
 </body>
-
-
-
-
-
-<script>
-	let isScrolling = true;
-const messageQueue = [
-     {
-    text: "🌟 Follow Mirakle Group on X for updates about CosmicCoin!",
-    link: "http://www.x.com/MirakleGroup",
-},
-{
-    text: "🚀 Explore the CosmicCoin website for all ecosystem details.",
-    link: "https://mirak-oracle.github.io/COS.org/",
-},
-{
-    text: "🎉 Join the CosmicCoin Telegram Channel for community updates!",
-    link: "https://t.me/CosmicCoin11",
-},
-{
-        text: "📢 Place your advert here! Reach out to us now.",
-    link: "mailto:Miraklegroupinfo@gmail.com",
-
-    },
-];
-
-let currentIndex = 0;
-
-// Display Messages in Queue
-function displayNextMessage() {
-    const currentMessageElement = document.getElementById("currentMessage");
-    const { text, link } = messageQueue[currentIndex];
-
-    currentMessageElement.innerHTML = link
-        ? `<a href="${link}" target="_blank" class="underline hover:text-yellow-300">${text}</a>`
-        : text;
-
-    currentIndex = (currentIndex + 1) % messageQueue.length;
-}
-
-// Pause Scrolling
-function pauseScrolling() {
-    isScrolling = false;
-    document.getElementById("currentMessage").style.animationPlayState = "paused";
-    document.getElementById("pauseBtn").classList.add("hidden");
-    document.getElementById("resumeBtn").classList.remove("hidden");
-}
-
-// Resume Scrolling
-function resumeScrolling() {
-    isScrolling = true;
-    document.getElementById("currentMessage").style.animationPlayState = "running";
-    document.getElementById("resumeBtn").classList.add("hidden");
-    document.getElementById("pauseBtn").classList.remove("hidden");
-}
-
-// Hide Notification Bar
-function hideNotificationBar() {
-    document.getElementById("notificationBar").style.display = "none";
-}
-
-// Auto-Change Messages
-function startMessageRotation() {
-    displayNextMessage();
-    setInterval(() => {
-        if (isScrolling) {
-            displayNextMessage();
-        }
-    }, 15000); // Change message every 15 seconds
-}
-
-// Initialize
-startMessageRotation();
-
-</script>
-
-
-    
-
-<body class="bg-gray-900 text-white text-center p-6">
-<div class="loading-screen" id="loadingScreen">
-    <div>
-      
-
-<h1 class="text-5xl font-bold font-mono mb-6 text-gradient">CosmicCoin Galaxy Airdrop</h1>
-<p class="text-xl font-light font-sans text-gray-600">Powered By CosmicEcosystem, <span class="text-purple-600">A Mirakle Group Initiative</span>.</p>
-</div>
-  </div>
-    </div>
-  </div>
-</div>
-
-
-
-<div id="mainSection">
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(24)">Start 24-Hour Mining</button>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full mb-4" onclick="startMining(12)">Start 12-Hour Mining</button>
-    <div id="miningStatus" class="text-lg mb-4"></div>
-    <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
-</div>
-</div>
-
-
-  <div id="tasksSection" class="hidden">
-    <h2 class="text-3xl font-small mb-6 text-center"></h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div class="task-item">
-            <a href="https://www.instagram.com/dolapo_kolawole?igsh=Y2g0bHJmazEwMHB2" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_group_x')">
-                    Follow Dolippy on Instagram 
-                </button>
-            </a>
-        </div>
-	    <div class="task-item">
-    <a href="tg://msg_url?url=https%3A%2F%2Ft.me%2FHarbor1%2Fs%2F8" target="_blank">
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full flex items-center justify-center" onclick="completeTask('follow_group_x')">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
-                <polyline points="16 6 12 2 8 6"></polyline>
-                <line x1="12" y1="2" x2="12" y2="15"></line>
-            </svg>
-            Share $COS TG Story(link)
-        </button>
-    </a>
-	    
-	    </div>
-        <div class="task-item">
-            <a href="https://www.instagram.com/miracleharbor?igsh=MTRkcnF4ajV6cDl0Zw==" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ceo_ig')">
-                    Follow CEO on Instagram
-                </button>
-            </a>
-        </div>
-        
-        <div class="task-item">
-            <a href="https://vm.tiktok.com/ZMkYHF9uc/" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_group_tiktok')">
-                    Follow CosmicCoin on TikTok
-                </button>
-	    </a>
-		</div>
-        <div class="task-item">
-            <a href="https://www.facebook.com/profile.php?id=61557787735701" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ceo_fb')">
-                    Follow Mirakle Group on Facebook
-                </button>
-            </a>
-        </div>
-        <div class="task-item">
-            <a href="https://t.me/CosmicCoin11" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ai_ig')">
-                    Join Our TG Info Channel
-                </button>
-            </a>
-        </div>
-    </div>
-        <div class="task-item">
-            <a href="https://www.instagram.com/mirakle.group?igsh=Yjg4cXhuc3VlbTRn" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_group_ig')">
-                    Follow Mirakle Group on Instagram
-                </button>
-            </a>
-        </div>
-	  <div class="task-item">
-            <a href="https://x.com/Miracleharbor?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ceo_x')">
-                    Follow CEO on X
-                </button>
-            </a>
-	  </div>
-        <div class="task-item">
-            <a href="https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('subscribe_youtube')">
-                    Subscribe to YouTube Channel
-                </button>
-            </a>
-        </div>
-        <div class="task-item">
-            <a href="https://t.me/boost/CosmicCoin11" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cpo_ig')">
-                          Boost COS TG Channel
-                </button>
-            </a>
-        </div>
-        <div class="task-item">
-            <a href="https://x.com/tosinsodiya1?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cpo_x')">
-                    Follow CPO on X
-                </button>
-            </a>
-		</div>
-        <div class="task-item">
-            <a href="https://discord.gg/NpvcBgGt" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cao_ig')">
-                    Join Discord server 
-                </button>
-            </a>
-        </div>
-        <div class="task-item">
-            <a href="https://x.com/Vickydiya1?t=dqzzaDkR4c-ZDb55Msit8g&s=09" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cao_ig')">
-                    Follow CAO on X 
-                </button>
-            </a>
-        </div>
-        <div class="task-item">
-            <a href="https://t.me/miracleharbor" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cao_x')">
-                   CEO TG Channel 
-                </button>
-            </a>
-        </div>
-	    <div class="task-item">
-            <a href="https://t.me/addstickers/COS662" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cao_x')">
-                   Add COS Stickers
-                </button>
-            </a>
-	    </div>
-	    <div class="task-item">
-            <a href="https://youtube.com/@micholo_tvlog?si=J6PoR0WfVOFcglNc" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_cao_x')">
-                   Subscribe to Micholo_tvlog
-                </button>
-            </a>
-	    </div>
-	    
-		    </a>
-    </div>
-</div>
-
-
-  <div id="boosterSection" class="hidden">
-    <h2 class="text-2xl mb-4">Boosters</h2>
-    <div class="rotating-circle">
-      <div class="balance">0%</div>
-    </div>
-    <button class="task-button" onclick="activateBooster('speed')">Speed Booster</button>
-    <button class="task-button" onclick="activateBooster('efficiency')">Efficiency Booster</button>
-    <button class="task-button" onclick="activateBooster('yield')">Yield Booster</button>
-  </div>
-
-  <div id="leaderboardSection" class="hidden max-w-md mx-auto px-4 py-8">
-  <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">Leaderboard</h2>
-  <div class="bg-white shadow-lg rounded-lg overflow-hidden border border-gray-200">
-    <div class="p-4 bg-blue-500 text-white text-center">
-      <p class="text-lg font-semibold">Coming Soon</p>
-      <p class="text-sm"> Airdrop Cooking 🍳 </p>
- </div>
-<table class="w-full">
-      <thead>
-        <tr class="bg-gray-50 text-gray-600 uppercase text-xs">
-          <th class="py-3 px-4 text-left font-semibold">Rank</th>
-          <th class="py-3 px-4 text-left font-semibold">User ID</th>
-          <th class="py-3 px-4 text-right font-semibold">Balance</th>
-        </tr>
-      </thead>
-      <tbody class="text-gray-600 text-sm">
-        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
-          <td class="py-3 px-4 text-left">1</td>
-          <td class="py-3 px-4 text-left font-medium">CEO_CTO_CLAUNS</td>
-          <td class="py-3 px-4 text-right">25B CosmicCoin</td>
-        </tr>
-        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
-          <td class="py-3 px-4 text-left">2</td>
-          <td class="py-3 px-4 text-left font-medium">CAO_HUBS</td>
-          <td class="py-3 px-4 text-right">21B CosmicCoin</td>
-        </tr>
-        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
-          <td class="py-3 px-4 text-left">3</td>
-          <td class="py-3 px-4 text-left font-medium">CPO_VILLAGES</td>
-          <td class="py-3 px-4 text-right">19B CosmicCoin</td>
-        </tr>
-        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
-          <td class="py-3 px-4 text-left">4</td>
-          <td class="py-3 px-4 text-left font-medium">CMO_VILLAS</td>
-          <td class="py-3 px-4 text-right">18B CosmicCoin</td>
-        </tr>
-        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
-          <td class="py-3 px-4 text-left">5</td>
-          <td class="py-3 px-4 text-left font-medium">CAO_CREWS</td>
-          <td class="py-3 px-4 text-right">10B CosmicCoin</td>
-        </tr>
-        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
-          <td class="py-3 px-4 text-left">6</td>
-          <td class="py-3 px-4 text-left font-medium">CPO_GUYS</td>
-          <td class="py-3 px-4 text-right">8.5B CosmicCoin</td>
-        </tr>
-        <tr class="hover:bg-gray-50 transition duration-150">
-          <td class="py-3 px-4 text-left">7</td>
-          <td class="py-3 px-4 text-left font-medium">CMO_RESORTS</td>
-          <td class="py-3 px-4 text-right">7.5B CosmicCoin</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  </div>
-    
-
-
-
-<div id="rewardsSection" class="p-6 max-w-md mx-auto bg-gradient-to-r from-purple-800 to-black text-white rounded-lg shadow-lg mt-10">
-    <h2 class="text-3xl font-bold text-center mb-6">🚀 Daily $Cos Rewards</h2>
-    
-    <p class="text-lg text-center mb-4">Claim Your Daily Cosmic Loot and fuel your intergalactic adventures with $COS tokens!</p>
-    
-    <!-- Claim Daily Reward Button -->
-    <div class="flex justify-center mb-4">
-        <button class="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
-                onclick="claimDailyReward()">Claim Daily Reward</button>
-    </div>
-    
-    <!-- Double Reward Button (Watch Ads) -->
-    <div class="flex justify-center">
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
-                onclick="window.open('https://whomeenoaglauns.com/4/5544101', '_blank'); doubleRewards()">
-           Get 2x coins and view Ads 
-        </button>
-    </div>
-</div>
-
-
-      <div id="referralSection" class="hidden bg-white shadow-md rounded-lg p-6 max-w-md mx-auto">
-    <h2 class="text-2xl font-bold mb-4 text-center text-gray-800">Referral Program</h2>
-    <p class="text-center mb-4 text-gray-600">Invite friends to earn more CosmicCoin!</p>
-    <div class="flex justify-center space-x-4 mb-6">
-        <div class="text-center">
-            <span id="inviteCount" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">0</span>
-            <p class="text-sm text-gray-500">Invites</p>
-        </div>
-        <div class="text-center">
-            <span id="totalEarned" class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">0</span>
-            <p class="text-sm text-gray-500">CosmicCoins Earned</p>
-        </div>
-    </div>
-    <a href="https://mirak-oracle.github.io/InviteFriend.COS/" target="_blank" id="inviteButton" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-full inline-block w-full text-center transition-colors duration-300">Invite a Friend</a>
-    <p id="inviteStatus" class="mt-4 text-sm text-center text-gray-500">Earn 10 CosmicCoins for each friend who joins!</p>
-      </div>
-
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-    const inviteButton = document.getElementById('inviteButton');
-    const inviteCountElement = document.getElementById('inviteCount');
-    const totalEarnedElement = document.getElementById('totalEarned');
-    const inviteStatusElement = document.getElementById('inviteStatus');
-
-    let inviteCount = parseInt(localStorage.getItem('inviteCount') || '0', 10);
-    let totalEarned = parseInt(localStorage.getItem('totalEarned') || '0', 10);
-
-    function updateDisplay() {
-        inviteCountElement.textContent = inviteCount;
-        totalEarnedElement.textContent = totalEarned;
-    }
-
-    updateDisplay();
-
-    inviteButton.addEventListener('click', function(event) {
-        event.preventDefault();
-
-        // Increment invite count
-        inviteCount++;
-        
-        // Calculate new earnings (10 CosmicCoins per invite)
-        const newEarnings = 10;
-        totalEarned += newEarnings;
-
-        // Save to localStorage
-        localStorage.setItem('inviteCount', inviteCount.toString());
-        localStorage.setItem('totalEarned', totalEarned.toString());
-
-        // Update display
-        updateDisplay();
-
-        // Update invite status
-        inviteStatusElement.textContent = `Great! You've invited ${inviteCount} friend${inviteCount !== 1 ? 's' : ''}. Keep it up!`;
-
-        // Here you would typically also send this data to your server
-        // For example: sendInviteDataToServer(inviteCount, totalEarned)
-
-        // Open the invite link in a new tab
-        window.open(this.href, '_blank');
-    });
-});
-	</script>
-		
-
-  
-
-  <div id="notificationsSection" class="hidden">
-    <h2 class="text-2xl mb-4">Enable Notifications</h2>
-    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full" onclick="enableNotifications()">Enable Notifications</button>
-  </div>
-
-  <div id="comingSoonSection" class="hidden">
-    <h2 class="text-2xl mb-4">Wallet</h2>
-    <p>Coming soon...</p>
-  </div>
-
-<div id="gamesSection" class="hidden bg-slate-800 p-6 rounded-lg shadow-lg max-w-md mx-auto">
-    <h2 class="text-3xl font-bold mb-4 text-indigo-400 flex items-center">
-        <svg class="w-8 h-8 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2z" />
-        </svg>
-        Play Galactic Gems
-    </h2>
-    <p class="mb-6 text-gray-300">Click the button below to launch the game and start earning Galactic Gems!</p>
-    <button 
-        onclick="window.open('https://mirak-oracle.github.io/GalacticGems/', '_blank')" 
-        class="flex items-center justify-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-md">
-        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12h18M12 3v18" />
-        </svg>
-        Open Game
-    </button>
-</div>
-
-
-	
-
-  <nav class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4">
-  <div class="max-w-screen-xl mx-auto">
-    <ul class="flex justify-between items-center">
-      <li class="flex-1">
-        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('mainSection')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </svg>
-          <span>Home</span>
-        </button>
-      </li>
-      <li class="flex-1">
-        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('tasksSection')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-          </svg>
-          <span>Tasks</span>
-        </button>
-      </li>
-      <li class="flex-1">
-        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('rewardsSection')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-          </svg>
-          <span>Rewards</span>
-        </button>
-      </li>
-      <li class="flex-1">
-        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('referralSection')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <span>Invite</span>
-        </button>
-      </li>
-      <li class="flex-1">
-        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('notificationsSection')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-          </svg>
-          <span>Alert</span>
-        </button>
-      </li>
-	<li class="flex-1">
-        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2 w-full" onclick="showSection('gamesSection')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>Games</span>
-        </button>
-      <li class="flex-1">
-        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('comingSoonSection')">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-          </svg>
-          <span>Wallet</span>
-        </button>
-      </li>
-    </ul>
-  </div>
-</nav>
-
-
-  
-    <button class="task-button mb-4 flex items-center justify-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out" onclick="showSection('leaderboardSection')">
-  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-    <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
-  </svg>
-  <span>Leaderboard</span>
-    </button>
-  
-
-  <script>
-    function loadTawkTo() {
-      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-      s1.async=true;
-      s1.src='https://embed.tawk.to/66998eeebecc2fed69275083/1i33tclbi';
-      s1.charset='UTF-8';
-      s1.setAttribute('crossorigin','*');
-      s0.parentNode.insertBefore(s1,s0);
-    }
-  </script>
-  
-  
-
-  
-
-  <!-- Google Form Modal -->
-  <div class="modal-overlay" onclick="toggleModal()"></div>
-  <div id="googleFormModal" class="modal w-96">
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?embedded=true" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
-  </div>
-
-  <script>
-    
-    function openModal() {
-      document.getElementById('modalOverlay').style.display = 'block';
-      document.getElementById('googleFormModal').style.display = 'block';
-      document.getElementById('googleFormIframe').src = "https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?embedded=true";
-    }
-
-    function closeModal() {
-      document.getElementById('modalOverlay').style.display = 'none';
-      document.getElementById('googleFormModal').style.display = 'none';
-      document.getElementById('googleFormIframe').src = "";
-    }
-  </script>
-
-
-<script>
-	// Anti-Cheat Detection System with Google Analytics Integration
-
-// Initialize Google Analytics (Make sure to replace with your GA ID)
-const initializeAnalytics = () => {
-  gtag('config', 'G-ES3NKKYCS7'', {
-    custom_map: {
-      dimension1: 'user_id',
-      dimension2: 'cheat_type',
-      dimension3: 'risk_score'
-    }
-  });
-};
-
-// 1. Multiple Account Detection
-class MultiAccountDetector {
-  constructor() {
-    this.deviceFingerprint = {
-      userAgent: navigator.userAgent,
-      language: navigator.language,
-      platform: navigator.platform,
-      screenResolution: `${window.screen.width}x${window.screen.height}`,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
-    };
-  }
-
-  async detectMultipleAccounts(userId) {
-    const fingerprint = await this.generateFingerprint();
-    const existingAccounts = JSON.parse(localStorage.getItem('known_devices') || '{}');
-    
-    if (existingAccounts[fingerprint] && 
-        existingAccounts[fingerprint].length > 0 && 
-        !existingAccounts[fingerprint].includes(userId)) {
-      
-      this.reportToAnalytics(userId, 'multiple_accounts', {
-        existing_accounts: existingAccounts[fingerprint],
-        fingerprint: fingerprint
-      });
-      return true; // Multiple accounts detected
-    }
-
-    // Update known devices
-    if (!existingAccounts[fingerprint]) {
-      existingAccounts[fingerprint] = [];
-    }
-    if (!existingAccounts[fingerprint].includes(userId)) {
-      existingAccounts[fingerprint].push(userId);
-    }
-    localStorage.setItem('known_devices', JSON.stringify(existingAccounts));
-    return false;
-  }
-
-  async generateFingerprint() {
-    const values = Object.values(this.deviceFingerprint);
-    const fingerprint = values.join('||');
-    return await this.hash(fingerprint);
-  }
-
-  async hash(string) {
-    const msgBuffer = new TextEncoder().encode(string);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  }
-
-  reportToAnalytics(userId, type, details) {
-    gtag('event', 'cheat_detected', {
-      event_category: 'security',
-      event_label: 'multiple_accounts',
-      user_id: userId,
-      cheat_type: type,
-      cheat_details: JSON.stringify(details)
-    });
-  }
-}
-
-// 2. Bot Detection
-class BotDetector {
-  constructor() {
-    this.movements = [];
-    this.clickPatterns = [];
-    this.keyPatterns = [];
-    this.startTracking();
-  }
-
-  startTracking() {
-    document.addEventListener('mousemove', (e) => this.trackMouseMovement(e));
-    document.addEventListener('click', (e) => this.trackClick(e));
-    document.addEventListener('keypress', (e) => this.trackKeypress(e));
-  }
-
-  trackMouseMovement(event) {
-    this.movements.push({
-      x: event.clientX,
-      y: event.clientY,
-      timestamp: Date.now()
-    });
-
-    // Keep only last 100 movements
-    if (this.movements.length > 100) {
-      this.movements.shift();
-    }
-  }
-
-  trackClick(event) {
-    this.clickPatterns.push({
-      x: event.clientX,
-      y: event.clientY,
-      timestamp: Date.now()
-    });
-  }
-
-  trackKeypress(event) {
-    this.keyPatterns.push({
-      key: event.key,
-      timestamp: Date.now()
-    });
-  }
-
-  detectBot() {
-    const botIndicators = {
-      linearMovement: this.checkLinearMovement(),
-      regularTiming: this.checkRegularTiming(),
-      unnaturalSpeed: this.checkUnnaturalSpeed(),
-      noMouseMovement: this.movements.length === 0,
-      perfectClicks: this.checkPerfectClicks()
-    };
-
-    const riskScore = this.calculateRiskScore(botIndicators);
-    
-    if (riskScore > 70) {
-      this.reportBotActivity(botIndicators, riskScore);
-      return true;
-    }
-    return false;
-  }
-
-  checkLinearMovement() {
-    if (this.movements.length < 3) return false;
-    
-    let linearPatterns = 0;
-    for (let i = 2; i < this.movements.length; i++) {
-      const p1 = this.movements[i-2];
-      const p2 = this.movements[i-1];
-      const p3 = this.movements[i];
-      
-      // Check if three points form a straight line
-      const slope1 = (p2.y - p1.y) / (p2.x - p1.x);
-      const slope2 = (p3.y - p2.y) / (p3.x - p2.x);
-      
-      if (Math.abs(slope1 - slope2) < 0.01) {
-        linearPatterns++;
-      }
-    }
-    
-    return (linearPatterns / (this.movements.length - 2)) > 0.8;
-  }
-
-  checkRegularTiming() {
-    const intervals = [];
-    for (let i = 1; i < this.movements.length; i++) {
-      intervals.push(this.movements[i].timestamp - this.movements[i-1].timestamp);
-    }
-    
-    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    const regularIntervals = intervals.filter(interval => 
-      Math.abs(interval - avgInterval) < 10
-    ).length;
-    
-    return (regularIntervals / intervals.length) > 0.9;
-  }
-
-  checkUnnaturalSpeed() {
-    if (this.movements.length < 2) return false;
-    
-    const speeds = [];
-    for (let i = 1; i < this.movements.length; i++) {
-      const dx = this.movements[i].x - this.movements[i-1].x;
-      const dy = this.movements[i].y - this.movements[i-1].y;
-      const dt = this.movements[i].timestamp - this.movements[i-1].timestamp;
-      const speed = Math.sqrt(dx*dx + dy*dy) / dt;
-      speeds.push(speed);
-    }
-    
-    const avgSpeed = speeds.reduce((a, b) => a + b, 0) / speeds.length;
-    return avgSpeed > 2; // Threshold for unnatural speed
-  }
-
-  checkPerfectClicks() {
-    if (this.clickPatterns.length < 2) return false;
-    
-    const intervals = [];
-    for (let i = 1; i < this.clickPatterns.length; i++) {
-      intervals.push(this.clickPatterns[i].timestamp - this.clickPatterns[i-1].timestamp);
-    }
-    
-    const avgInterval = intervals.reduce((a, b) => a + b, 0) / intervals.length;
-    const perfectClicks = intervals.filter(interval => 
-      Math.abs(interval - avgInterval) < 5
-    ).length;
-    
-    return (perfectClicks / intervals.length) > 0.95;
-  }
-
-  calculateRiskScore(indicators) {
-    let score = 0;
-    if (indicators.linearMovement) score += 30;
-    if (indicators.regularTiming) score += 25;
-    if (indicators.unnaturalSpeed) score += 20;
-    if (indicators.noMouseMovement) score += 15;
-    if (indicators.perfectClicks) score += 10;
-    return score;
-  }
-
-  reportBotActivity(indicators, riskScore) {
-    gtag('event', 'bot_detected', {
-      event_category: 'security',
-      event_label: 'bot_activity',
-      risk_score: riskScore,
-      indicators: JSON.stringify(indicators)
-    });
-  }
-}
-
-// 3. Rapid Update Detection
-class UpdatePatternDetector {
-  constructor() {
-    this.updateHistory = new Map();
-  }
-
-  trackUpdate(userId, updateData) {
-    if (!this.updateHistory.has(userId)) {
-      this.updateHistory.set(userId, []);
-    }
-    
-    const userHistory = this.updateHistory.get(userId);
-    userHistory.push({
-      timestamp: Date.now(),
-      data: updateData
-    });
-
-    // Keep only last 24 hours of updates
-    const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
-    this.updateHistory.set(
-      userId, 
-      userHistory.filter(update => update.timestamp > oneDayAgo)
-    );
-
-    return this.detectSuspiciousUpdates(userId);
-  }
-
-  detectSuspiciousUpdates(userId) {
-    const updates = this.updateHistory.get(userId);
-    
-    // Check update frequency
-    if (this.isUpdateTooFrequent(updates)) {
-      this.reportSuspiciousActivity(userId, 'rapid_updates');
-      return true;
-    }
-
-    // Check for impossible progress
-    if (this.isProgressImpossible(updates)) {
-      this.reportSuspiciousActivity(userId, 'impossible_progress');
-      return true;
-    }
-
-    return false;
-  }
-
-  isUpdateTooFrequent(updates) {
-    if (updates.length < 2) return false;
-    
-    // Check if there are more than 5 updates in any 1-hour window
-    for (let i = 0; i < updates.length - 5; i++) {
-      const timeWindow = updates[i + 4].timestamp - updates[i].timestamp;
-      if (timeWindow < 60 * 60 * 1000) { // 1 hour in milliseconds
-        return true;
-      }
-    }
-    return false;
-  }
-
-  isProgressImpossible(updates) {
-    if (updates.length < 2) return false;
-
-    for (let i = 1; i < updates.length; i++) {
-      const progressRate = this.calculateProgressRate(
-        updates[i-1].data,
-        updates[i].data,
-        updates[i].timestamp - updates[i-1].timestamp
-      );
-      
-      if (progressRate > this.getMaxPossibleProgressRate()) {
-        return true;
-      }
-    }
-    return false;
-  }
-
-  calculateProgressRate(previousData, currentData, timeInterval) {
-    // Implement based on your specific progress metrics
-    const progressDiff = currentData.progress - previousData.progress;
-    return progressDiff / timeInterval;
-  }
-
-  getMaxPossibleProgressRate() {
-    // Define maximum possible progress rate based on your game mechanics
-    return 0.001; // Example threshold
-  }
-
-  reportSuspiciousActivity(userId, type) {
-    gtag('event', 'suspicious_updates', {
-      event_category: 'security',
-      event_label: type,
-      user_id: userId,
-      update_history: JSON.stringify(this.updateHistory.get(userId))
-    });
-  }
-}
-
-// Main Anti-Cheat Controller
-class AntiCheatController {
-  constructor() {
-    this.multiAccountDetector = new MultiAccountDetector();
-    this.botDetector = new BotDetector();
-    this.updateDetector = new UpdatePatternDetector();
-    this.initializeAnalytics();
-  }
-
-  async validateUserActivity(userId, updateData) {
-    const checks = await Promise.all([
-      this.multiAccountDetector.detectMultipleAccounts(userId),
-      this.botDetector.detectBot(),
-      this.updateDetector.trackUpdate(userId, updateData)
-    ]);
-
-    const isCheatDetected = checks.some(result => result === true);
-    
-    if (isCheatDetected) {
-      this.enforceConsequences(userId);
-    }
-
-    return !isCheatDetected;
-  }
-
-  enforceConsequences(userId) {
-    // Implement your consequence logic here
-    // For example: temporary ban, progress reset, etc.
-    localStorage.setItem(`user_${userId}_restricted`, 'true');
-    
-    gtag('event', 'cheat_consequences', {
-      event_category: 'security',
-      event_label: 'account_restricted',
-      user_id: userId
-    });
-  }
-}
-
-// Usage Example
-const antiCheat = new AntiCheatController();
-
-// Integrate with your form submission
-async function handleFormSubmission(formData) {
-  const isValid = await antiCheat.validateUserActivity(
-    formData.userId,
-    {
-      progress: formData.progress,
-      timestamp: Date.now(),
-      // Add other relevant data
-    }
-  );
-
-  if (!isValid) {
-    return {
-      success: false,
-      message: 'Suspicious activity detected'
-    };
-  }
-
-  // Proceed with normal form submission
-  return submitToGoogleForms(formData);
-	}
-</script>
-
-
-	
-  
-  <script>
-    
-// Helper function to get and parse localStorage item
-function getLocalStorageItem(key, defaultValue) {
-  const item = localStorage.getItem(key);
-  return item ? JSON.parse(item) : defaultValue;
-}
-
-// Helper function to set localStorage item
-function setLocalStorageItem(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  setTimeout(function() {
-    document.getElementById('loadingScreen').style.display = 'none';
-  }, 2000);
-  loadBalance();
-  loadMiningStatus();
-  checkReferral();
-});
-
-function startMining(hours) {
-  const isMining = getLocalStorageItem('isMining', false);
-  const miningEndTime = getLocalStorageItem('miningEndTime', 0);
-  const currentTime = new Date().getTime();
-
-  if (isMining && currentTime < miningEndTime) {
-    alert('Mining is already in progress. Please wait until the current session is complete.');
-    return;
-  }
-
-  const endTime = currentTime + hours * 60 * 60 * 1000;
-  setLocalStorageItem('miningEndTime', endTime);
-  setLocalStorageItem('isMining', true);
-  updateMiningStatus();
-  startMiningProcess(); // Start the notification process
-}
-
-function updateMiningStatus() {
-  const miningEndTime = getLocalStorageItem('miningEndTime', 0);
-  const currentTime = new Date().getTime();
-
-  if (currentTime < miningEndTime) {
-    const timeLeft = (miningEndTime - currentTime) / 1000;
-    const hours = Math.floor(timeLeft / 3600);
-    const minutes = Math.floor((timeLeft % 3600) / 60);
-    const seconds = Math.floor(timeLeft % 60);
-
-    document.getElementById('miningStatus').innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
-    updateMiningAmount(timeLeft);
-    setTimeout(updateMiningStatus, 1000);
-  } else {
-    document.getElementById('miningStatus').innerText = 'Mining complete!';
-    const currentBalance = getLocalStorageItem('balance', 0);
-    setLocalStorageItem('balance', currentBalance + 10); // Adjust the reward as necessary
-    setLocalStorageItem('isMining', false);
-    updateBalanceDisplay();
-    showMiningNotification();
-  }
-}
-
-function updateMiningAmount(secondsLeft) {
-  const ratePerSecond = 0.00040; // Adjust mining rate per second
-  const currentBalance = getLocalStorageItem('balance', 0);
-  const miningAmount = currentBalance + (ratePerSecond * (24 * 60 * 60 - secondsLeft)); // Total mined amount
-  document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} COS`;
-}
-
-function updateBalanceDisplay() {
-  const balance = getLocalStorageItem('balance', 0);
-  document.getElementById('miningAmount').innerText = `Current Balance: ${parseFloat(balance).toFixed(4)} COS`;
-}
-
-function loadBalance() {
-  updateBalanceDisplay();
-}
-
-function loadMiningStatus() {
-  const isMining = getLocalStorageItem('isMining', false);
-  if (isMining) {
-    updateMiningStatus();
-  } else {
-    document.getElementById('miningStatus').innerText = 'No mining in progress';
-  }
-}
-
-function showSection(sectionId) {
-  const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection', 'gamesSection'];
-  sections.forEach(id => document.getElementById(id).classList.add('hidden'));
-  document.getElementById(sectionId).classList.remove('hidden');
-}
-
-function claimDailyReward() {
-  const lastClaimTime = getLocalStorageItem('lastClaimTime', 0);
-  const currentTime = new Date().getTime();
-  const oneDay = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
-
-  if (currentTime - lastClaimTime < oneDay) {
-    alert('You have already claimed your daily reward today. Come back tomorrow!');
-  } else {
-    alert('Daily reward claimed!');
-    const currentBalance = getLocalStorageItem('balance', 0);
-    setLocalStorageItem('balance', currentBalance + 50); // Add daily reward amount
-    setLocalStorageItem('lastClaimTime', currentTime);
-    updateBalanceDisplay();
-  }
-}
-
-function completeTask(taskId) {
-  const completedTasks = getLocalStorageItem('completedTasks', {});
-
-  if (completedTasks[taskId]) {
-    alert('Task already completed! More tasks coming soon 😊');
-    // Optionally, display a meme or image here
-    document.getElementById('taskMeme').innerHTML = '<img src="path_to_your_meme.jpg" alt="Meme" />';
-  } else {
-    alert(`Task ${taskId} completed!`);
-    const currentBalance = getLocalStorageItem('balance', 0);
-    setLocalStorageItem('balance', currentBalance + 30); // Reward for task completion
-    completedTasks[taskId] = true;
-    setLocalStorageItem('completedTasks', completedTasks);
-    updateBalanceDisplay();
-  }
-}
-
-function generateReferralCode() {
-  const timestamp = Date.now().toString(36);
-  const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `${timestamp}-${randomPart}`;
-}
-
-function inviteFriend() {
-  const referralCode = generateReferralCode();
-  const referralLink = `https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=ar0978585297?ref=${referralCode}`;
-  const shareText = 'Join me in earning CosmicCoin through the CosmicCoin Galaxy Airdrop. Use my referral link to get started!';
-  const shareTitle = 'Join the CosmicCoin Galaxy Airdrop!';
-
-  if (navigator.share) {
-    navigator.share({
-      title: shareTitle,
-      text: shareText,
-      url: referralLink,
-    })
-    .then(() => console.log('Successful share'))
-    .catch((error) => {
-      console.log('Error sharing', error);
-      fallbackShare();
-    });
-  } else {
-    fallbackShare();
-  }
-
-  function fallbackShare() {
-    const shareOptions = document.createElement('div');
-    shareOptions.className = 'fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center';
-    shareOptions.innerHTML = `
-      <div class="bg-white p-8 rounded-md shadow-xl max-w-md w-full">
-        <h2 class="text-xl font-bold mb-4">Share Referral Link</h2>
-        <p class="mb-4">Choose how you want to share your referral link:</p>
-        <div class="space-y-4">
-          <button onclick="copyToClipboard('${referralLink}')" class="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Copy Link</button>
-          <a href="mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(shareText + ' ' + referralLink)}" class="block w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-center">Share via Email</a>
-          <a href="https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText + ' ' + referralLink)}" target="_blank" rel="noopener noreferrer" class="block w-full px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-500 text-center">Share on Twitter</a>
-          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(referralLink)}" target="_blank" rel="noopener noreferrer" class="block w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 text-center">Share on Facebook</a>
-          <button onclick="closeShareOptions()" class="w-full px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">Close</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(shareOptions);
-  }
-}
-
-function copyToClipboard(text) {
-  navigator.clipboard.writeText(text).then(() => {
-    alert('Referral link copied to clipboard!');
-  }, (err) => {
-    console.error('Could not copy text: ', err);
-  });
-}
-
-function closeShareOptions() {
-  const shareOptions = document.querySelector('.fixed');
-  if (shareOptions) {
-    shareOptions.remove();
-  }
-}
-
-function rewardReferrer(referralCode) {
-  const referrerBalanceKey = `balance_${referralCode}`;
-  const currentBalance = getLocalStorageItem(referrerBalanceKey, 0);
-  const newBalance = currentBalance + 30; // Reward amount
-  setLocalStorageItem(referrerBalanceKey, newBalance);
-
-  console.log(`Referrer with code ${referralCode} now has a balance of ${newBalance} CosmicCoin`);
-}
-
-function rewardNewUser() {
-  const currentUserBalance = getLocalStorageItem('balance', 0);
-  const newBalance = currentUserBalance + 20; // Reward for using referral code
-  setLocalStorageItem('balance', newBalance);
-}
-
-function checkReferral() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const referralCode = urlParams.get('ref');
-  if (referralCode) {
-    rewardReferrer(referralCode);
-    rewardNewUser();
-    updateBalanceDisplay();
-
-    alert(`You've been rewarded for using a referral code! Your current balance is ${getLocalStorageItem('balance', 0)} CosmicCoin.`);
-  }
-}
-
-function activateBooster(booster) {
-  alert(`${booster.charAt(0).toUpperCase() + booster.slice(1)} Booster activated!`);
-  document.querySelector('.balance').textContent = '10%';  // Placeholder for actual logic
-}
-
-function joinSquad(squad) {
-  const rewards = {
-    'CEO_CTO_CLAUNS': 5000,
-    'CAO_HUBS': 2100,
-    'CPO_VILLAGES': 1900,
-    'CMO_VILLAS': 1800,
-    'CAO_CREWS': 1009,
-    'CPO_GUYS': 950,
-    'CMO_RESORTS': 850
-  };
-
-  let userCoins = getLocalStorageItem('userCoins', 0);
-  let joinedSquads = getLocalStorageItem('joinedSquads', {});
-
-  if (joinedSquads[squad]) {
-    alert(`You've already joined ${squad.replace(/_/g, ' ')}! No additional rewards.`);
-    return;
-  }
-
-  let reward = rewards[squad] || 0;
-  userCoins += reward;
-  setLocalStorageItem('userCoins', userCoins);
-
-  alert(`Joined ${squad.replace(/_/g, ' ')}! Reward: ${reward.toLocaleString()} CosmicCoins. Total: ${userCoins.toLocaleString()} CosmicCoins.`);
-
-  const maxReward = Math.max(...Object.values(rewards));
-  if (reward === maxReward) {
-    alert('Congratulations! You joined the squad with the highest CosmicCoin amount. Extra reward granted!');
-    userCoins += 100;  // Extra reward for joining the highest squad
-    setLocalStorageItem('userCoins', userCoins);
-  }
-
-  joinedSquads[squad] = true;
-  setLocalStorageItem('joinedSquads', joinedSquads);
-
-  updateBalanceDisplay();
-}
-
-function enableNotifications() {
-  if ("Notification" in window) {
-    if (Notification.permission === "granted") {
-      alert('Notifications are already enabled!');
-      setMiningReminder();
-    } else if (Notification.permission !== "denied") {
-      Notification.requestPermission().then(function (permission) {
-        if (permission === "granted") {
-          alert('Notifications enabled!');
-          setMiningReminder();
-        } else {
-          alert('Notifications disabled. Please enable notifications in your browser settings.');
-        }
-      });
-    } else {
-      alert('You have denied notifications. Please change your settings to enable notifications.');
-    }
-  } else {
-    alert('This browser does not support notifications.');
-  }
-}
-
-function setMiningReminder() {
-  const twelveHours = 12 * 60 * 60 * 1000;
-  setTimeout(function () {
-    showMiningNotification();
-    setMiningReminder();
-  }, twelveHours);
-}
-
-function showMiningNotification() {
-  if (Notification.permission === "granted") {
-    const options = {
-      body: "⛏️ Time to continue mining your CosmicCoin! Click to return to the mining page.",
-      icon: "path_to_mining_icon.png",
-      vibrate: [200, 100, 200],
-      requireInteraction: true
-    };
-
-    const notification = new Notification('🚀 Mining Reminder', options);
-
-    notification.onclick = function () {
-      window.focus();
-      window.location.href = "your_mining_page_url";
-    };
-  }
-}
-
-function startMiningProcess() {
-  enableNotifications();
-  setMiningReminder();
-}
-
-// Call this function when the page loads
-window.addEventListener('load', function() {
-  setTimeout(() => {
-    document.getElementById('loadingScreen').style.display = 'none';
-  }, 3000);
-});
-
-console.log("Script loaded successfully!");
-
-
-
-
-  
-
-
-	    
-  </script>
-</body>
 </html>
- 
