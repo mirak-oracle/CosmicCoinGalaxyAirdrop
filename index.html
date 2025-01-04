@@ -849,6 +849,8 @@ startMessageRotation();
       </div>
 
 	<script>
+		const sanitizedInput = DOMPurify.sanitize(userInput);
+
 		document.addEventListener('DOMContentLoaded', function() {
     const inviteButton = document.getElementById('inviteButton');
     const inviteCountElement = document.getElementById('inviteCount');
