@@ -609,6 +609,7 @@ startMessageRotation();
     <div id="miningStatus" class="text-lg mb-4"></div>
     <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
 </div>
+	<button onclick="resetBalance()">Reset Balance</button>
 </div>
 
 
@@ -1430,18 +1431,18 @@ async function handleFormSubmission(formData) {
   
   <script>
     
-// Helper function to get and parse localStorage item
+const MINING_RATE = 0.00040; // COS per second
+
 function getLocalStorageItem(key, defaultValue) {
   const item = localStorage.getItem(key);
   try {
-    return item ? JSON.parse(item) : defaultValue;
+    return item !== null ? JSON.parse(item) : defaultValue;
   } catch (error) {
     console.error(`Error parsing localStorage item ${key}:`, error);
     return defaultValue;
   }
 }
 
-// Helper function to set localStorage item
 function setLocalStorageItem(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
@@ -1450,22 +1451,10 @@ function setLocalStorageItem(key, value) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function() {
-  setTimeout(function() {
-    const loadingScreen = document.getElementById('loadingScreen');
-    if (loadingScreen) {
-      loadingScreen.style.display = 'none';
-    }
-  }, 2000);
-  loadBalance();
-  loadMiningStatus();
-  checkReferral();
-});
-
 function startMining(hours) {
   const isMining = getLocalStorageItem('isMining', false);
   const miningEndTime = getLocalStorageItem('miningEndTime', 0);
-  const currentTime = new Date().getTime();
+  const currentTime = Date.now();
 
   if (isMining && currentTime < miningEndTime) {
     alert('Mining is already in progress. Please wait until the current session is complete.');
@@ -1477,67 +1466,53 @@ function startMining(hours) {
   setLocalStorageItem('miningStartTime', currentTime);
   setLocalStorageItem('isMining', true);
   updateMiningStatus();
-  startMiningProcess(); // Start the notification process
 }
 
 function updateMiningStatus() {
   const miningEndTime = getLocalStorageItem('miningEndTime', 0);
-  const currentTime = new Date().getTime();
+  const currentTime = Date.now();
 
   if (currentTime < miningEndTime) {
-    const timeLeft = (miningEndTime - currentTime) / 1000;
+    const timeLeft = Math.max(0, (miningEndTime - currentTime) / 1000);
     const hours = Math.floor(timeLeft / 3600);
     const minutes = Math.floor((timeLeft % 3600) / 60);
     const seconds = Math.floor(timeLeft % 60);
 
-    const miningStatusElement = document.getElementById('miningStatus');
-    if (miningStatusElement) {
-      miningStatusElement.innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
-    }
+    document.getElementById('miningStatus').innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
     updateMiningAmount();
     setTimeout(updateMiningStatus, 1000);
   } else {
-    const miningStatusElement = document.getElementById('miningStatus');
-    if (miningStatusElement) {
-      miningStatusElement.innerText = 'Mining complete!';
-    }
+    document.getElementById('miningStatus').innerText = 'Mining complete!';
     const currentBalance = getLocalStorageItem('balance', 0);
     const minedAmount = calculateMinedAmount();
-    setLocalStorageItem('balance', currentBalance + minedAmount);
+    const newBalance = Math.max(0, Number((currentBalance + minedAmount).toFixed(4)));
+    setLocalStorageItem('balance', newBalance);
     setLocalStorageItem('isMining', false);
     setLocalStorageItem('miningStartTime', null);
     setLocalStorageItem('miningEndTime', null);
     updateBalanceDisplay();
-    showMiningNotification();
   }
 }
 
 function calculateMinedAmount() {
   const miningStartTime = getLocalStorageItem('miningStartTime', 0);
   const miningEndTime = getLocalStorageItem('miningEndTime', 0);
-  const currentTime = new Date().getTime();
+  const currentTime = Date.now();
   const endTime = Math.min(currentTime, miningEndTime);
-  const miningDuration = (endTime - miningStartTime) / 1000; // in seconds
-  const ratePerSecond = 0.00040; // Adjust mining rate per second
-  return ratePerSecond * miningDuration;
+  const miningDuration = Math.max(0, (endTime - miningStartTime) / 1000); // in seconds
+  return Number((MINING_RATE * miningDuration).toFixed(4));
 }
 
 function updateMiningAmount() {
   const currentBalance = getLocalStorageItem('balance', 0);
   const minedAmount = calculateMinedAmount();
-  const totalAmount = currentBalance + minedAmount;
-  const miningAmountElement = document.getElementById('miningAmount');
-  if (miningAmountElement) {
-    miningAmountElement.innerText = `Current Balance: ${totalAmount.toFixed(4)} COS`;
-  }
+  const totalAmount = Math.max(0, Number((currentBalance + minedAmount).toFixed(4)));
+  document.getElementById('miningAmount').innerText = `Current Balance: ${totalAmount} COS`;
 }
 
 function updateBalanceDisplay() {
   const balance = getLocalStorageItem('balance', 0);
-  const miningAmountElement = document.getElementById('miningAmount');
-  if (miningAmountElement) {
-    miningAmountElement.innerText = `Current Balance: ${parseFloat(balance).toFixed(4)} COS`;
-  }
+  document.getElementById('miningAmount').innerText = `Current Balance: ${balance} COS`;
 }
 
 function loadBalance() {
@@ -1549,13 +1524,28 @@ function loadMiningStatus() {
   if (isMining) {
     updateMiningStatus();
   } else {
-    const miningStatusElement = document.getElementById('miningStatus');
-    if (miningStatusElement) {
-      miningStatusElement.innerText = 'No mining in progress';
-    }
+    document.getElementById('miningStatus').innerText = 'No mining in progress';
     updateBalanceDisplay();
   }
 }
+
+// Call these functions when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+  loadBalance();
+  loadMiningStatus();
+});
+
+// Add this function to reset the balance (for testing purposes)
+function resetBalance() {
+  setLocalStorageItem('balance', 0);
+  setLocalStorageItem('isMining', false);
+  setLocalStorageItem('miningStartTime', null);
+  setLocalStorageItem('miningEndTime', null);
+  loadBalance();
+  loadMiningStatus();
+  alert('Balance has been reset to 0');
+}
+
 
 function startMiningProcess() {
   // Implement your notification process here
