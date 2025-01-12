@@ -1433,17 +1433,29 @@ async function handleFormSubmission(formData) {
 // Helper function to get and parse localStorage item
 function getLocalStorageItem(key, defaultValue) {
   const item = localStorage.getItem(key);
-  return item ? JSON.parse(item) : defaultValue;
+  try {
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.error(`Error parsing localStorage item ${key}:`, error);
+    return defaultValue;
+  }
 }
 
 // Helper function to set localStorage item
 function setLocalStorageItem(key, value) {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error(`Error setting localStorage item ${key}:`, error);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
   setTimeout(function() {
-    document.getElementById('loadingScreen').style.display = 'none';
+    const loadingScreen = document.getElementById('loadingScreen');
+    if (loadingScreen) {
+      loadingScreen.style.display = 'none';
+    }
   }, 2000);
   loadBalance();
   loadMiningStatus();
@@ -1462,6 +1474,7 @@ function startMining(hours) {
 
   const endTime = currentTime + hours * 60 * 60 * 1000;
   setLocalStorageItem('miningEndTime', endTime);
+  setLocalStorageItem('miningStartTime', currentTime);
   setLocalStorageItem('isMining', true);
   updateMiningStatus();
   startMiningProcess(); // Start the notification process
@@ -1477,29 +1490,54 @@ function updateMiningStatus() {
     const minutes = Math.floor((timeLeft % 3600) / 60);
     const seconds = Math.floor(timeLeft % 60);
 
-    document.getElementById('miningStatus').innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
-    updateMiningAmount(timeLeft);
+    const miningStatusElement = document.getElementById('miningStatus');
+    if (miningStatusElement) {
+      miningStatusElement.innerText = `Mining in progress: ${hours}h ${minutes}m ${seconds}s left`;
+    }
+    updateMiningAmount();
     setTimeout(updateMiningStatus, 1000);
   } else {
-    document.getElementById('miningStatus').innerText = 'Mining complete!';
+    const miningStatusElement = document.getElementById('miningStatus');
+    if (miningStatusElement) {
+      miningStatusElement.innerText = 'Mining complete!';
+    }
     const currentBalance = getLocalStorageItem('balance', 0);
-    setLocalStorageItem('balance', currentBalance + 10); // Adjust the reward as necessary
+    const minedAmount = calculateMinedAmount();
+    setLocalStorageItem('balance', currentBalance + minedAmount);
     setLocalStorageItem('isMining', false);
+    setLocalStorageItem('miningStartTime', null);
+    setLocalStorageItem('miningEndTime', null);
     updateBalanceDisplay();
     showMiningNotification();
   }
 }
 
-function updateMiningAmount(secondsLeft) {
+function calculateMinedAmount() {
+  const miningStartTime = getLocalStorageItem('miningStartTime', 0);
+  const miningEndTime = getLocalStorageItem('miningEndTime', 0);
+  const currentTime = new Date().getTime();
+  const endTime = Math.min(currentTime, miningEndTime);
+  const miningDuration = (endTime - miningStartTime) / 1000; // in seconds
   const ratePerSecond = 0.00040; // Adjust mining rate per second
+  return ratePerSecond * miningDuration;
+}
+
+function updateMiningAmount() {
   const currentBalance = getLocalStorageItem('balance', 0);
-  const miningAmount = currentBalance + (ratePerSecond * (24 * 60 * 60 - secondsLeft)); // Total mined amount
-  document.getElementById('miningAmount').innerText = `Current Balance: ${miningAmount.toFixed(4)} COS`;
+  const minedAmount = calculateMinedAmount();
+  const totalAmount = currentBalance + minedAmount;
+  const miningAmountElement = document.getElementById('miningAmount');
+  if (miningAmountElement) {
+    miningAmountElement.innerText = `Current Balance: ${totalAmount.toFixed(4)} COS`;
+  }
 }
 
 function updateBalanceDisplay() {
   const balance = getLocalStorageItem('balance', 0);
-  document.getElementById('miningAmount').innerText = `Current Balance: ${parseFloat(balance).toFixed(4)} COS`;
+  const miningAmountElement = document.getElementById('miningAmount');
+  if (miningAmountElement) {
+    miningAmountElement.innerText = `Current Balance: ${parseFloat(balance).toFixed(4)} COS`;
+  }
 }
 
 function loadBalance() {
@@ -1511,10 +1549,28 @@ function loadMiningStatus() {
   if (isMining) {
     updateMiningStatus();
   } else {
-    document.getElementById('miningStatus').innerText = 'No mining in progress';
+    const miningStatusElement = document.getElementById('miningStatus');
+    if (miningStatusElement) {
+      miningStatusElement.innerText = 'No mining in progress';
+    }
+    updateBalanceDisplay();
   }
 }
 
+function startMiningProcess() {
+  // Implement your notification process here
+  console.log('Mining process started');
+}
+
+function showMiningNotification() {
+  // Implement your notification logic here
+  console.log('Mining complete notification');
+}
+
+function checkReferral() {
+  // Implement your referral check logic here
+  console.log('Checking referral...');
+}
 function showSection(sectionId) {
   const sections = ['mainSection', 'tasksSection', 'rewardsSection', 'referralSection', 'notificationsSection', 'comingSoonSection', 'boosterSection', 'leaderboardSection', 'gamesSection'];
   sections.forEach(id => document.getElementById(id).classList.add('hidden'));
