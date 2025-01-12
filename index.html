@@ -510,83 +510,121 @@ updateBadgeInfo();
 </body>
 
 
-
-
-
-<script>
-	let isScrolling = true;
-const messageQueue = [
-     {
-    text: "🌟 Follow Mirakle Group on X for updates about CosmicCoin!",
-    link: "http://www.x.com/MirakleGroup",
-},
-{
-    text: "🚀 Explore the CosmicCoin website for all ecosystem details.",
-    link: "https://mirak-oracle.github.io/COS.org/",
-},
-{
-    text: "🎉 Join the CosmicCoin Telegram Channel for community updates!",
-    link: "https://t.me/CosmicCoin11",
-},
-{
-        text: "📢 Place your advert here! Reach out to us now.",
-    link: "mailto:Miraklegroupinfo@gmail.com",
-
-    },
-];
-
-let currentIndex = 0;
-
-// Display Messages in Queue
-function displayNextMessage() {
-    const currentMessageElement = document.getElementById("currentMessage");
-    const { text, link } = messageQueue[currentIndex];
-
-    currentMessageElement.innerHTML = link
-        ? `<a href="${link}" target="_blank" class="underline hover:text-yellow-300">${text}</a>`
-        : text;
-
-    currentIndex = (currentIndex + 1) % messageQueue.length;
-}
-
-// Pause Scrolling
-function pauseScrolling() {
-    isScrolling = false;
-    document.getElementById("currentMessage").style.animationPlayState = "paused";
-    document.getElementById("pauseBtn").classList.add("hidden");
-    document.getElementById("resumeBtn").classList.remove("hidden");
-}
-
-// Resume Scrolling
-function resumeScrolling() {
-    isScrolling = true;
-    document.getElementById("currentMessage").style.animationPlayState = "running";
-    document.getElementById("resumeBtn").classList.add("hidden");
-    document.getElementById("pauseBtn").classList.remove("hidden");
-}
-
-// Hide Notification Bar
-function hideNotificationBar() {
-    document.getElementById("notificationBar").style.display = "none";
-}
-
-// Auto-Change Messages
-function startMessageRotation() {
-    displayNextMessage();
-    setInterval(() => {
-        if (isScrolling) {
-            displayNextMessage();
+<style type="text/tailwindcss">
+        @layer utilities {
+            .animate-scroll {
+                animation: scroll 20s linear infinite;
+            }
+            @keyframes scroll {
+                0% { transform: translateX(100%); }
+                100% { transform: translateX(-100%); }
+            }
+            .pause-animation {
+                animation-play-state: paused;
+            }
         }
-    }, 15000); // Change message every 15 seconds
-}
-
-// Initialize
-startMessageRotation();
-
-</script>
+    </style>
 
 
-    
+
+<!-- Sticky Notification Bar -->
+    <div id="notificationBar" class="fixed top-0 w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white py-3 px-4 z-50 shadow-lg transition-all duration-300 ease-in-out">
+        <div class="container mx-auto flex items-center justify-between">
+            <!-- Scrolling Message Container -->
+            <div id="messageContainer" class="flex-1 overflow-hidden">
+                <p id="currentMessage" class="animate-scroll text-sm md:text-base font-medium whitespace-nowrap"></p>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex items-center space-x-4 ml-4">
+                <button id="pauseBtn" class="text-white hover:text-yellow-300 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-yellow-300 rounded-full p-1 transition duration-300 ease-in-out">
+                    <span class="sr-only">Pause</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <button id="resumeBtn" class="text-white hover:text-green-300 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-green-300 rounded-full p-1 transition duration-300 ease-in-out hidden">
+                    <span class="sr-only">Resume</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+                <button id="closeBtn" class="text-white hover:text-red-300 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-red-300 rounded-full p-1 transition duration-300 ease-in-out">
+                    <span class="sr-only">Close</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const messageQueue = [
+            {
+                text: "🌟 Follow Mirakle Group on X for updates about CosmicCoin!",
+                link: "http://www.x.com/MirakleGroup",
+            },
+            {
+                text: "🚀 Explore the CosmicCoin website for all ecosystem details.",
+                link: "https://mirak-oracle.github.io/COS.org/",
+            },
+            {
+                text: "🎉 Join the CosmicCoin Telegram Channel for community updates!",
+                link: "https://t.me/CosmicCoin11",
+            },
+            {
+                text: "📢 Place your advert here! Reach out to us now.",
+                link: "mailto:Info.Cosmic.cos@gmail.com",
+            },
+        ];
+
+        let currentIndex = 0;
+        let isScrolling = true;
+        const currentMessageElement = document.getElementById("currentMessage");
+        const pauseBtn = document.getElementById("pauseBtn");
+        const resumeBtn = document.getElementById("resumeBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const notificationBar = document.getElementById("notificationBar");
+
+        function displayNextMessage() {
+            const { text, link } = messageQueue[currentIndex];
+            currentMessageElement.innerHTML = link
+                ? `<a href="${link}" target="_blank" class="underline hover:text-yellow-300 transition duration-300">${text}</a>`
+                : text;
+            currentIndex = (currentIndex + 1) % messageQueue.length;
+        }
+
+        function toggleScrolling() {
+            isScrolling = !isScrolling;
+            currentMessageElement.classList.toggle("pause-animation", !isScrolling);
+            pauseBtn.classList.toggle("hidden", !isScrolling);
+            resumeBtn.classList.toggle("hidden", isScrolling);
+        }
+
+        function hideNotificationBar() {
+            notificationBar.classList.add("opacity-0");
+            setTimeout(() => {
+                notificationBar.classList.add("hidden");
+            }, 300);
+        }
+
+        function startMessageRotation() {
+            displayNextMessage();
+            setInterval(() => {
+                if (isScrolling) {
+                    displayNextMessage();
+                }
+            }, 15000);
+        }
+
+        pauseBtn.addEventListener("click", toggleScrolling);
+        resumeBtn.addEventListener("click", toggleScrolling);
+        closeBtn.addEventListener("click", hideNotificationBar);
+
+        startMessageRotation();
+    </script>
+   
 
 <body class="bg-gray-900 text-white text-center p-6">
 <div class="loading-screen" id="loadingScreen">
@@ -609,7 +647,6 @@ startMessageRotation();
     <div id="miningStatus" class="text-lg mb-4"></div>
     <div id="miningAmount" class="text-lg mb-4 holographic-text"></div>
 </div>
-	<button onclick="resetBalance()">Reset Balance</button>
 </div>
 
 
