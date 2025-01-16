@@ -604,13 +604,7 @@ updateBadgeInfo();
   <div id="tasksSection" class="hidden">
     <h2 class="text-3xl font-small mb-6 text-center"></h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        <div class="task-item">
-            <a href="https://www.instagram.com/dolapo_kolawole?igsh=Y2g0bHJmazEwMHB2" target="_blank">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_group_x')">
-                    Follow Dolippy on Instagram 
-                </button>
-            </a>
-        </div>
+        
 	    <div class="task-item">
     <a href="tg://msg_url?url=https%3A%2F%2Ft.me%2FHarbor1%2Fs%2F8" target="_blank">
         <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full flex items-center justify-center" onclick="completeTask('follow_group_x')">
@@ -639,6 +633,13 @@ updateBadgeInfo();
                 </button>
 	    </a>
 		</div>
+	    <div class="task-item">
+            <a href="https://www.instagram.com/dolapo_kolawole?igsh=Y2g0bHJmazEwMHB2" target="_blank">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_group_x')">
+                    Follow Dolippy on Instagram 
+                </button>
+            </a>
+        </div>
         <div class="task-item">
             <a href="https://www.facebook.com/profile.php?id=61557787735701" target="_blank">
                 <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_ceo_fb')">
@@ -853,8 +854,7 @@ updateBadgeInfo();
       </div>
 
 	<script>
-		const sanitizedInput = DOMPurify.sanitize(userInput);
-
+		
 		document.addEventListener('DOMContentLoaded', function() {
     const inviteButton = document.getElementById('inviteButton');
     const inviteCountElement = document.getElementById('inviteCount');
