@@ -38,13 +38,12 @@
         }
     </style>
 </head>
-<body class="bg-gray-950 text-white min-h-screen flex items-center justify-center">
-  <!-- Main Container -->
-  <div class="flex flex-col items-center space-y-6 text-center">
-    <!-- User Info -->
-    <div id="user-info" class="text-lg font-semibold text-blue-400"></div>
 
-    <!-- Generate User ID Button -->
+</head>
+<body class="bg-gray-950 text-white min-h-screen flex flex-col items-center justify-start pt-10">
+
+  <!-- Button Container -->
+  <div class="flex flex-col items-center mb-10">
     <button 
       id="createUserButton" 
       class="flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300"
@@ -54,18 +53,16 @@
       </svg>
       Generate User ID
     </button>
-
-    <!-- User ID Display -->
-    <div id="userId" class="text-lg font-mono text-gray-200 border border-blue-500 rounded px-4 py-2 bg-gray-800 shadow-md hidden"></div>
   </div>
 
- 
-<script>
+  <!-- User ID Display Section -->
+  <div id="userId" class="text-center text-lg font-mono text-gray-200 border border-blue-500 rounded px-4 py-2 bg-gray-800 shadow-md w-1/2"></div>
 
-
+  <script>
     function generateUniqueId() {
       return 'user-' + Math.random().toString(36).substr(2, 9);
     }
+
     function createUser() {
       let userId = localStorage.getItem('userId');
       if (!userId) {
@@ -76,6 +73,7 @@
       console.log('User ID:', userId);
       return userId;
     }
+
     function getUserBalance(userId) {
       let userBalance = localStorage.getItem(userId + '_balance');
       if (userBalance === null) {
@@ -84,6 +82,7 @@
       }
       return parseFloat(userBalance);
     }
+
     function displayUserBalance(userId, elementId) {
       const userBalance = getUserBalance(userId);
       const userBalanceElement = document.createElement('p');
@@ -91,27 +90,37 @@
       userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(2)}`;
       document.getElementById(elementId).appendChild(userBalanceElement);
     }
+
     document.getElementById('createUserButton').addEventListener('click', () => {
       const userId = createUser();
+
+      // Clear previous content
+      const userIdDiv = document.getElementById('userId');
+      userIdDiv.innerHTML = '';
+
       const userIdElement = document.createElement('p');
       userIdElement.className = 'userId';
       userIdElement.innerText = `Your User ID is: ${userId}`;
-      document.getElementById('userId').appendChild(userIdElement);
+      userIdDiv.appendChild(userIdElement);
+
       displayUserBalance(userId, 'userId');
     });
+
     window.onload = () => {
       const userId = localStorage.getItem('userId');
       if (userId) {
+        const userIdDiv = document.getElementById('userId');
+        userIdDiv.innerHTML = '';
+
         const userIdElement = document.createElement('p');
         userIdElement.className = 'userId';
         userIdElement.innerText = `Your User ID is: ${userId}`;
-        document.getElementById('userId').appendChild(userIdElement);
+        userIdDiv.appendChild(userIdElement);
+
         displayUserBalance(userId, 'userId');
       }
     };
-  </script>
-
-    
+  </script>   
 <body class="bg-gray-950 text-white min-h-screen">
     <!-- Side Menu Button -->
     <button id="menuBtn" class="fixed top-4 left-4 p-2 rounded-lg hover:bg-gray-800 transition-colors z-50">
