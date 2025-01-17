@@ -1,230 +1,218 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CosmicCoin Mining</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdn.jsdelivr.net/npm/lucide-icons@latest/dist/umd/lucide.min.css" rel="stylesheet">
-    <style>
-        .mining-circle {
-            clip-path: circle(50% at 50% 50%);
-            transition: clip-path 0.3s ease;
-        }
-        
-        .mining-progress {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            transition: height 1s linear;
-        }
+import React, { useState } from 'react';
+import { Card } from '@/components/ui/card';
+import { Globe, Home, CheckSquare, Gift, Users, Menu, X, ExternalLink, Copy, MessageCircle, Share2 } from 'lucide-react';
 
-        .world-map {
-            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"><path d="M3 12h18M12 3v18M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>');
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: contain;
-        }
+export default function CosmicGalaxyDashboard() {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState('home');
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
+  // Sample user data - would come from your backend
+  const userData = {
+    balance: 54520,
+    hashRate: 1.26,
+    activeTime: '24h 12m',
+    earnings: 12.45,
+    referralCount: 5,
+    completedTasks: 7,
+    totalTasks: 10,
+    referralCode: 'COSMIC123'
+  };
 
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-    </style>
-</head>
-<body class="bg-gray-950 text-white min-h-screen">
-    <!-- Side Menu Button -->
-    <button id="menuBtn" class="fixed top-4 left-4 p-2 rounded-lg hover:bg-gray-800 transition-colors">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-    </button>
+  // Sample tasks data
+  const tasks = [
+    { id: 1, title: 'Follow on Twitter', reward: 100, completed: true },
+    { id: 2, title: 'Join Telegram Group', reward: 150, completed: true },
+    { id: 3, title: 'Join Discord Server', reward: 200, completed: false },
+    { id: 4, title: 'Share Referral Code', reward: 300, completed: false },
+    { id: 5, title: 'Complete KYC', reward: 500, completed: false }
+  ];
 
-    <!-- Side Menu -->
-    <div id="sideMenu" class="fixed left-0 top-0 h-full w-64 bg-gray-900 transform -translate-x-full transition-transform duration-200 ease-in-out z-50">
-        <div class="p-4 border-b border-gray-800">
-            <h2 class="text-xl font-bold">CosmicCoin Galaxy</h2>
-            <p class="text-sm text-gray-400">Mining Dashboard</p>
-        </div>
-        <nav class="p-4">
-            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                </svg>
-                <span>Home</span>
-            </a>
-            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                </svg>
-                <span>Tasks</span>
-            </a>
-            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
-                </svg>
-                <span>Rewards</span>
-            </a>
-            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span>Invite</span>
-            </a>
-        </nav>
-    </div>
-
-    <!-- Main Content -->
-    <div class="min-h-screen flex items-center justify-center p-4">
-        <div class="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-6">
-            <!-- Mining Circle -->
-            <div class="relative aspect-square rounded-full border border-gray-800 mb-6">
-                <div class="absolute inset-0 world-map opacity-20"></div>
-                
-                <!-- Mining Progress -->
-                <div id="miningProgress" class="absolute bottom-0 w-full mining-progress opacity-20" style="height: 0%"></div>
-                
-                <!-- Balance Display -->
-                <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                    <div id="balance" class="text-4xl font-bold">0.00</div>
-                    <div class="text-sm text-gray-400">h/h</div>
-                    <div id="timeLeft" class="flex items-center mt-2 text-sm text-gray-400 hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span id="timer">0h 0m</span>
-                    </div>
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'home':
+        return (
+          <div className="space-y-6">
+            <Card className="bg-white/5 backdrop-blur-lg border-0 p-6 rounded-2xl">
+              <div className="relative">
+                <div className="absolute inset-0 opacity-10">
+                  <Globe className="w-full h-full text-gray-400" />
                 </div>
+                <div className="relative z-10">
+                  <div className="text-center mb-8">
+                    <div className="text-yellow-500 text-2xl font-bold mb-2">₭{userData.balance}</div>
+                    <div className="text-4xl font-bold text-white mb-2">{userData.hashRate} kh/s</div>
+                    <div className="text-gray-400">BALANCE</div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-4 text-center">
+                    <div className="p-3 rounded-lg bg-white/5">
+                      <div className="text-sm text-gray-400 mb-1">Active Time</div>
+                      <div className="text-white font-semibold">{userData.activeTime}</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-white/5">
+                      <div className="text-sm text-gray-400 mb-1">Earnings</div>
+                      <div className="text-white font-semibold">₭{userData.earnings}</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-white/5">
+                      <div className="text-sm text-gray-400 mb-1">Tasks Complete</div>
+                      <div className="text-white font-semibold">{userData.completedTasks}/{userData.totalTasks}</div>
+                    </div>
+                    <div className="p-3 rounded-lg bg-white/5">
+                      <div className="text-sm text-gray-400 mb-1">Referrals</div>
+                      <div className="text-white font-semibold">{userData.referralCount}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button className="w-full py-4 px-6 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-xl transition-colors">
+                Claim Rewards
+              </button>
+              <button className="w-full py-4 px-6 bg-gray-800 hover:bg-gray-700 text-white font-semibold rounded-xl transition-colors">
+                View Tasks
+              </button>
+            </div>
+          </div>
+        );
+
+      case 'tasks':
+        return (
+          <div className="space-y-4">
+            <h2 className="text-xl font-bold text-white mb-4">Available Tasks</h2>
+            {tasks.map(task => (
+              <Card key={task.id} className="bg-white/5 p-4 rounded-xl flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className={`w-4 h-4 rounded-full ${task.completed ? 'bg-green-500' : 'bg-gray-500'}`} />
+                  <span className="text-white">{task.title}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-500">₭{task.reward}</span>
+                  <button className="p-2 bg-gray-700 rounded-lg hover:bg-gray-600 transition-colors">
+                    <ExternalLink className="w-4 h-4 text-white" />
+                  </button>
+                </div>
+              </Card>
+            ))}
+          </div>
+        );
+
+      case 'rewards':
+        return (
+          <div className="space-y-4">
+            <Card className="bg-white/5 p-6 rounded-xl text-center">
+              <h2 className="text-2xl font-bold text-white mb-2">Total Earnings</h2>
+              <div className="text-4xl font-bold text-yellow-500 mb-4">₭{userData.balance}</div>
+              <button className="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-xl transition-colors">
+                Claim All Rewards
+              </button>
+            </Card>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="bg-white/5 p-4 rounded-xl">
+                <div className="text-gray-400 mb-1">Task Rewards</div>
+                <div className="text-xl font-bold text-white">₭1,250</div>
+              </Card>
+              <Card className="bg-white/5 p-4 rounded-xl">
+                <div className="text-gray-400 mb-1">Referral Rewards</div>
+                <div className="text-xl font-bold text-white">₭750</div>
+              </Card>
+            </div>
+          </div>
+        );
+
+      case 'invite':
+        return (
+          <div className="space-y-4">
+            <Card className="bg-white/5 p-6 rounded-xl">
+              <h2 className="text-xl font-bold text-white mb-4">Your Referral Code</h2>
+              <div className="flex items-center gap-2 bg-gray-800 p-3 rounded-lg">
+                <input 
+                  type="text" 
+                  value={userData.referralCode} 
+                  readOnly 
+                  className="bg-transparent text-white flex-1 outline-none"
+                />
+                <button className="p-2 hover:bg-gray-700 rounded-lg transition-colors">
+                  <Copy className="w-4 h-4 text-white" />
+                </button>
+              </div>
+            </Card>
+
+            <div className="grid grid-cols-2 gap-4">
+              <button className="flex items-center justify-center gap-2 w-full py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-xl transition-colors">
+                <Share2 className="w-4 h-4" />
+                Share on Social
+              </button>
+              <button className="flex items-center justify-center gap-2 w-full py-3 bg-blue-400 hover:bg-blue-500 text-white font-semibold rounded-xl transition-colors">
+                <MessageCircle className="w-4 h-4" />
+                Join Community
+              </button>
             </div>
 
-            <!-- Mining Controls -->
-            <div class="grid grid-cols-2 gap-4">
-                <button onclick="startMining(12)" class="px-4 py-2 bg-transparent border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors">
-                    Mine 12h
-                </button>
-                <button onclick="startMining(24)" class="px-4 py-2 bg-transparent border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors">
-                    Mine 24h
-                </button>
-            </div>
+            <Card className="bg-white/5 p-4 rounded-xl">
+              <div className="text-gray-400 mb-2">Total Referrals</div>
+              <div className="text-2xl font-bold text-white">{userData.referralCount}</div>
+            </Card>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black">
+      {/* Sidebar */}
+      <div className={`fixed inset-y-0 left-0 w-64 bg-gray-900 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-200 ease-in-out z-30`}>
+        <div className="p-4">
+          <div className="flex items-center justify-between mb-8">
+            <div className="text-xl font-bold text-white">Cosmic Galaxy</div>
+            <button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-white">
+              <X className="w-6 h-6" />
+            </button>
+          </div>
+          
+          <nav className="space-y-2">
+            {[
+              { id: 'home', icon: Home, label: 'Home' },
+              { id: 'tasks', icon: CheckSquare, label: 'Tasks' },
+              { id: 'rewards', icon: Gift, label: 'Rewards' },
+              { id: 'invite', icon: Users, label: 'Invite' }
+            ].map(item => (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setActiveTab(item.id);
+                  setSidebarOpen(false);
+                }}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                  activeTab === item.id ? 'bg-yellow-500 text-black' : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                }`}
+              >
+                <item.icon className="w-5 h-5" />
+                {item.label}
+              </button>
+            ))}
+          </nav>
         </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="p-4 max-w-md mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <button onClick={() => setSidebarOpen(true)} className="text-gray-400 hover:text-white">
+            <Menu className="w-6 h-6" />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 bg-green-500 rounded-full" />
+            <span className="text-gray-400 text-sm">Online</span>
+          </div>
+        </div>
+
+        {renderContent()}
+      </div>
     </div>
-
-    <script>
-        // Constants
-        const MINING_RATE = 0.00040; // COS per second
-
-        // State Management
-        let isMining = false;
-        let miningEndTime = 0;
-        let miningInterval = null;
-        let balance = parseFloat(localStorage.getItem('balance')) || 0;
-
-        // DOM Elements
-        const balanceEl = document.getElementById('balance');
-        const progressEl = document.getElementById('miningProgress');
-        const timerEl = document.getElementById('timer');
-        const timeLeftContainer = document.getElementById('timeLeft');
-        const menuBtn = document.getElementById('menuBtn');
-        const sideMenu = document.getElementById('sideMenu');
-
-        // Initialize
-        updateBalanceDisplay();
-        loadMiningState();
-
-        // Menu Toggle
-        menuBtn.addEventListener('click', () => {
-            sideMenu.classList.toggle('-translate-x-full');
-        });
-
-        // Click outside menu to close
-        document.addEventListener('click', (e) => {
-            if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-                sideMenu.classList.add('-translate-x-full');
-            }
-        });
-
-        function startMining(hours) {
-            if (isMining) {
-                alert('Mining already in progress!');
-                return;
-            }
-
-            isMining = true;
-            const startTime = Date.now();
-            miningEndTime = startTime + (hours * 60 * 60 * 1000);
-            
-            localStorage.setItem('isMining', 'true');
-            localStorage.setItem('miningEndTime', miningEndTime.toString());
-            localStorage.setItem('miningStartTime', startTime.toString());
-            
-            updateMiningProgress();
-            timeLeftContainer.classList.remove('hidden');
-        }
-
-        function updateMiningProgress() {
-            clearInterval(miningInterval);
-            
-            miningInterval = setInterval(() => {
-                const now = Date.now();
-                const timeLeft = miningEndTime - now;
-                
-                if (timeLeft <= 0) {
-                    completeMining();
-                    return;
-                }
-
-                // Update progress bar
-                const progress = 100 - ((timeLeft / (24 * 60 * 60 * 1000)) * 100);
-                progressEl.style.height = `${progress}%`;
-                
-                // Update timer
-                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                timerEl.textContent = `${hours}h ${minutes}m`;
-                
-                // Update balance
-                const earnedAmount = MINING_RATE * ((now - parseInt(localStorage.getItem('miningStartTime'))) / 1000);
-                balance = parseFloat(localStorage.getItem('balance')) + earnedAmount;
-                updateBalanceDisplay();
-            }, 1000);
-        }
-
-        function completeMining() {
-            clearInterval(miningInterval);
-            isMining = false;
-            progressEl.style.height = '0%';
-            timeLeftContainer.classList.add('hidden');
-            
-            localStorage.setItem('isMining', 'false');
-            localStorage.setItem('balance', balance.toString());
-            
-            updateBalanceDisplay();
-        }
-
-        function updateBalanceDisplay() {
-            balanceEl.textContent = balance.toFixed(2);
-        }
-
-        function loadMiningState() {
-            const storedMining = localStorage.getItem('isMining') === 'true';
-            const storedEndTime = parseInt(localStorage.getItem('miningEndTime'));
-            
-            if (storedMining && Date.now() < storedEndTime) {
-                isMining = true;
-                miningEndTime = storedEndTime;
-                updateMiningProgress();
-                timeLeftContainer.classList.remove('hidden');
-            }
-        }
-
-        // Handle page visibility changes
-        document.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'visible' && isMining) {
-                updateMiningProgress();
-            }
-        });
-    </script>
-</body>
-</html>
+  );
+}
