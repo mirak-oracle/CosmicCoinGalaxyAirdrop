@@ -38,6 +38,185 @@
         }
     </style>
 </head>
+    <
+div
+ 
+id
+=
+"
+user-info
+"
+>
+</
+div
+>
+
+  
+<
+button
+ 
+id
+=
+"
+createUserButton
+"
+ 
+class
+=
+"
+flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-semibold rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-colors duration-300
+"
+>
+
+  
+<
+svg
+ 
+class
+=
+"
+w-5 h-5 mr-2
+"
+ 
+fill
+=
+"
+none
+"
+ 
+stroke
+=
+"
+currentColor
+"
+ 
+viewBox
+=
+"
+0 0 24 24
+"
+ 
+xmlns
+=
+"
+http://www.w3.org/2000/svg
+"
+>
+
+    
+<
+path
+ 
+stroke-linecap
+=
+"
+round
+"
+ 
+stroke-linejoin
+=
+"
+round
+"
+ 
+stroke-width
+=
+"
+2
+"
+ 
+d
+=
+"
+M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z
+"
+>
+</
+path
+>
+
+  
+</
+svg
+>
+
+  Generate User ID
+  
+</
+button
+>
+
+  
+<
+div
+ 
+id
+=
+"
+userId
+"
+>
+</
+div
+>
+
+  
+<
+script
+>
+
+    function generateUniqueId() {
+      return 'user-' + Math.random().toString(36).substr(2, 9);
+    }
+    function createUser() {
+      let userId = localStorage.getItem('userId');
+      if (!userId) {
+        userId = generateUniqueId();
+        localStorage.setItem('userId', userId);
+        localStorage.setItem(userId + '_balance', '0');
+      }
+      console.log('User ID:', userId);
+      return userId;
+    }
+    function getUserBalance(userId) {
+      let userBalance = localStorage.getItem(userId + '_balance');
+      if (userBalance === null) {
+        userBalance = '0';
+        localStorage.setItem(userId + '_balance', userBalance);
+      }
+      return parseFloat(userBalance);
+    }
+    function displayUserBalance(userId, elementId) {
+      const userBalance = getUserBalance(userId);
+      const userBalanceElement = document.createElement('p');
+      userBalanceElement.className = 'userBalance';
+      userBalanceElement.innerText = `Your Balance is: $${userBalance.toFixed(2)}`;
+      document.getElementById(elementId).appendChild(userBalanceElement);
+    }
+    document.getElementById('createUserButton').addEventListener('click', () => {
+      const userId = createUser();
+      const userIdElement = document.createElement('p');
+      userIdElement.className = 'userId';
+      userIdElement.innerText = `Your User ID is: ${userId}`;
+      document.getElementById('userId').appendChild(userIdElement);
+      displayUserBalance(userId, 'userId');
+    });
+    window.onload = () => {
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        const userIdElement = document.createElement('p');
+        userIdElement.className = 'userId';
+        userIdElement.innerText = `Your User ID is: ${userId}`;
+        document.getElementById('userId').appendChild(userIdElement);
+        displayUserBalance(userId, 'userId');
+      }
+    };
+  
+</
+script
+>
+
+    
 <body class="bg-gray-950 text-white min-h-screen">
     <!-- Side Menu Button -->
     <button id="menuBtn" class="fixed top-4 left-4 p-2 rounded-lg hover:bg-gray-800 transition-colors z-50">
