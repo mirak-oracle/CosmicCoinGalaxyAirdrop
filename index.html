@@ -605,6 +605,54 @@ updateBadgeInfo();
       <p class="text-sm"> Airdrop Cooking 🍳 </p>
  </div>
 <table class="w-full">
+	<thead>
+        <tr class="bg-gray-50 text-gray-600 uppercase text-xs">
+          <th class="py-3 px-4 text-left font-semibold">Rank</th>
+          <th class="py-3 px-4 text-left font-semibold">User ID</th>
+          <th class="py-3 px-4 text-right font-semibold">Balance</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 text-sm">
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">1</td>
+          <td class="py-3 px-4 text-left font-medium">CEO_CTO_CLAUNS</td>
+          <td class="py-3 px-4 text-right">25B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">2</td>
+          <td class="py-3 px-4 text-left font-medium">CAO_HUBS</td>
+          <td class="py-3 px-4 text-right">21B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">3</td>
+          <td class="py-3 px-4 text-left font-medium">CPO_VILLAGES</td>
+          <td class="py-3 px-4 text-right">19B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">4</td>
+          <td class="py-3 px-4 text-left font-medium">CMO_VILLAS</td>
+          <td class="py-3 px-4 text-right">18B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">5</td>
+          <td class="py-3 px-4 text-left font-medium">CAO_CREWS</td>
+          <td class="py-3 px-4 text-right">10B CosmicCoin</td>
+        </tr>
+        <tr class="border-b border-gray-100 hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">6</td>
+          <td class="py-3 px-4 text-left font-medium">CPO_GUYS</td>
+          <td class="py-3 px-4 text-right">8.5B CosmicCoin</td>
+        </tr>
+        <tr class="hover:bg-gray-50 transition duration-150">
+          <td class="py-3 px-4 text-left">7</td>
+          <td class="py-3 px-4 text-left font-medium">CMO_RESORTS</td>
+          <td class="py-3 px-4 text-right">7.5B CosmicCoin</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  </div>
+    
       
 
 
@@ -818,7 +866,14 @@ updateBadgeInfo();
           </svg>
           <span>Games</span>
         </button>
-      
+      <li class="flex-1">
+        <button class="nav-button flex flex-col items-center space-y-1 text-xs font-medium hover:text-blue-400 transition-colors duration-200 p-2" onclick="showSection('comingSoonSection')">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+          </svg>
+          <span>Wallet</span>
+        </button>
+      </li>
     </ul>
   </div>
 </nav>
