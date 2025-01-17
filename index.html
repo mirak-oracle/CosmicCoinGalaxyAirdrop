@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmicCoin Galaxy Airdrop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/lucide-icons@latest/dist/umd/lucide.min.css" rel="stylesheet">
+    <style>
+        .mining-circle {
+            clip-path: circle(50% at 50% 50%);
+            transition: clip-path 0.3s ease;
+        }
+        
+        .mining-progress {
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            transition: height 1s linear;
+        }
+
+        .world-map {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"><path d="M3 12h18M12 3v18M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-950 text-white min-h-screen">
+    <!-- Side Menu Button -->
+    <button id="menuBtn" class="fixed top-4 left-4 p-2 rounded-lg hover:bg-gray-800 transition-colors z-50">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+
+    <!-- Side Menu -->
+    <div id="sideMenu" class="fixed left-0 top-0 h-full w-64 bg-gray-900 transform -translate-x-full transition-transform duration-200 ease-in-out z-40">
+        <div class="p-4 border-b border-gray-800">
+            <h2 class="text-xl font-bold">CosmicCoin Galaxy</h2>
+            <p class="text-sm text-gray-400">Mining Dashboard</p>
+        </div>
+        <nav class="p-4">
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('mainSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Home</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('tasksSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+                <span>Tasks</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('rewardsSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                </svg>
+                <span>Rewards</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('referralSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <span>Invite</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('notificationsSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                <span>Notifications</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('gamesSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Games</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('walletSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                </svg>
+                <span>Wallet</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="p-4 sm:ml-64">
+        <!-- Home Section -->
+        <div id="mainSection" class="min-h-screen flex items-center justify-center">
+            <div class="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-6">
+                <!-- Mining Circle -->
+                <div class="relative aspect-square rounded-full border border-gray-800 mb-6">
+                    <div class="absolute inset-0 world-map opacity-20"></div>
+                    
+                    <!-- Mining Progress -->
+                    <div id="miningProgress" class="absolute bottom-0 w-full mining-progress opacity-20" style="height: 0%"></div>
+                    
+                    <!-- Balance Display -->
+                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                        <div id="balance" class="text-4xl font-bold">0.00</div>
+                        <div class="text-sm text-gray-400">h/h</div>
+                        <div id="timeLeft" class="flex items-center mt-2 text-sm text-gray-400 hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span id="timer">0h 0m</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mining Controls -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="startMining(12)" class="px-4 py-2 bg-transparent border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors">
+                        Mine 12h
+                    </button>
+                    <button onclick="startMining(24)" class="px-4 py-2 bg-transparent border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors">
+                        Mine 24h
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div id="tasksSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Tasks</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="task-item">
+                    <a href="https://t.me/CosmicCoin11" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('join_telegram')">
+                            Join Telegram Channel
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://twitter.com/MirakleGroup" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_twitter')">
+                            Follow on Twitter
+                        </button>
+                    </a>
+                </div>
+                <!-- Add more task items here -->
+            </div>
+        </div>
+
+        <!-- Rewards Section -->
+        <div id="rewardsSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
+                <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
+                <button onclick="claimDailyReward()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    Claim Daily Reward
+                </button>
+            </div>
+        </div>
+
+        <!-- Referral Section -->
+        <div id="referralSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <p class="mb-4">Invite your friends and earn bonus CosmicCoins!</p>
+                <button onclick="inviteFriend()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
+                    Invite a Friend
+                </button>
+                <p id="referralStatus" class="mt-4 text-sm text-gray-400"></p>
+            </div>
+        </div>
+
+        <!-- Notifications Section -->
+        <div id="notificationsSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Notifications</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Enable Notifications</h3>
+                <p class="mb-4">Stay updated with the latest CosmicCoin news and mining reminders!</p>
+                <button onclick="enableNotifications()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    Enable Notifications
+                </button>
+            </div>
+        </div>
+
+        <!-- Games Section -->
+        <div id="gamesSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Cosmic Games Hub</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Play and Earn</h3>
+                <p class="mb-4">Play games to earn extra CosmicCoin and Galactic Gems!</p>
+                <button onclick="window.open('https://mirak-oracle.github.io/GalacticGems/', '_blank')" class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded">
+                    Launch Galactic Gems
+                </button>
+            </div>
+        </div>
+
+        <!-- Wallet Section -->
+        <div id="walletSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Wallet</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Your CosmicCoin Balance</h3>
+                <p id="walletBalance" class="text-2xl font-bold mb-4">0.00 COS</p>
+                <button onclick="refreshWalletBalance()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    Refresh Balance
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Constants
+        const MINING_RATE = 0.00040; // COS per second
+
+        // State Management
+        let isMining = false;
+        let miningEndTime = 0;
+        let miningInterval = null;
+        let balance = parseFloat(localStorage.getItem('balance')) || 0;
+
+        // DOM Elements
+        const balanceEl = document.getElementById('balance');
+        const progressEl = document.getElementById('miningProgress');
+        const timerEl = document.getElementById('timer');
+        const timeLeftContainer = document.getElementById('timeLeft');
+        const menuBtn = document.getElementById('menuBtn');
+        const sideMenu = document.getElementById('sideMenu');
+
+        // Initialize
+        updateBalanceDisplay();
+        loadMiningState();
+
+        // Menu Toggle
+        menuBtn.addEventListener('click', () => {
+            sideMenu.classList.toggle('-translate-x-full');
+        });
+
+        // Click outside menu to close
+        document.addEventListener('click', (e) => {
+            if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+                sideMenu.classList.add('-translate-x-full');
+            }
+        });
+
+        function startMining(hours) {
+            if (isMining) {
+                alert('Mining already in progress!');
+                return;
+            }
+
+            isMining = true;
+            const startTime = Date.now();
+            miningEndTime = startTime + (hours * 60 * 60 * 1000);
+            
+            localStorage.setItem('isMining', 'true');
+            localStorage.setItem('miningEndTime', miningEndTime.toString());
+            localStorage.setItem('miningStartTime', startTime.toString());
+            
+            updateMiningProgress();
+            timeLeftContainer.classList.remove('hidden');
+        }
+
+        function updateMiningProgress() {
+            clearInterval(miningInterval);
+            
+            miningInterval = setInterval(() => {
+                const now = Date.now();
+                const timeLeft = miningEndTime - now;
+                
+                if (timeLeft <= 0) {
+                    completeMining();
+                    return;
+                }
+
+                // Update progress bar
+                const progress = 100 - ((timeLeft / (24 * 60 * 60 * 1000)) * 100);
+                progressEl.style.height = `${progress}%`;
+                
+                // Update timer
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                timerEl.textContent = `${hours}h ${minutes}m`;
+                
+                // Update balance
+                const earnedAmount = MINING_RATE * ((now - parseInt(localStorage.getItem('miningStartTime'))) / 1000);
+                balance = parseFloat(localStorage.getItem('balance')) + earnedAmount;
+                updateBalanceDisplay();
+            }, 1000);
+        }
+
+        function completeMining() {
+            clearInterval(miningInterval);
+            isMining = false;
+            progressEl.style.height = '0%';
+            timeLeftContainer.classList.add('hidden');
+            
+            localStorage.setItem('isMining', 'false');
+            localStorage.setItem('balance', balance.toString());
+            
+            updateBalanceDisplay();
+        }
+
+        function updateBalanceDisplay() {
+            balanceEl.textContent = balance.toFixed(2);
+            document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
+        }
+
+        function loadMiningState() {
+            const storedMining = localStorage.getItem('isMining') === 'true';
+            const storedEndTime = parseInt(localStorage.getItem('miningEndTime'));
+            
+            if (storedMining && Date.now() < storedEndTime) {
+                isMining = true;
+                miningEndTime = storedEndTime;
+                updateMiningProgress();
+                timeLeftContainer.classList.remove('hidden');
+            }
+        }
+
+        function showSection(sectionId) {
+            const sections = document.querySelectorAll('#mainContent > div');
+            sections.forEach(section => section.classList.add('hidden'));
+            document.getElementById(sectionId).classList.remove('hidden');
+        }
+
+        function completeTask(taskId) {
+            // Implement task completion logic here
+            console.log(`Task ${taskId} completed`);
+            // You can add points, update UI, etc.
+        }
+
+        function claimDailyReward() {
+            const lastClaimTime = localStorage.getItem('lastClaimTime');
+            const now = Date.now();
+            if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
+                alert('You have already claimed your daily reward. Come back tomorrow!');
+            } else {
+                const reward = 50; // Example reward amount
+                balance += reward;
+                localStorage.setItem('balance', balance.toString());
+                localStorage.setItem('lastClaimTime', now.toString());
+                updateBalanceDisplay();
+                alert(`You've claimed ${reward} CosmicCoins as your daily reward!`);
+            }
+        }
+
+        function inviteFriend() {
+            const referralCode = generateReferralCode();
+            const referralLink = `https://cosmiccoin.com?ref=${referralCode}`;
+            navigator.clipboard.writeText(referralLink).then(() => {
+                document.getElementById('referralStatus').textContent = 'Referral link copied to clipboard!';
+            });
+        }
+
+        function generateReferralCode() {
+            return Math.random().toString(36).substring(2, 8).toUpperCase();
+        }
+
+        function enableNotifications() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                        alert('Notifications enabled successfully!');
+                    }
+                });
+            }
+        }
+
+        function refreshWalletBalance() {
+            updateBalanceDisplay();
+        }
+
+        // Handle page visibility changes
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible' && isMining) {
+                updateMiningProgress();
+            }
+        });
+    </script>
+</body>
+</html>
