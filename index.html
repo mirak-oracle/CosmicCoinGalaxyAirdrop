@@ -795,88 +795,10 @@ table class="w-full">
 
 	<script>
 		
-		document.addEventListener('DOMContentLoaded', function() {
-    const taskButtons = document.querySelectorAll('.task-item button');
-    const totalPointsElement = document.getElementById('totalPoints');
-    const taskStatusElement = document.getElementById('taskStatus');
+		
+    
 
-    let totalPoints = parseInt(localStorage.getItem('totalPoints') || '0', 10);
-    let completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '{}');
-    const cooldownPeriod = 5 * 60 * 1000; // 5 minutes in milliseconds
-
-    function updateDisplay() {
-        totalPointsElement.textContent = totalPoints;
-    }
-
-    updateDisplay();
-
-    async function verifyTaskCompletion(taskId, taskType) {
-        // Simulated server-side verification
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const randomSuccess = Math.random() < 0.8; // 80% success rate for simulation
-                resolve(randomSuccess);
-            }, 1000); // Simulate network delay
-        });
-    }
-
-    async function completeTask(taskId, taskType) {
-        if (completedTasks[taskId]) {
-            const timeSinceLastCompletion = Date.now() - completedTasks[taskId];
-            if (timeSinceLastCompletion < cooldownPeriod) {
-                const remainingCooldown = Math.ceil((cooldownPeriod - timeSinceLastCompletion) / 1000 / 60);
-                taskStatusElement.textContent = `Please wait ${remainingCooldown} minutes before attempting this task again.`;
-                return;
-            }
-        }
-
-        taskStatusElement.textContent = 'Verifying task completion...';
-
-        try {
-            const isVerified = await verifyTaskCompletion(taskId, taskType);
-
-            if (isVerified) {
-                const pointsEarned = getPointsForTask(taskType);
-                totalPoints += pointsEarned;
-                completedTasks[taskId] = Date.now();
-
-                localStorage.setItem('totalPoints', totalPoints.toString());
-                localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
-
-                updateDisplay();
-                taskStatusElement.textContent = `Task completed! You earned ${pointsEarned} points.`;
-            } else {
-                taskStatusElement.textContent = 'Task verification failed. Please try again or contact support.';
-            }
-        } catch (error) {
-            console.error('Error verifying task:', error);
-            taskStatusElement.textContent = 'An error occurred. Please try again later.';
-        }
-    }
-
-    function getPointsForTask(taskType) {
-        const pointsMap = {
-            'social': 5,
-            'telegram': 10,
-            'partner': 15,
-            'other': 20
-        };
-        return pointsMap[taskType] || 5;
-    }
-
-    taskButtons.forEach(button => {
-        button.addEventListener('click', async function(event) {
-            event.preventDefault();
-            const taskId = this.getAttribute('data-task-id');
-            const taskType = this.getAttribute('data-task-type');
-            
-            await completeTask(taskId, taskType);
-
-            // Open the task link in a new tab
-            window.open(this.closest('a').href, '_blank');
-        });
-    });
-});
+    
 	</script>
 		
 
@@ -1564,23 +1486,88 @@ function claimDailyReward() {
     updateBalanceDisplay();
   }
 }
+document.addEventListener('DOMContentLoaded', function() {
+    const taskButtons = document.querySelectorAll('.task-item button');
+    const totalPointsElement = document.getElementById('totalPoints');
+    const taskStatusElement = document.getElementById('taskStatus');
 
-function completeTask(taskId) {
-  const completedTasks = getLocalStorageItem('completedTasks', {});
+    let totalPoints = parseInt(localStorage.getItem('totalPoints') || '0', 10);
+    let completedTasks = JSON.parse(localStorage.getItem('completedTasks') || '{}');
+    const cooldownPeriod = 5 * 60 * 1000; // 5 minutes in milliseconds
 
-  if (completedTasks[taskId]) {
-    alert('Task already completed! More tasks coming soon 😊');
-    // Optionally, display a meme or image here
-    document.getElementById('taskMeme').innerHTML = '<img src="path_to_your_meme.jpg" alt="Meme" />';
-  } else {
-    alert(`Task ${taskId} completed!`);
-    const currentBalance = getLocalStorageItem('balance', 0);
-    setLocalStorageItem('balance', currentBalance + 30); // Reward for task completion
-    completedTasks[taskId] = true;
-    setLocalStorageItem('completedTasks', completedTasks);
-    updateBalanceDisplay();
-  }
-}
+    function updateDisplay() {
+        totalPointsElement.textContent = totalPoints;
+    }
+
+    updateDisplay();
+
+    async function verifyTaskCompletion(taskId, taskType) {
+        // Simulated server-side verification
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const randomSuccess = Math.random() < 0.8; // 80% success rate for simulation
+                resolve(randomSuccess);
+            }, 1000); // Simulate network delay
+        });
+    }
+
+    async function completeTask(taskId, taskType) {
+        if (completedTasks[taskId]) {
+            const timeSinceLastCompletion = Date.now() - completedTasks[taskId];
+            if (timeSinceLastCompletion < cooldownPeriod) {
+                const remainingCooldown = Math.ceil((cooldownPeriod - timeSinceLastCompletion) / 1000 / 60);
+                taskStatusElement.textContent = `Please wait ${remainingCooldown} minutes before attempting this task again.`;
+                return;
+            }
+        }
+
+        taskStatusElement.textContent = 'Verifying task completion...';
+
+        try {
+            const isVerified = await verifyTaskCompletion(taskId, taskType);
+
+            if (isVerified) {
+                const pointsEarned = getPointsForTask(taskType);
+                totalPoints += pointsEarned;
+                completedTasks[taskId] = Date.now();
+
+                localStorage.setItem('totalPoints', totalPoints.toString());
+                localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+
+                updateDisplay();
+                taskStatusElement.textContent = `Task completed! You earned ${pointsEarned} points.`;
+            } else {
+                taskStatusElement.textContent = 'Task verification failed. Please try again or contact support.';
+            }
+        } catch (error) {
+            console.error('Error verifying task:', error);
+            taskStatusElement.textContent = 'An error occurred. Please try again later.';
+        }
+    }
+
+    function getPointsForTask(taskType) {
+        const pointsMap = {
+            'social': 5,
+            'telegram': 10,
+            'partner': 15,
+            'other': 20
+        };
+        return pointsMap[taskType] || 5;
+    }
+
+    taskButtons.forEach(button => {
+        button.addEventListener('click', async function(event) {
+            event.preventDefault();
+            const taskId = this.getAttribute('data-task-id');
+            const taskType = this.getAttribute('data-task-type');
+            
+            await completeTask(taskId, taskType);
+
+            // Open the task link in a new tab
+            window.open(this.closest('a').href, '_blank');
+        });
+    });
+});
 
 function generateReferralCode() {
   const timestamp = Date.now().toString(36);
