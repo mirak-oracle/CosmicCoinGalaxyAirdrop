@@ -324,18 +324,16 @@
         </div>
         </div>
 
-        <!-- Referral Section -->
-        <div id="referralSection" class="hidden">
-            <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <p class="mb-4">Invite your friends and earn bonus CosmicCoins!</p>
-                <button onclick="inviteFriend()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
-                    Invite a Friend
-                </button>
-                <p id="referralStatus" class="mt-4 text-sm text-gray-400"></p>
-            </div>
-        </div>
-
+<div id="referralSection" class="hidden">
+    <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <p class="mb-4">Invite your friends and earn bonus CosmicCoins!</p>
+        <button onclick="inviteFriend()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
+            Invite a Friend
+        </button>
+        <p id="referralStatus" class="mt-4 text-sm text-gray-400"></p>
+    </div>
+</div>
         <!-- Wallet Section -->
         <div id="walletSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Wallet</h2>
@@ -597,14 +595,225 @@ document.addEventListener('DOMContentLoaded', initializeCooldowns);
             }
         }
 
-        function inviteFriend() {
-            const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-            const referralLink = `https://cosmiccoin.com?ref=${referralCode}`;
-            navigator.clipboard.writeText(referralLink).then(() => {
-                document.getElementById('referralStatus').textContent = 'Referral link copied to clipboard!';
-            });
+// Referral System Configuration
+const REFERRAL_CONFIG = {
+    BONUS_AMOUNT: 50, // Bonus coins for successful referral
+    MAX_REFERRALS: 20, // Maximum referrals per user
+    PLATFORMS: {
+        TELEGRAM: 'telegram',
+        WAPCHAT: 'wapchat',
+        WEBAPP: 'webapp'
+    },
+    REWARD_TIERS: [
+        { count: 5, bonus: 100 },
+        { count: 10, bonus: 250 },
+        { count: 20, bonus: 500 }
+    ]
+};
+
+class ReferralSystem {
+    constructor() {
+        this.referralData = JSON.parse(localStorage.getItem('referralData')) || {
+            myReferralCode: '',
+            referredBy: '',
+            myReferrals: [],
+            totalEarned: 0,
+            platform: ''
+        };
+        
+        this.initializeSystem();
+    }
+
+    initializeSystem() {
+        if (!this.referralData.myReferralCode) {
+            this.referralData.myReferralCode = this.generateReferralCode();
+            this.saveData();
+        }
+        this.detectPlatform();
+        this.updateUI();
+    }
+
+    generateReferralCode() {
+        const timestamp = Date.now().toString(36);
+        const random = Math.random().toString(36).substring(2, 6);
+        return (timestamp + random).toUpperCase().substring(0, 10);
+    }
+
+    detectPlatform() {
+        if (window.Telegram && window.Telegram.WebApp) {
+            this.referralData.platform = REFERRAL_CONFIG.PLATFORMS.TELEGRAM;
+        } else if (window.WapchatAPI) { // Assuming Wapchat has a specific API
+            this.referralData.platform = REFERRAL_CONFIG.PLATFORMS.WAPCHAT;
+        } else {
+            this.referralData.platform = REFERRAL_CONFIG.PLATFORMS.WEBAPP;
+        }
+    }
+
+    async inviteFriend() {
+        const referralLink = this.generateReferralLink();
+        const shareData = {
+            title: 'Join CosmicCoin Galaxy!',
+            text: `Join me on CosmicCoin and get bonus coins! Use my referral code: ${this.referralData.myReferralCode}`,
+            url: referralLink
+        };
+
+        try {
+            if (this.referralData.platform === REFERRAL_CONFIG.PLATFORMS.TELEGRAM) {
+                await this.shareTelegram(shareData);
+            } else if (this.referralData.platform === REFERRAL_CONFIG.PLATFORMS.WAPCHAT) {
+                await this.shareWapchat(shareData);
+            } else {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(referralLink);
+                    this.updateReferralStatus('Referral link copied to clipboard!');
+                }
+            }
+        } catch (error) {
+            console.error('Error sharing:', error);
+            this.updateReferralStatus('Error sharing referral link. Please try again.');
+        }
+    }
+
+    generateReferralLink() {
+        const baseUrls = {
+            [REFERRAL_CONFIG.PLATFORMS.TELEGRAM]: `https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=${this.referralData.myReferralCode}`,
+            [REFERRAL_CONFIG.PLATFORMS.WAPCHAT]: `wapchat://invite?ref=${this.referralData.myReferralCode}`,
+            [REFERRAL_CONFIG.PLATFORMS.WEBAPP]: `https://cosmiccoin.com?ref=${this.referralData.myReferralCode}`
+        };
+        return baseUrls[this.referralData.platform];
+    }
+
+    async shareTelegram(shareData) {
+        if (window.Telegram && window.Telegram.WebApp) {
+            await window.Telegram.WebApp.sendData(JSON.stringify({
+                type: 'share_referral',
+                referralCode: this.referralData.myReferralCode
+            }));
+        }
+    }
+
+    async shareWapchat(shareData) {
+        if (window.WapchatAPI && window.WapchatAPI.share) {
+            await window.WapchatAPI.share(shareData);
+        }
+    }
+
+    async processReferral(referrerCode) {
+        if (this.referralData.referredBy) {
+            this.updateReferralStatus('You have already been referred by someone.');
+            return false;
         }
 
+        try {
+            // Here you would typically make an API call to verify the referral
+            const response = await this.verifyReferralWithServer(referrerCode);
+            
+            if (response.success) {
+                this.referralData.referredBy = referrerCode;
+                this.saveData();
+                this.updateReferralStatus('Referral successful! Bonus coins added.');
+                return true;
+            }
+        } catch (error) {
+            console.error('Error processing referral:', error);
+            this.updateReferralStatus('Error processing referral. Please try again.');
+        }
+        return false;
+    }
+
+    async verifyReferralWithServer(referrerCode) {
+        // Placeholder for API call to verify referral
+        // In real implementation, make an API call to your server
+        return new Promise(resolve => {
+            setTimeout(() => {
+                resolve({ success: true });
+            }, 1000);
+        });
+    }
+
+    calculateTierBonus() {
+        const referralCount = this.referralData.myReferrals.length;
+        for (const tier of REFERRAL_CONFIG.REWARD_TIERS) {
+            if (referralCount === tier.count) {
+                return tier.bonus;
+            }
+        }
+        return 0;
+    }
+
+    updateReferralStatus(message) {
+        const statusElement = document.getElementById('referralStatus');
+        if (statusElement) {
+            statusElement.textContent = message;
+            // Clear message after 5 seconds
+            setTimeout(() => {
+                statusElement.textContent = '';
+            }, 5000);
+        }
+    }
+
+    updateUI() {
+        // Update referral section UI
+        const referralSection = document.getElementById('referralSection');
+        if (referralSection) {
+            referralSection.classList.remove('hidden');
+            
+            // Create and append referral stats
+            const statsHTML = `
+                <div class="mt-6 grid grid-cols-2 gap-4">
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-bold">Your Referral Code</h3>
+                        <p class="text-xl text-purple-400">${this.referralData.myReferralCode}</p>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-bold">Total Referrals</h3>
+                        <p class="text-xl text-purple-400">${this.referralData.myReferrals.length}</p>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-bold">Coins Earned</h3>
+                        <p class="text-xl text-purple-400">${this.referralData.totalEarned}</p>
+                    </div>
+                    <div class="bg-gray-700 p-4 rounded-lg">
+                        <h3 class="font-bold">Next Tier</h3>
+                        <p class="text-xl text-purple-400">${this.getNextTierInfo()}</p>
+                    </div>
+                </div>
+            `;
+            
+            referralSection.insertAdjacentHTML('beforeend', statsHTML);
+        }
+    }
+
+    getNextTierInfo() {
+        const referralCount = this.referralData.myReferrals.length;
+        for (const tier of REFERRAL_CONFIG.REWARD_TIERS) {
+            if (referralCount < tier.count) {
+                return `${tier.count - referralCount} more to ${tier.bonus} bonus`;
+            }
+        }
+        return 'Max tier reached!';
+    }
+
+    saveData() {
+        localStorage.setItem('referralData', JSON.stringify(this.referralData));
+    }
+}
+
+// Initialize the referral system
+const referralSystem = new ReferralSystem();
+
+// Updated inviteFriend function
+function inviteFriend() {
+    referralSystem.inviteFriend();
+}
+
+// Function to handle incoming referrals
+async function handleIncomingReferral(referralCode) {
+    await referralSystem.processReferral(referralCode);
+}
+    
         function refreshWalletBalance() {
             updateBalanceDisplay();
             alert('Balance refreshed!');
