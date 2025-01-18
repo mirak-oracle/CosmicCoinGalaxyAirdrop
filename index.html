@@ -261,56 +261,31 @@
         </div>
 
 
-<!-- Tasks Section -->
-<div id="tasksContainer" class="pt-20">
-    <!-- Socials Section -->
-    <div id="socialsSection" class="mb-12">
-        <h2 class="text-3xl font-bold mb-6 text-center">Socials</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="task-item">
-                <a href="https://twitter.com/MirakleGroup" target="_blank">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_twitter')">
-                        Follow on Twitter
+        <!-- Tasks Section -->
+        <div id="tasksSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Tasks</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="task-item">
+                    <a href="https://t.me/CosmicCoin11" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('join_telegram')">
+                            Join Telegram Channel
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://twitter.com/MirakleGroup" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_twitter')">
+                            Follow on Twitter
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('daily_login')">
+                        Daily Login
                     </button>
-                </a>
-            </div>
-            <div class="task-item">
-                <a href="https://instagram.com" target="_blank">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_instagram')">
-                        Follow on Instagram
-                    </button>
-                </a>
+                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Others Section -->
-    <div id="othersSection" class="mb-12">
-        <h2 class="text-3xl font-bold mb-6 text-center">Others</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="task-item">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('daily_login')">
-                    Daily Login
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Telegram Section -->
-    <div id="telegramSection" class="mb-12">
-        <h2 class="text-3xl font-bold mb-6 text-center">Telegram</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            <div class="task-item">
-                <a href="https://t.me/CosmicCoin11" target="_blank">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('join_telegram')">
-                        Join Telegram Channel
-                    </button>
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
-
 
         
 <!-- Rewards Section -->
@@ -531,13 +506,81 @@ let userId = localStorage.getItem('userId') || '';
             document.getElementById(sectionId).classList.remove('hidden');
         }
 
-        function completeTask(taskId) {
-            console.log(`Task ${taskId} completed`);
-            alert('Task completed! You earned 10 COS.');
-            balance += 10;
-            localStorage.setItem('balance', balance.toString());
-            updateBalanceDisplay();
+const cooldownDuration = 10 * 60 * 1000; // 10 minutes cooldown in milliseconds
+    let balance = parseInt(localStorage.getItem('balance')) || 0;
+
+    function completeTask(taskId) {
+        const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
+        const now = Date.now();
+
+        if (completedTasks[taskId] && now - completedTasks[taskId] < cooldownDuration) {
+            const remainingTime = cooldownDuration - (now - completedTasks[taskId]);
+            alert(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
+            return;
         }
+
+        // Mark task as completed and add reward
+        completedTasks[taskId] = now;
+        localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+
+        balance += 10;
+        localStorage.setItem('balance', balance.toString());
+        updateBalanceDisplay();
+
+        alert('Task completed! You earned 10 COS.');
+
+        // Start cooldown timer
+        startCooldown(taskId, cooldownDuration);
+    }
+
+    function updateBalanceDisplay() {
+        console.log(`Balance updated: ${balance}`);
+        // Update balance display on the UI (Add a balance display element in your HTML)
+    }
+
+    function startCooldown(taskId, duration) {
+        const button = document.getElementById(`${taskId}Button`);
+        const timer = document.getElementById(`${taskId}Timer`);
+
+        if (!button || !timer) return;
+
+        button.disabled = true;
+        timer.classList.remove('hidden');
+
+        let timeLeft = duration;
+        const interval = setInterval(() => {
+            timeLeft -= 1000;
+            timer.textContent = `Cooldown: ${formatTime(timeLeft)}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                button.disabled = false;
+                timer.classList.add('hidden');
+            }
+        }, 1000);
+    }
+
+    function formatTime(milliseconds) {
+        const totalSeconds = Math.floor(milliseconds / 1000);
+        const minutes = Math.floor(totalSeconds / 60);
+        const seconds = totalSeconds % 60;
+        return `${minutes}m ${seconds}s`;
+    }
+
+    function initializeTasks() {
+        const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
+        const now = Date.now();
+
+        for (const taskId in completedTasks) {
+            const elapsed = now - completedTasks[taskId];
+            if (elapsed < cooldownDuration) {
+                startCooldown(taskId, cooldownDuration - elapsed);
+            }
+        }
+    }
+
+    // Initialize tasks on page load
+    document.addEventListener('DOMContentLoaded', initializeTasks);
 
         function claimDailyReward() {
             const lastClaimTime = localStorage.getItem('lastClaimTime');
