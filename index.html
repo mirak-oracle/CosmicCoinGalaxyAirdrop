@@ -81,6 +81,12 @@
             justify-content: center;
             z-index: 100;
         }
+
+            .hidden { display: none; }
+    .streak-day { width: 20px; height: 20px; border: 1px solid gray; display: inline-block; margin: 2px; }
+    .streak-day.active { background-color: green; }
+    .badge { margin: 5px; padding: 5px 10px; background-color: gold; border-radius: 5px; display: inline-block; }
+  
     </style>
 </head>
 <body class="bg-gray-950 text-white min-h-screen">
@@ -246,19 +252,41 @@
                 </div>
             </div>
 
-            <!-- Mining Boosts -->
-            <div class="mt-8 w-full max-w-md">
-                <h3 class="text-xl font-bold mb-4">Mining Boosts</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="activateBoost('speed')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                        Speed Boost (2x)
-                    </button>
-                    <button onclick="activateBoost('efficiency')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
-                        Efficiency Boost (1.5x)
-                    </button>
-                </div>
-            </div>
-        </div>
+  <!-- Mining Boosts Section -->
+  <div class="mt-8 w-full max-w-md mx-auto">
+    <h3 class="text-xl font-bold mb-4">Mining Boosts</h3>
+    <div class="grid grid-cols-2 gap-4">
+      <button onclick="activateBoost('speed')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+        Speed Boost (2x)
+      </button>
+      <button onclick="activateBoost('efficiency')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
+        Efficiency Boost (1.5x)
+      </button>
+    </div>
+  </div>
+
+  <!-- Sticky Notification -->
+  <div id="stickyNotification" class="hidden fixed bottom-5 right-5 bg-blue-500 text-white p-4 rounded shadow-lg">
+    <p id="notificationText"></p>
+    <button onclick="closeStickyNotification()" class="ml-4 bg-red-500 text-white px-2 py-1 rounded">Close</button>
+  </div>
+
+  <!-- Badges Section -->
+  <div class="mt-8 w-full max-w-md mx-auto">
+    <h3 class="text-xl font-bold mb-4">Badges</h3>
+    <div id="badgeContainer" class="flex flex-wrap"></div>
+  </div>
+
+  <!-- Streak Section -->
+  <div class="mt-8 w-full max-w-md mx-auto">
+    <h3 class="text-xl font-bold mb-4">Streak</h3>
+    <div id="streakContainer" class="flex"></div>
+  </div>
+
+  <!-- Trigger Streak Update -->
+  <button onclick="updateStreak()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">
+    Update Streak
+  </button>
 
         <!-- Tasks Section -->
         <div id="tasksSection" class="hidden">
@@ -552,111 +580,118 @@ let userId = localStorage.getItem('userId') || '';
             alert('Balance refreshed!');
         }
 
-        // Mining Boosts
-        function activateBoost(boostType) {
-            let message = '';
-            let duration = 0;
-            let multiplier = 1;
+// Mining Boosts
+function activateBoost(boostType) {
+  let message = '';
+  let duration = 0;
+  let multiplier = 1;
 
-            switch(boostType) {
-                case 'speed':
-                    message = 'Speed Boost activated! Mining rate doubled for the next hour.';
-                    duration = 60 * 60 * 1000; // 1 hour
-                    multiplier = 2;
-                    break;
-                case 'efficiency':
-                    message = 'Efficiency Boost activated! 50% more COS per mining operation for the next 30 minutes.';
-                    duration = 30 * 60 * 1000; // 30 minutes
-                    multiplier = 1.5;
-                    break;
-            }
+  switch (boostType) {
+    case 'speed':
+      message = 'Speed Boost activated! Mining rate doubled for the next hour.';
+      duration = 60 * 60 * 1000; // 1 hour
+      multiplier = 2;
+      break;
+    case 'efficiency':
+      message = 'Efficiency Boost activated! 50% more COS per mining operation for the next 30 minutes.';
+      duration = 30 * 60 * 1000; // 30 minutes
+      multiplier = 1.5;
+      break;
+    default:
+      console.error('Invalid boost type');
+      return;
+  }
 
-            // Apply the boost
-            const currentRate = MINING_RATE;
-            MINING_RATE *= multiplier;
+  // Apply the boost
+  const currentRate = MINING_RATE;
+  MINING_RATE *= multiplier;
 
-            // Set a timeout to revert the boost
-            setTimeout(() => {
-                MINING_RATE = currentRate;
-                showStickyNotification(`Your ${boostType} boost has expired.`);
-            }, duration);
+  // Set a timeout to revert the boost
+  setTimeout(() => {
+    MINING_RATE = currentRate;
+    showStickyNotification(`Your ${boostType} boost has expired.`);
+  }, duration);
 
-            showStickyNotification(message);
-        }
+  showStickyNotification(message);
+}
 
-                // Sticky Notification
-        function showStickyNotification(message) {
-            const notification = document.getElementById('stickyNotification');
-            const notificationText = document.getElementById('notificationText');
-            notificationText.textContent = message;
-            notification.classList.remove('hidden');
-        }
+// Sticky Notification
+function showStickyNotification(message) {
+  const notification = document.getElementById('stickyNotification');
+  const notificationText = document.getElementById('notificationText');
+  notificationText.textContent = message;
+  notification.classList.remove('hidden');
+}
 
-        function closeStickyNotification() {
-            const notification = document.getElementById('stickyNotification');
-            notification.classList.add('hidden');
-        }
+function closeStickyNotification() {
+  const notification = document.getElementById('stickyNotification');
+  notification.classList.add('hidden');
+}
 
-        // Badge system
-        let badges = JSON.parse(localStorage.getItem('badges')) || {};
+// Badge System
+let badges = JSON.parse(localStorage.getItem('badges')) || {};
 
-        function awardBadge(badgeName) {
-            if (!badges[badgeName]) {
-                badges[badgeName] = true;
-                localStorage.setItem('badges', JSON.stringify(badges));
-                showStickyNotification(`You've earned the ${badgeName} badge!`);
-                updateBadgeDisplay();
-            }
-        }
+function awardBadge(badgeName) {
+  if (!badges[badgeName]) {
+    badges[badgeName] = true;
+    localStorage.setItem('badges', JSON.stringify(badges));
+    showStickyNotification(`You've earned the ${badgeName} badge!`);
+    updateBadgeDisplay();
+  }
+}
 
-        function updateBadgeDisplay() {
-            const badgeContainer = document.getElementById('badgeContainer');
-            badgeContainer.innerHTML = '';
-            for (const badge in badges) {
-                if (badges[badge]) {
-                    const badgeElement = document.createElement('div');
-                    badgeElement.className = 'badge';
-                    badgeElement.textContent = badge;
-                    badgeContainer.appendChild(badgeElement);
-                }
-            }
-        }
+function updateBadgeDisplay() {
+  const badgeContainer = document.getElementById('badgeContainer');
+  badgeContainer.innerHTML = '';
+  for (const badge in badges) {
+    if (badges[badge]) {
+      const badgeElement = document.createElement('div');
+      badgeElement.className = 'badge';
+      badgeElement.textContent = badge;
+      badgeContainer.appendChild(badgeElement);
+    }
+  }
+}
 
-        // Streak system
-        let streak = parseInt(localStorage.getItem('streak')) || 0;
-        let lastStreakUpdate = localStorage.getItem('lastStreakUpdate');
+// Streak System
+let streak = parseInt(localStorage.getItem('streak')) || 0;
+let lastStreakUpdate = localStorage.getItem('lastStreakUpdate');
 
-        function updateStreak() {
-            const now = new Date();
-            const today = now.toDateString();
+function updateStreak() {
+  const now = new Date();
+  const today = now.toDateString();
 
-            if (lastStreakUpdate !== today) {
-                if (lastStreakUpdate !== null && new Date(lastStreakUpdate).getTime() + 24 * 60 * 60 * 1000 >= now.getTime()) {
-                    streak++;
-                } else {
-                    streak = 1;
-                }
-                localStorage.setItem('streak', streak);
-                localStorage.setItem('lastStreakUpdate', today);
-                updateStreakDisplay();
+  if (lastStreakUpdate !== today) {
+    if (lastStreakUpdate !== null && new Date(lastStreakUpdate).getTime() + 24 * 60 * 60 * 1000 >= now.getTime()) {
+      streak++;
+    } else {
+      streak = 1;
+    }
+    localStorage.setItem('streak', streak);
+    localStorage.setItem('lastStreakUpdate', today);
+    updateStreakDisplay();
 
-                if (streak % 7 === 0) {
-                    awardBadge('7-Day Streak');
-                }
-            }
-        }
+    if (streak % 7 === 0) {
+      awardBadge('7-Day Streak');
+    }
+  }
+}
 
-        function updateStreakDisplay() {
-            const streakContainer = document.getElementById('streakContainer');
-            streakContainer.innerHTML = '';
-            for (let i = 0; i < 7; i++) {
-                const streakDay = document.createElement('div');
-                streakDay.className = `streak-day ${i < (streak % 7) ? 'active' : ''}`;
-                streakContainer.appendChild(streakDay);
-            }
-        }
+function updateStreakDisplay() {
+  const streakContainer = document.getElementById('streakContainer');
+  streakContainer.innerHTML = '';
+  for (let i = 0; i < 7; i++) {
+    const streakDay = document.createElement('div');
+    streakDay.className = `streak-day ${i < (streak % 7) ? 'active' : ''}`;
+    streakContainer.appendChild(streakDay);
+  }
+}
 
+// Initialize display
+updateBadgeDisplay();
+updateStreakDisplay();
 
+        
 function openModal() {
             document.getElementById('modalOverlay').classList.remove('hidden');
             document.getElementById('googleFormModal').classList.remove('hidden');
