@@ -292,9 +292,21 @@
     <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
         <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
         <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
-                onclick="claimDailyReward()">
-            Get 2x Rewards and view Ads
+        
+        <!-- Normal Claim Daily Reward Button -->
+        <button
+            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105 mb-4"
+            onclick="claimDailyReward(false)"
+        >
+            Claim Daily Reward
+        </button>
+        
+        <!-- Double Rewards with Ads Button -->
+        <button
+            class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
+            onclick="openAdAndClaimReward()"
+        >
+            Get 2x Rewards and View Ads
         </button>
     </div>
 </div>
@@ -513,47 +525,63 @@ let userId = localStorage.getItem('userId') || '';
             updateBalanceDisplay();
         }
 
+// Function to handle opening ads and granting double rewards
 function openAdAndClaimReward() {
-    // Open the ad in a new tab
+    // Open the ad in a new tab or window
     const adWindow = window.open('https://whomeenoaglauns.com/4/5544101', '_blank');
 
-    // Set a timer to check if the ad window is closed
-    const checkAdWindowClosed = setInterval(function () {
+    if (!adWindow) {
+        // If the popup was blocked, show an alert
+        alert('Please enable popups in your browser to view the ad and claim rewards.');
+        return;
+    }
+
+    // Check every second if the ad window is closed
+    const checkAdClosed = setInterval(() => {
         if (adWindow.closed) {
-            clearInterval(checkAdWindowClosed); // Stop checking once the window is closed
-            claimDailyReward(true);  // Pass `true` to indicate that 2x reward should be given
+            clearInterval(checkAdClosed); // Stop checking when the ad window is closed
+            claimDailyReward(true); // Pass true to grant double rewards
         }
-    }, 1000); // Check every second if the ad window is closed
+    }, 1000); // Check every 1 second
 }
 
+// Function to claim daily rewards
 function claimDailyReward(isDoubleReward = false) {
     const lastClaimTime = localStorage.getItem('lastClaimTime');
     const now = Date.now();
-    let balance = parseInt(localStorage.getItem('balance')) || 0; // Fetch current balance or initialize it to 0
+    let balance = parseInt(localStorage.getItem('balance')) || 0; // Fetch balance or set to 0
 
+    // Check if the user has already claimed their daily reward within 24 hours
     if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000 && !isDoubleReward) {
-        // If the reward was already claimed and not bypassed by watching the ad
         alert('You have already claimed your daily reward. Come back tomorrow!');
     } else {
         let reward = 50; // Base reward
         if (isDoubleReward) {
-            reward *= 2; // Double the reward if ad was watched
+            reward *= 2; // Double the reward for ad-based claim
         }
 
-        // Update balance and save to localStorage
+        // Update balance and save it in localStorage
         balance += reward;
         localStorage.setItem('balance', balance.toString());
 
-        // Only update lastClaimTime if it's a regular reward (not ad-based bypass)
+        // Update lastClaimTime only for standard claims
         if (!isDoubleReward) {
             localStorage.setItem('lastClaimTime', now.toString());
         }
 
-        updateBalanceDisplay(); // Update the displayed balance in the UI
+        updateBalanceDisplay(); // Update the balance display on the page
         alert(`You've claimed ${reward} CosmicCoins as your reward!`);
     }
 }
-    
+
+// Function to update the balance display in the UI
+function updateBalanceDisplay() {
+    const balance = parseInt(localStorage.getItem('balance')) || 0;
+    const balanceDisplay = document.getElementById('balanceDisplay');
+    if (balanceDisplay) {
+        balanceDisplay.innerText = `Balance: ${balance} CosmicCoins`;
+    }
+}
  function inviteFriend() {
             const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
             const referralLink = `https://cosmiccoin.com?ref=${referralCode}`;
