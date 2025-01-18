@@ -581,15 +581,6 @@ function claimDailyReward() {
             // Apply the boost
             const currentRate = MINING_RATE;
             MINING_RATE *= multiplier;
-
-            // Set a timeout to revert the boost
-            setTimeout(() => {
-                MINING_RATE = currentRate;
-                showStickyNotification(Your ${boostType} boost has expired.);
-            }, duration);
-
-            showStickyNotification(message);
-        }
         
 function openModal() {
             document.getElementById('modalOverlay').classList.remove('hidden');
