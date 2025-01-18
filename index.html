@@ -516,37 +516,45 @@ let userId = localStorage.getItem('userId') || '';
 function openAdAndClaimReward() {
     // Open the ad in a new tab
     const adWindow = window.open('https://whomeenoaglauns.com/4/5544101', '_blank');
-    
+
     // Set a timer to check if the ad window is closed
     const checkAdWindowClosed = setInterval(function () {
         if (adWindow.closed) {
             clearInterval(checkAdWindowClosed); // Stop checking once the window is closed
             claimDailyReward(true);  // Pass `true` to indicate that 2x reward should be given
         }
-    }, 1000);  // Check every second if the ad window is closed
+    }, 1000); // Check every second if the ad window is closed
 }
 
 function claimDailyReward(isDoubleReward = false) {
     const lastClaimTime = localStorage.getItem('lastClaimTime');
     const now = Date.now();
-    let balance = parseInt(localStorage.getItem('balance')) || 0;  // Fetch the current balance or initialize it to 0
+    let balance = parseInt(localStorage.getItem('balance')) || 0; // Fetch current balance or initialize it to 0
 
-    if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
+    if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000 && !isDoubleReward) {
+        // If the reward was already claimed and not bypassed by watching the ad
         alert('You have already claimed your daily reward. Come back tomorrow!');
     } else {
-        let reward = 50;  // Normal reward amount
-        // Double the reward if isDoubleReward is true
+        let reward = 50; // Base reward
         if (isDoubleReward) {
-            reward *= 2;
+            reward *= 2; // Double the reward if ad was watched
         }
+
+        // Update balance and save to localStorage
         balance += reward;
         localStorage.setItem('balance', balance.toString());
-        localStorage.setItem('lastClaimTime', now.toString());
-        updateBalanceDisplay();  // Assuming this function updates the displayed balance in your UI
-        alert(`You've claimed ${reward} CosmicCoins as your daily reward!`);
+
+        // Only update lastClaimTime if it's a regular reward (not ad-based bypass)
+        if (!isDoubleReward) {
+            localStorage.setItem('lastClaimTime', now.toString());
+        }
+
+        updateBalanceDisplay(); // Update the displayed balance in the UI
+        alert(`You've claimed ${reward} CosmicCoins as your reward!`);
     }
 }
-   function inviteFriend() {
+    
+ function inviteFriend() {
             const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
             const referralLink = `https://cosmiccoin.com?ref=${referralCode}`;
             navigator.clipboard.writeText(referralLink).then(() => {
