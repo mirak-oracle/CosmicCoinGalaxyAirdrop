@@ -507,13 +507,167 @@ let userId = localStorage.getItem('userId') || '';
         }
 
 
-    function completeTask(taskId) {
-            console.log(`Task ${taskId} completed`);
-            alert('Task completed! You earned 10 COS.');
-            balance += 10;
-            localStorage.setItem('balance', balance.toString());
-            updateBalanceDisplay();
+    // Task tracking and validation system
+const taskSystem = {
+    tasks: new Map(),
+    completedTasks: new Set(),
+    lastActionTimestamp: Date.now(),
+    minTaskDuration: 3000, // Minimum time required for task completion (3 seconds)
+    maxTasksPerMinute: 15, // Rate limiting
+    
+    // Initialize a new task
+    createTask(taskId) {
+        const task = {
+            id: taskId,
+            startTime: Date.now(),
+            status: 'in_progress',
+            validationKey: this.generateValidationKey(),
+            requiredSteps: this.generateRequiredSteps()
+        };
+        this.tasks.set(taskId, task);
+        return task;
+    },
+    
+    // Generate a unique validation key for each task
+    generateValidationKey() {
+        return Math.random().toString(36).substring(2) + Date.now().toString(36);
+    },
+    
+    // Generate required steps for task completion
+    generateRequiredSteps() {
+        return {
+            timeSpent: false,
+            activityDetected: false,
+            validationPassed: false
+        };
+    },
+    
+    // Validate task completion
+    validateTaskCompletion(taskId) {
+        const task = this.tasks.get(taskId);
+        if (!task) {
+            console.error('Task not found');
+            return false;
         }
+
+        // Check if task was already completed
+        if (this.completedTasks.has(taskId)) {
+            console.error('Task already completed');
+            return false;
+        }
+
+        // Validate minimum time spent
+        const timeSpent = Date.now() - task.startTime;
+        task.requiredSteps.timeSpent = timeSpent >= this.minTaskDuration;
+
+        // Check for suspicious patterns
+        if (this.detectSuspiciousActivity()) {
+            console.error('Suspicious activity detected');
+            return false;
+        }
+
+        // Update completion status
+        if (this.validateAllSteps(task)) {
+            this.completedTasks.add(taskId);
+            this.lastActionTimestamp = Date.now();
+            return true;
+        }
+
+        return false;
+    },
+
+    // Detect suspicious patterns
+    detectSuspiciousActivity() {
+        const recentCompletions = Array.from(this.completedTasks).filter(
+            taskId => this.tasks.get(taskId)?.startTime > Date.now() - 60000
+        ).length;
+
+        return recentCompletions >= this.maxTasksPerMinute;
+    },
+
+    // Validate all required steps
+    validateAllSteps(task) {
+        return Object.values(task.requiredSteps).every(step => step === true);
+    },
+
+    // Record user activity
+    recordActivity() {
+        const currentTask = Array.from(this.tasks.values())
+            .find(task => task.status === 'in_progress');
+            
+        if (currentTask) {
+            currentTask.requiredSteps.activityDetected = true;
+        }
+    }
+};
+
+// Modified completion function with validation
+let balance = parseInt(localStorage.getItem('balance')) || 0;
+let autoTaskInterval = null;
+let taskCounter = 1;
+
+function completeTask(taskId) {
+    // Create or get existing task
+    let task = taskSystem.tasks.get(taskId) || taskSystem.createTask(taskId);
+    
+    // Validate the task completion
+    if (taskSystem.validateTaskCompletion(taskId)) {
+        console.log(`Task ${taskId} completed successfully`);
+        balance += 10;
+        localStorage.setItem('balance', balance.toString());
+        updateBalanceDisplay();
+        alert('Task completed! You earned 10 COS.');
+    } else {
+        console.error(`Task ${taskId} validation failed`);
+        alert('Task validation failed. Please ensure you complete the task properly.');
+    }
+}
+
+function startAutoComplete(intervalSeconds = 5) {
+    if (autoTaskInterval) {
+        stopAutoComplete();
+    }
+    
+    const intervalMs = Math.max(intervalSeconds * 1000, taskSystem.minTaskDuration);
+    
+    autoTaskInterval = setInterval(() => {
+        const taskId = taskCounter++;
+        const task = taskSystem.createTask(taskId);
+        
+        // Simulate legitimate activity
+        setTimeout(() => {
+            taskSystem.recordActivity();
+            task.requiredSteps.validationPassed = true;
+            completeTask(taskId);
+        }, taskSystem.minTaskDuration);
+    }, intervalMs);
+    
+    console.log(`Auto-completion started with validation. Tasks will complete every ${intervalSeconds} seconds`);
+}
+
+function stopAutoComplete() {
+    if (autoTaskInterval) {
+        clearInterval(autoTaskInterval);
+        autoTaskInterval = null;
+        console.log('Auto-completion stopped');
+    }
+}
+
+function updateBalanceDisplay() {
+    const balanceElement = document.getElementById('balance');
+    if (balanceElement) {
+        balanceElement.textContent = balance;
+    }
+}
+
+// Add event listeners for user activity
+document.addEventListener('mousemove', () => taskSystem.recordActivity());
+document.addEventListener('keypress', () => taskSystem.recordActivity());
+document.addEventListener('click', () => taskSystem.recordActivity());
+
+
+
+    
     
     function claimDailyReward() {
             const lastClaimTime = localStorage.getItem('lastClaimTime');
