@@ -307,8 +307,6 @@
                         </button>
                     </a>
                 </div>
-                
-        </div>
 
         
 <!-- Rewards Section -->
@@ -536,7 +534,7 @@ function completeTask(taskId) {
             localStorage.setItem('balance', balance.toString());
             updateBalanceDisplay();
         }
-    const cooldownDuration = 10 * 60 * 1000; // 10 minutes in milliseconds
+    const cooldownDuration = 5 * 60 * 1000; // 5 minutes in milliseconds
 const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
 
 // Function to handle task completion with cooldown
