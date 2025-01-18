@@ -506,8 +506,6 @@ let userId = localStorage.getItem('userId') || '';
             document.getElementById(sectionId).classList.remove('hidden');
         }
 
-const cooldownDuration = 10 * 60 * 1000; // 10 minutes cooldown in milliseconds
-    let balance = parseInt(localStorage.getItem('balance')) || 0;
 
     function completeTask(taskId) {
         const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
@@ -518,6 +516,9 @@ const cooldownDuration = 10 * 60 * 1000; // 10 minutes cooldown in milliseconds
             alert(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
             return;
         }
+        
+const cooldownDuration = 10 * 60 * 1000; // 10 minutes cooldown in milliseconds
+    let balance = parseInt(localStorage.getItem('balance')) || 0;
 
         // Mark task as completed and add reward
         completedTasks[taskId] = now;
