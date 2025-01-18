@@ -524,34 +524,14 @@ let userId = localStorage.getItem('userId') || '';
         }
 
         function completeTask(taskId) {
-            // Check if the task has already been completed
-            const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
-            if (completedTasks[taskId]) {
-                showStickyNotification('You have already completed this task!');
-                return;
-            }
-
-            // Simulate task completion verification
-            setTimeout(() => {
-                // Mark the task as completed
-                completedTasks[taskId] = true;
-                localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
-
-                // Reward the user
-                const reward = 10; // Example reward amount
-                balance += reward;
-                localStorage.setItem('balance', balance.toString());
-                updateBalanceDisplay();
-
-                showStickyNotification(`Task completed! You earned ${reward} COS.`);
-
-                // Check for streak
-                updateStreak();
-
-                // Check for badges
-                checkForBadges();
-            }, 5000); // Simulate a 5-second verification process
+            console.log(`Task ${taskId} completed`);
+            alert('Task completed! You earned 10 COS.');
+            balance += 10;
+            localStorage.setItem('balance', balance.toString());
+            updateBalanceDisplay();
         }
+
+       
 
 function claimDailyReward() {
             const lastClaimTime = localStorage.getItem('lastClaimTime');
