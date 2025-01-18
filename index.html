@@ -286,18 +286,19 @@
             </div>
         </div>
 
-        <!-- Rewards Section -->
-        <div id="rewardsSection" class="hidden">
-            <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
-                <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
-                <button  onclick="window.open('https://whomeenoaglauns.com/4/5544101', '_blank'); doubleRewards()">
-           Get 2x Rewards and view Ads 
+<!-- Rewards Section -->
+<div id="rewardsSection" class="hidden">
+    <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
+        <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
+        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
+                onclick="claimDailyReward()">
+            Get 2x Rewards and view Ads
         </button>
-    
-            </div>
-        </div>
+    </div>
+</div>
+
 
         <!-- Referral Section -->
         <div id="referralSection" class="hidden">
@@ -512,20 +513,32 @@ let userId = localStorage.getItem('userId') || '';
             updateBalanceDisplay();
         }
 
-        function claimDailyReward() {
-            const lastClaimTime = localStorage.getItem('lastClaimTime');
-            const now = Date.now();
-            if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
-                alert('You have already claimed your daily reward. Come back tomorrow!');
-            } else {
-                const reward = 50;
-                balance += reward;
-                localStorage.setItem('balance', balance.toString());
-                localStorage.setItem('lastClaimTime', now.toString());
-                updateBalanceDisplay();
-                alert(`You've claimed ${reward} CosmicCoins as your daily reward!`);
-            }
+function claimDailyReward() {
+    const lastClaimTime = localStorage.getItem('lastClaimTime');
+    const now = Date.now();
+    let balance = parseInt(localStorage.getItem('balance')) || 0;  // Fetch the current balance or initialize it to 0
+
+    if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
+        alert('You have already claimed your daily reward. Come back tomorrow!');
+    } else {
+        let reward = 50;  // Normal reward amount
+        // Optionally, double the reward if needed (e.g., based on a condition or a promotion)
+        if (someConditionToDoubleReward()) {
+            reward *= 2;
         }
+        balance += reward;
+        localStorage.setItem('balance', balance.toString());
+        localStorage.setItem('lastClaimTime', now.toString());
+        updateBalanceDisplay();  // Assuming this function updates the displayed balance in your UI
+        alert(`You've claimed ${reward} CosmicCoins as your daily reward!`);
+    }
+}
+
+// Example of how to define the condition for doubling the reward (if needed)
+function someConditionToDoubleReward() {
+    // Check if some criteria for doubling the reward is met (e.g., ads watched)
+    return true;  // Placeholder: return true if you want to double rewards
+}
 
         function inviteFriend() {
             const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
