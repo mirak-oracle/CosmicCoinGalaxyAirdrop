@@ -260,33 +260,74 @@
             </div>
         </div>
 
-        <!-- Tasks Section -->
-        <div id="tasksSection" class="hidden">
-            <h2 class="text-3xl font-bold mb-6 text-center">Tasks</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="task-item">
-                    <a href="https://t.me/CosmicCoin11" target="_blank">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('join_telegram')">
-                            Join Telegram Channel
-                        </button>
-                    </a>
-                </div>
-                <div class="task-item">
-                    <a href="https://twitter.com/MirakleGroup" target="_blank">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_twitter')">
-                            Follow on Twitter
-                        </button>
-                    </a>
-                </div>
-                <div class="task-item">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('daily_login')">
-                        Daily Login
+<!-- Navbar -->
+<nav class="bg-gray-800 text-white p-4 fixed top-0 w-full shadow-md z-10">
+    <div class="container mx-auto flex justify-around">
+        <a href="#socialsSection" class="hover:underline">
+            Socials
+        </a>
+        <a href="#othersSection" class="hover:underline">
+            Others
+        </a>
+        <a href="#telegramSection" class="hover:underline">
+            Telegram
+        </a>
+    </div>
+</nav>
+
+<!-- Tasks Section -->
+<div id="tasksContainer" class="pt-20">
+    <!-- Socials Section -->
+    <div id="socialsSection" class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 text-center">Socials</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="task-item">
+                <a href="https://twitter.com/MirakleGroup" target="_blank">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_twitter')">
+                        Follow on Twitter
                     </button>
-                </div>
+                </a>
+            </div>
+            <div class="task-item">
+                <a href="https://instagram.com" target="_blank">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_instagram')">
+                        Follow on Instagram
+                    </button>
+                </a>
             </div>
         </div>
+    </div>
 
-        <!-- Rewards Section -->
+    <!-- Others Section -->
+    <div id="othersSection" class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 text-center">Others</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="task-item">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('daily_login')">
+                    Daily Login
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Telegram Section -->
+    <div id="telegramSection" class="mb-12">
+        <h2 class="text-3xl font-bold mb-6 text-center">Telegram</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div class="task-item">
+                <a href="https://t.me/CosmicCoin11" target="_blank">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('join_telegram')">
+                        Join Telegram Channel
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        
+<!-- Rewards Section -->
         <div id="rewardsSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
