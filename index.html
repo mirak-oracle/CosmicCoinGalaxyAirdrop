@@ -513,7 +513,20 @@ let userId = localStorage.getItem('userId') || '';
             updateBalanceDisplay();
         }
 
-function claimDailyReward() {
+function openAdAndClaimReward() {
+    // Open the ad in a new tab
+    const adWindow = window.open('https://whomeenoaglauns.com/4/5544101', '_blank');
+    
+    // Set a timer to check if the ad window is closed
+    const checkAdWindowClosed = setInterval(function () {
+        if (adWindow.closed) {
+            clearInterval(checkAdWindowClosed); // Stop checking once the window is closed
+            claimDailyReward(true);  // Pass `true` to indicate that 2x reward should be given
+        }
+    }, 1000);  // Check every second if the ad window is closed
+}
+
+function claimDailyReward(isDoubleReward = false) {
     const lastClaimTime = localStorage.getItem('lastClaimTime');
     const now = Date.now();
     let balance = parseInt(localStorage.getItem('balance')) || 0;  // Fetch the current balance or initialize it to 0
@@ -522,8 +535,8 @@ function claimDailyReward() {
         alert('You have already claimed your daily reward. Come back tomorrow!');
     } else {
         let reward = 50;  // Normal reward amount
-        // Optionally, double the reward if needed (e.g., based on a condition or a promotion)
-        if (someConditionToDoubleReward()) {
+        // Double the reward if isDoubleReward is true
+        if (isDoubleReward) {
             reward *= 2;
         }
         balance += reward;
@@ -533,14 +546,7 @@ function claimDailyReward() {
         alert(`You've claimed ${reward} CosmicCoins as your daily reward!`);
     }
 }
-
-// Example of how to define the condition for doubling the reward (if needed)
-function someConditionToDoubleReward() {
-    // Check if some criteria for doubling the reward is met (e.g., ads watched)
-    return true;  // Placeholder: return true if you want to double rewards
-}
-
-        function inviteFriend() {
+   function inviteFriend() {
             const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
             const referralLink = `https://cosmiccoin.com?ref=${referralCode}`;
             navigator.clipboard.writeText(referralLink).then(() => {
