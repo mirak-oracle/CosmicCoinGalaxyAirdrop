@@ -680,10 +680,10 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
     }
 
     startReferralTracking() {
-        // Check for new referrals every 3 minutes
+        // Check for new referrals every 8 minutes
         setInterval(() => {
             this.checkNewReferrals();
-        }, 3 * 60 * 1000);
+        }, 8 * 60 * 1000);
     }
 
     async checkNewReferrals() {
@@ -708,7 +708,7 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
         return new Promise(resolve => {
             const mockNewReferrals = [];
             // Simulate some random referrals for testing
-            if (Math.random() > 0.7) {
+            if (Math.random() > 0.9) {
                 mockNewReferrals.push({ timestamp: Date.now() });
             }
             resolve(mockNewReferrals);
