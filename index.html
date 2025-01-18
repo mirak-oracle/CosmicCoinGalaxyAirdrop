@@ -292,6 +292,18 @@
             </div>
         </div>
 
+                <!-- Rewards Section -->
+        <div id="rewardsSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
+                <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
+                <button onclick="claimDailyReward()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+                    Claim Daily Reward
+                </button>
+            </div>
+        </div>
+
 
         <!-- Referral Section -->
         <div id="referralSection" class="hidden">
@@ -541,53 +553,24 @@ let userId = localStorage.getItem('userId') || '';
             }, 5000); // Simulate a 5-second verification process
         }
 
-
-        
-
-                // Update rewards section
-        function updateRewardsSection() {
-            const rewardsSection = document.getElementById('rewardsSection');
-            rewardsSection.innerHTML = `
-                <div class="p-6 max-w-md mx-auto bg-gradient-to-r from-purple-800 to-black text-white rounded-lg shadow-lg mt-10">
-                    <h2 class="text-3xl font-bold text-center mb-6">🚀 Daily $Cos Rewards</h2>
-                    
-                    <p class="text-lg text-center mb-4">Claim Your Daily Cosmic Loot and fuel your intergalactic adventures with $COS tokens!</p>
-                    
-                    <!-- Claim Daily Reward Button -->
-                    <div class="flex justify-center mb-4">
-                        <button class="bg-yellow-400 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
-                                onclick="claimDailyReward()">Claim Daily Reward</button>
-                    </div>
-                    
-                    <!-- Double Reward Button (Watch Ads) -->
-                    <div class="flex justify-center">
-                        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 transform hover:scale-105"
-                                onclick="doubleRewards()">
-                           Get 2x coins and view Ads 
-                        </button>
-                    </div>
-
-                    <!-- Streak Display -->
-                    <div class="streak-indicator mt-4" id="streakContainer"></div>
-                </div>
-            `;
-            updateStreakDisplay();
-        }
-
-        // Double rewards function
-        function doubleRewards() {
-            window.open('https://whomeenoaglauns.com/4/5544101', '_blank');
-            setTimeout(() => {
-                const reward = 100; // Double the usual reward
+function claimDailyReward() {
+            const lastClaimTime = localStorage.getItem('lastClaimTime');
+            const now = Date.now();
+            if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
+                alert('You have already claimed your daily reward. Come back tomorrow!');
+            } else {
+                const reward = 50;
                 balance += reward;
                 localStorage.setItem('balance', balance.toString());
+                localStorage.setItem('lastClaimTime', now.toString());
                 updateBalanceDisplay();
-                showStickyNotification(`You've earned ${reward} CosmicCoins for watching an ad!`);
-            }, 5000); // Simulate ad watching time
+                alert(`You've claimed ${reward} CosmicCoins as your daily reward!`);
+            }
         }
 
         
-        function inviteFriend() {
+
+   function inviteFriend() {
             const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
             const referralLink = `https://cosmiccoin.com?ref=${referralCode}`;
             navigator.clipboard.writeText(referralLink).then(() => {
