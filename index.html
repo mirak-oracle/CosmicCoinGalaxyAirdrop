@@ -597,175 +597,194 @@ document.addEventListener('DOMContentLoaded', initializeCooldowns);
 
 // Simplified Referral System Configuration
 const REFERRAL_CONFIG = {
-    CLAIM_DATE: '2025-03-01',
+    INVITE_REWARD: 10,
     REFERRAL_LINKS: {
         TELEGRAM: 'https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=',
         WAPCHAT: 'https://apkpure.com/wapchat/wapchat.actb?ref='
     },
-    REWARD_TIERS: [
-        { count: 5, bonus: 100 },
-        { count: 10, bonus: 250 },
-        { count: 20, bonus: 500 },
-        { count: 30, bonus: 1000 },
-        { count: 50, bonus: 2500 }
-    ]
+    SOCIAL_LINKS: {
+        TELEGRAM: 'https://t.me/share/url',
+        TWITTER: 'https://twitter.com/intent/tweet',
+        WHATSAPP: 'https://wa.me/',
+        FACEBOOK: 'https://www.facebook.com/sharer/sharer.php'
+    }
 };
 
 class ReferralSystem {
     constructor() {
         this.referralData = JSON.parse(localStorage.getItem('referralData')) || {
-            myReferralCode: '',
             referrals: [],
-            lastShare: null
+            shares: {},
+            lastCheck: Date.now()
         };
         
         this.initializeSystem();
-        this.startAutoDetection();
+        this.startReferralTracking();
     }
 
     initializeSystem() {
-        if (!this.referralData.myReferralCode) {
-            this.referralData.myReferralCode = this.generateReferralCode();
-            this.saveData();
+        const referralSection = document.getElementById('referralSection');
+        if (referralSection) {
+            referralSection.classList.remove('hidden');
         }
         this.updateUI();
-    }
-
-    generateReferralCode() {
-        const prefix = 'CC';
-        const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-        return `${prefix}${random}`;
     }
 
     generateShareText() {
         return `🚀 Join CosmicCoin Galaxy Airdrop!
 
 📱 Join via:
-Telegram: ${REFERRAL_CONFIG.REFERRAL_LINKS.TELEGRAM}${this.referralData.myReferralCode}
-WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.referralData.myReferralCode}
+Telegram: ${REFERRAL_CONFIG.REFERRAL_LINKS.TELEGRAM}${this.getReferralCode()}
+WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
 
-🎁 Use my referral code: ${this.referralData.myReferralCode}
-⭐️ Earn bonus coins for each referral!`;
+⭐️ Earn ${REFERRAL_CONFIG.INVITE_REWARD} COS for each referral!
+🎁 Don't miss out on this opportunity!`;
+    }
+
+    getReferralCode() {
+        // Get referral code from URL or use placeholder
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('ref') || 'CCJFPVZ9GP';
+    }
+
+    startReferralTracking() {
+        // Check for new referrals every 3 minutes
+        setInterval(() => {
+            this.checkNewReferrals();
+        }, 3 * 60 * 1000);
+    }
+
+    async checkNewReferrals() {
+        try {
+            // Simulate checking for new referrals
+            if (this.referralData.lastCheck) {
+                const newReferrals = await this.fetchNewReferrals();
+                if (newReferrals.length > 0) {
+                    this.processNewReferrals(newReferrals);
+                }
+            }
+            this.referralData.lastCheck = Date.now();
+            this.saveData();
+        } catch (error) {
+            console.error('Error checking referrals:', error);
+        }
+    }
+
+    async fetchNewReferrals() {
+        // Placeholder for API call to fetch new referrals
+        // In production, this would call your backend
+        return new Promise(resolve => {
+            const mockNewReferrals = [];
+            // Simulate some random referrals for testing
+            if (Math.random() > 0.7) {
+                mockNewReferrals.push({ timestamp: Date.now() });
+            }
+            resolve(mockNewReferrals);
+        });
+    }
+
+    processNewReferrals(newReferrals) {
+        this.referralData.referrals = [...this.referralData.referrals, ...newReferrals];
+        this.saveData();
+        this.updateUI();
     }
 
     async copyToClipboard() {
         const shareText = this.generateShareText();
         try {
             await navigator.clipboard.writeText(shareText);
-            this.recordShare();
-            this.updateStatus('Referral links copied to clipboard!');
+            this.recordShare('clipboard');
+            this.updateStatus('Referral links copied! Share with your friends!');
         } catch (err) {
             this.updateStatus('Failed to copy. Please try again.');
         }
     }
 
-    recordShare() {
-        this.referralData.lastShare = Date.now();
-        this.saveData();
-    }
+    async shareToSocial(platform) {
+        const shareText = encodeURIComponent(this.generateShareText());
+        let shareUrl = '';
 
-    startAutoDetection() {
-        // Check for new referrals every 5 minutes
-        setInterval(() => {
-            this.checkNewReferrals();
-        }, 5 * 60 * 1000);
-    }
-
-    async checkNewReferrals() {
-        if (this.referralData.lastShare) {
-            // Simple detection based on localStorage changes
-            const storedReferrals = localStorage.getItem('pendingReferrals');
-            if (storedReferrals) {
-                const newReferrals = JSON.parse(storedReferrals);
-                this.processNewReferrals(newReferrals);
-            }
-        }
-    }
-
-    processNewReferrals(newReferrals) {
-        const uniqueReferrals = [...new Set([...this.referralData.referrals, ...newReferrals])];
-        this.referralData.referrals = uniqueReferrals;
-        this.saveData();
-        this.updateUI();
-    }
-
-    calculateDaysUntilClaim() {
-        const claimDate = new Date(REFERRAL_CONFIG.CLAIM_DATE);
-        const today = new Date();
-        const diffTime = claimDate - today;
-        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    }
-
-    getCurrentTier() {
-        const referralCount = this.referralData.referrals.length;
-        let currentTier = { count: 0, bonus: 0 };
-        
-        for (const tier of REFERRAL_CONFIG.REWARD_TIERS) {
-            if (referralCount >= tier.count) {
-                currentTier = tier;
-            } else {
+        switch (platform) {
+            case 'telegram':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TELEGRAM}?url=${shareText}`;
                 break;
-            }
+            case 'twitter':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TWITTER}?text=${shareText}`;
+                break;
+            case 'whatsapp':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.WHATSAPP}?text=${shareText}`;
+                break;
+            case 'facebook':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.FACEBOOK}?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`;
+                break;
         }
-        return currentTier;
+
+        if (shareUrl) {
+            window.open(shareUrl, '_blank');
+            this.recordShare(platform);
+            this.updateStatus(`Shared to ${platform}!`);
+        }
     }
 
-    getNextTier() {
-        const referralCount = this.referralData.referrals.length;
-        return REFERRAL_CONFIG.REWARD_TIERS.find(tier => referralCount < tier.count) || null;
+    recordShare(platform) {
+        if (!this.referralData.shares[platform]) {
+            this.referralData.shares[platform] = [];
+        }
+        this.referralData.shares[platform].push(Date.now());
+        this.saveData();
     }
 
     updateUI() {
         const referralSection = document.getElementById('referralSection');
         if (!referralSection) return;
 
-        const currentTier = this.getCurrentTier();
-        const nextTier = this.getNextTier();
-        const daysUntilClaim = this.calculateDaysUntilClaim();
-
         referralSection.innerHTML = `
             <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <!-- Referral Code Section -->
-                <div class="mb-6 text-center">
-                    <p class="text-xl mb-2">Your Referral Code</p>
-                    <p class="text-2xl font-bold text-purple-400">${this.referralData.myReferralCode}</p>
-                </div>
-
-                <!-- Stats Dashboard -->
-                <div class="grid grid-cols-2 gap-4 mb-6">
+                <div class="grid grid-cols-1 gap-4 mb-6">
                     <div class="bg-gray-700 p-4 rounded-lg text-center">
-                        <p class="text-sm">Total Referrals</p>
-                        <p class="text-2xl font-bold text-purple-400">${this.referralData.referrals.length}</p>
-                    </div>
-                    <div class="bg-gray-700 p-4 rounded-lg text-center">
-                        <p class="text-sm">Current Bonus</p>
-                        <p class="text-2xl font-bold text-green-400">${currentTier.bonus} COS</p>
+                        <p class="text-sm">Total Invites</p>
+                        <p class="text-2xl font-bold text-purple-400">
+                            ${this.referralData.referrals.length}
+                        </p>
+                        <p class="text-sm text-gray-400 mt-2">
+                            Calculating rewards... Final count on claim day
+                        </p>
                     </div>
                 </div>
 
-                <!-- Progress to Next Tier -->
-                ${nextTier ? `
-                <div class="mb-6">
-                    <p class="text-sm text-center">
-                        ${nextTier.count - this.referralData.referrals.length} more referrals until ${nextTier.bonus} COS bonus!
-                    </p>
-                </div>
-                ` : ''}
+                <!-- Share Buttons -->
+                <div class="space-y-3">
+                    <button 
+                        onclick="referralSystem.copyToClipboard()"
+                        class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        📋 Copy Referral Links
+                    </button>
+                    
+                    <button 
+                        onclick="referralSystem.shareToSocial('telegram')"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        Share on Telegram
+                    </button>
 
-                <!-- Claim Day Info -->
-                <div class="mb-6">
-                    <p class="text-center text-sm text-gray-400">
-                        Rewards will be calculated on claim day (${daysUntilClaim} days remaining)
-                    </p>
-                </div>
+                    <button 
+                        onclick="referralSystem.shareToSocial('twitter')"
+                        class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        Share on Twitter
+                    </button>
 
-                <!-- Share Button -->
-                <button 
-                    onclick="referralSystem.copyToClipboard()"
-                    class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
-                    <span>Copy Referral Links</span>
-                </button>
+                    <button 
+                        onclick="referralSystem.shareToSocial('whatsapp')"
+                        class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        Share on WhatsApp
+                    </button>
+
+                    <button 
+                        onclick="referralSystem.shareToSocial('facebook')"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        Share on Facebook
+                    </button>
+                </div>
 
                 <p id="referralStatus" class="mt-4 text-sm text-center text-gray-400"></p>
             </div>
