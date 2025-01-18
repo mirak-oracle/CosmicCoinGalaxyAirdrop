@@ -99,9 +99,7 @@
     <!-- Side Menu -->
     <div id="sideMenu" class="fixed left-0 top-0 h-full w-64 bg-gray-900 transform -translate-x-full transition-transform duration-200 ease-in-out z-40">
         <div class="p-4 border-b border-gray-800">
-            <h2 class="text-xl font-bold">CosmicCoin Galaxy</h2>
-            <p class="text-sm text-gray-400">Mining Dashboard</p>
-        </div>
+</div>
         <nav class="p-4">
             <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('mainSection')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -142,11 +140,6 @@
                 <span>Profile</span>
             </a>
         </nav>
-        <div class="flex flex-col items-center space-y-4 py-4">
-            <a href="#" class="text-blue-400 hover:underline">Telegram</a>
-            <a href="#" class="text-blue-400 hover:underline">X</a>
-            <a href="#" class="text-blue-400 hover:underline">Facebook</a>
-            <a href="#" class="text-blue-400 hover:underline">YouTube</a>
         </div>
         <div class="mt-auto p-4 border-t border-gray-800">
             <h4 class="text-lg font-semibold mb-2 text-center">Follow Us</h4>
@@ -339,40 +332,30 @@
         </div>
     </div>
 
-    <!-- Profile Update Modal -->
-    <div id="modalOverlay" class="modal-overlay hidden"></div>
-    <div id="profileModal" class="modal hidden">
-        <div class="bg-gray-900 rounded-lg p-6 w-full max-w-md">
-            <h3 class="text-2xl font-bold mb-4">Update Profile</h3>
-            <form id="profileForm">
-                <div class="mb-4">
-                    <label for="username" class="block text-sm font-medium text-gray-400">Username</label>
-                    <input type="text" id="username" name="username" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white">
-                </div>
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-400">Email</label>
-                    <input type="email" id="email" name="email" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white">
-                </div>
-                <div class="mb-4">
-                    <label for="country" class="block text-sm font-medium text-gray-400">Country</label>
-                    <select id="<merged_code>country" name="country" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white">
-                        <option value="">Select a country</option>
-                        <option value="US">United States</option>
-                        <option value="UK">United Kingdom</option>
-                        <option value="CA">Canada</option>
-                        <!-- Add more countries as needed -->
-                    </select>
-                </div>
-                <div class="flex justify-end">
-                    <button type="button" onclick="closeModal()" class="mr-2 bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
-                        Cancel
-                    </button>
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                        Save Changes
-                    </button>
-                </div>
-            </form>
+        <!-- Profile Section -->
+        <div id="profileSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Profile</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <button onclick="openModal()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                    Update Profile
+                </button>
+            </div>
         </div>
+    </div>
+
+    <!-- Google Form Modal -->
+    <div id="modalOverlay" class="modal-overlay hidden"></div>
+    <div id="googleFormModal" class="modal hidden">
+        <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <iframe id="googleFormIframe" src="" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">
+            Loading...
+        </iframe>
+    </div>
+    </div>
     </div>
 
     <script>
@@ -384,8 +367,7 @@
         let miningEndTime = 0;
         let miningInterval = null;
         let balance = parseFloat(localStorage.getItem('balance')) || 0;
-        // User ID Management
-        let userId = localStorage.getItem('userId') || '';
+let userId = localStorage.getItem('userId') || '';
 
         function generateUniqueId() {
             return 'COS-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5).toUpperCase();
@@ -408,8 +390,10 @@
             userId = generateUniqueId();
             localStorage.setItem('userId', userId);
             displayUserId();
+            showStickyNotification('New User ID generated: ' + userId);
         }
 
+      
         // DOM Elements
         const balanceEl = document.getElementById('balance');
         const progressEl = document.getElementById('miningProgress');
@@ -425,7 +409,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateBalanceDisplay();
             loadMiningState();
-            generateNewUserId(); // Generate User ID on page load
+            displayUserId(); // Display User ID on page load
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
             }, 2000);
@@ -579,31 +563,17 @@
             alert(message);
         }
 
-        // Profile Update
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const country = document.getElementById('country').value;
-            
-            // Here you would typically send this data to a server
-            console.log('Profile updated:', { username, email, country });
-            
-            alert('Profile updated successfully!');
-            closeModal();
-        });
-
-        // Modal functions
-        function openModal() {
+function openModal() {
             document.getElementById('modalOverlay').classList.remove('hidden');
-            document.getElementById('profileModal').classList.remove('hidden');
+            document.getElementById('googleFormModal').classList.remove('hidden');
+            document.getElementById('googleFormIframe').src = "https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?embedded=true";
         }
 
         function closeModal() {
             document.getElementById('modalOverlay').classList.add('hidden');
-            document.getElementById('profileModal').classList.add('hidden');
+            document.getElementById('googleFormModal').classList.add('hidden');
+            document.getElementById('googleFormIframe').src = "";
         }
-
         // Handle page visibility changes
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible' && isMining) {
