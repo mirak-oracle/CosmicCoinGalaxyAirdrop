@@ -292,13 +292,12 @@
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
                 <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
-                <button onclick="claimDailyReward()" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                    Claim Daily Reward
-                </button>
-            </div>
+<button  onclick="window.open('https://whomeenoaglauns.com/4/5544101', '_blank'); claimDailyReward();" 
+    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+    Claim Daily Reward
+</button>
         </div>
-
-
+        </div>
 
         <!-- Referral Section -->
         <div id="referralSection" class="hidden">
@@ -513,8 +512,7 @@ let userId = localStorage.getItem('userId') || '';
             updateBalanceDisplay();
         }
 
-    
-    function claimDailyReward() {
+        function claimDailyReward() {
             const lastClaimTime = localStorage.getItem('lastClaimTime');
             const now = Date.now();
             if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
@@ -525,11 +523,11 @@ let userId = localStorage.getItem('userId') || '';
                 localStorage.setItem('balance', balance.toString());
                 localStorage.setItem('lastClaimTime', now.toString());
                 updateBalanceDisplay();
-                alert(You've claimed ${reward} CosmicCoins as your daily reward!);
+                alert(`You've claimed ${reward} CosmicCoins as your daily reward!`);
             }
-        
+        }
 
- function inviteFriend() {
+        function inviteFriend() {
             const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
             const referralLink = `https://cosmiccoin.com?ref=${referralCode}`;
             navigator.clipboard.writeText(referralLink).then(() => {
