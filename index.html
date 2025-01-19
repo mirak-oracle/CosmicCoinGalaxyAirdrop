@@ -560,36 +560,49 @@
             });
         }
 
-        function completeTask(taskId) {
-            const now = Date.now();
+function completeTask(taskId) {
+    const now = Date.now();
 
-            if (completedTasks[taskId] && now - completedTasks[taskId] < COOLDOWN_DURATION) {
-                const remainingTime = COOLDOWN_DURATION - (now - completedTasks[taskId]);
-                showNotification(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
-                return;
-            }
+    // Check cooldown period
+    if (completedTasks[taskId] && now - completedTasks[taskId] < COOLDOWN_DURATION) {
+        const remainingTime = COOLDOWN_DURATION - (now - completedTasks[taskId]);
+        showNotification(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
+        return;
+    }
 
-            // Simulate task verification
-            setTimeout(() => {
-                completedTasks[taskId] = now;
-                localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+    // Show notification and start countdown
+    const verificationTime = 10000; // 10 seconds for verification
+    showNotification(`Verifying task... Please wait.`);
 
-                const reward = 10;
-                balance += reward;
-                localStorage.setItem('balance', balance.toString());
-                updateBalanceDisplay();
+    let secondsRemaining = verificationTime / 1000;
+    const countdownInterval = setInterval(() => {
+        secondsRemaining--;
+        showNotification(`Verifying task... ${secondsRemaining}s remaining.`);
+        if (secondsRemaining <= 0) clearInterval(countdownInterval);
+    }, 1000);
 
-                showNotification(`Task completed! You earned ${reward} COS.`);
-                renderTasks();
-            }, 2000);
-        }
+    // Simulate task verification
+    setTimeout(() => {
+        completedTasks[taskId] = now;
+        localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
 
-        function formatTime(milliseconds) {
-            const totalSeconds = Math.floor(milliseconds / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            return `${minutes}m ${seconds}s`;
-        }
+        const reward = 30;
+        balance += reward;
+        localStorage.setItem('balance', balance.toString());
+        updateBalanceDisplay();
+
+        // Notify task completion
+        showNotification(`🎉 Task completed! You earned ${reward} COS. Keep going!`);
+        renderTasks();
+    }, verificationTime);
+}
+
+function formatTime(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}m ${seconds}s`;
+}
 
         function claimDailyReward(viewAds) {
             const lastClaimTime = localStorage.getItem('lastClaimTime');
