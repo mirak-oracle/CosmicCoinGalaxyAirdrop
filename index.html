@@ -5,35 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CosmicCoin Galaxy Airdrop</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES3NKKYCS7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'G-ES3NKKYCS7');
-    </script>
+      <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-ES3NKKYCS7"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-ES3NKKYCS7');
+  </script>
+
+  
     <style>
         .mining-circle {
             clip-path: circle(50% at 50% 50%);
             transition: clip-path 0.3s ease;
         }
+        
         .mining-progress {
             background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
             transition: height 1s linear;
         }
+
         .world-map {
             background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"><path d="M3 12h18M12 3v18M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>');
             background-repeat: no-repeat;
             background-position: center;
             background-size: contain;
         }
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
         }
+
         .pulse {
             animation: pulse 2s infinite;
         }
+
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -43,6 +52,7 @@
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 9998;
         }
+
         .modal {
             position: fixed;
             top: 50%;
@@ -57,16 +67,19 @@
             max-height: 90vh;
             overflow-y: auto;
         }
+
         .holographic-text {
             background: linear-gradient(90deg, #ff00cc, #3333ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: shimmer 2s infinite linear;
         }
+
         @keyframes shimmer {
             0% { background-position: -100%; }
             100% { background-position: 100%; }
         }
+
         #loadingScreen {
             position: fixed;
             top: 0;
@@ -98,8 +111,89 @@
     <div id="sideMenu" class="fixed left-0 top-0 h-full w-64 bg-gray-900 transform -translate-x-full transition-transform duration-200 ease-in-out z-40">
         <div class="p-4 border-b border-gray-800">
 </div>
-       
+        <nav class="p-4">
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('mainSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span>Home</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('tasksSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+                </svg>
+                <span>Tasks</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('rewardsSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+                <span>Rewards</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('referralSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                </svg>
+                <span>Invite</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('walletSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M4 4a2 2 0 00-2 2v1h16V6a2 2 0 00-2-2H4z" />
+                    <path fill-rule="evenodd" d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z" clip-rule="evenodd" />
+                </svg>
+                <span>Wallet</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('gamesSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span>Games</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 p-2 hover:bg-gray-800 rounded-lg" onclick="showSection('profileSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+                <span>Profile</span>
+            </a>
+        </nav>
+        <div class="flex flex-col items-center space-y-4 py-4">
+            <a href="#" class="text-blue-400 hover:underline"></a>
+            <a href="#" class="text-blue-400 hover:underline"></a>
+            <a href="#" class="text-blue-400 hover:underline"></a>
+            <a href="#" class="text-blue-400 hover:underline"></a>
+        </div>
+        <div class="mt-auto p-4 border-t border-gray-800">
+            <h4 class="text-lg font-semibold mb-2 text-center">Follow Us</h4>
+            <div class="flex justify-center space-x-4">
+                <a href="https://x.com/MirakleGroup" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                    </svg>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61557787735701" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+                    </svg>
+                </a>
+                <a href="https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                    </svg>
+                </a>
+                <a href="https://t.me/CosmicCoin11" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
     <div id="mainContent" class="p-4 sm:ml-64">
+        <!-- Home Section -->
         <div id="mainSection" class="min-h-screen flex flex-col items-center justify-center">
             <!-- User ID Generation -->
             <div class="mb-8 text-center">
@@ -113,12 +207,15 @@
                 </button>
             </div>
 
-            <!-- Mining Section -->
             <div class="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-6">
                 <!-- Mining Circle -->
                 <div class="relative aspect-square rounded-full border border-gray-800 mb-6">
                     <div class="absolute inset-0 world-map opacity-20"></div>
+                    
+                    <!-- Mining Progress -->
                     <div id="miningProgress" class="absolute bottom-0 w-full mining-progress opacity-20" style="height: 0%"></div>
+                    
+                    <!-- Balance Display -->
                     <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
                         <div id="balance" class="text-4xl font-bold">0.00</div>
                         <div class="text-sm text-gray-400">$COS</div>
@@ -180,6 +277,8 @@
                 </div>
             </div>
         </div>
+
+
 
         <!-- Tasks Section -->
         <div id="tasksSection" class="hidden">
@@ -244,12 +343,13 @@
             </div>
         </div>
 
+
         <!-- Profile Section -->
         <div id="profileSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Profile</h2>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <p class="mb-4">Update your profile information and settings.</p>
-                <button onclick="openProfileModal()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center">
+                <button onclick="openModal()" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                     </svg>
@@ -259,28 +359,21 @@
         </div>
     </div>
 
-    <!-- Profile Modal -->
-    <div id="profileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-gray-900 p-8 rounded-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-4">Update Profile</h2>
-            <form id="profileForm">
-                <div class="mb-4">
-                    <label for="username" class="block text-sm font-medium text-gray-400">Username</label>
-                    <input type="text" id="username" name="username" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white">
-                </div>
-                <div class="mb-4">
-                    <label for="email" class="block text-sm font-medium text-gray-400">Email</label>
-                    <input type="email" id="email" name="email" class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white">
-                </div>
-                <div class="flex justify-end">
-                    <button type="button" onclick="closeProfileModal()" class="mr-2 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">Cancel</button>
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
-                </div>
-            </form>
-        </div>
+    <!-- Google Form Modal -->
+    <div id="modalOverlay" class="modal-overlay hidden"></div>
+    <div id="googleFormModal" class="modal hidden">
+        <button onclick="closeModal()" class="absolute top-2 right-2 text-gray-500 hover:text-gray-700">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <iframe id="googleFormIframe" src="" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">
+            Loading...
+        </iframe>
     </div>
 
-    <script>
+    
+ <script>
         // Constants
         const MINING_RATE = 0.00040; // COS per second
         const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
@@ -447,81 +540,7 @@
             document.getElementById(sectionId).classList.remove('hidden');
         }
 
-        function renderSideMenu() {
-            sideMenu.innerHTML = `
-                <div class="p-4 border-b border-gray-800">
-                    <h2 class="text-xl font-bold">CosmicCoin Galaxy</h2>
-                </div>
-                <nav class="p-4">
-                    <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('mainSection')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                        </svg>
-                        Home
-                    </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('tasksSection')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
-                            <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
-                        </svg>
-                        Tasks
-                    </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('rewardsSection')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd" />
-                            <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z" />
-                        </svg>
-                        Rewards
-                    </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('referralSection')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
-                        </svg>
-                        Invite
-                    </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('walletSection')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
-                        </svg>
-                        Wallet
-                    </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('gamesSection')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
-                        </svg>
-                        Games
-                    </a>
-                    <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('profileSection')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                        </svg>
-                        Profile
-                    </a>
-                </nav>
-                <div class="p-4 border-t border-gray-800">
-                    <h3 class="text-lg font-semibold mb-2">Follow Us</h3>
-                    <div class="flex space-x-2">
-                        <a href="#" class="text-blue-400 hover:text-blue-300">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-blue-600 hover:text-blue-500">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                        <a href="#" class="text-pink-400 hover:text-pink-300">
-                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.772-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderTasks() {
+function renderTasks() {
             const tasks = [
                 { id: 'join_telegram', name: 'Join Telegram Channel', url: 'https://t.me/CosmicCoin11' },
                 { id: 'follow_twitter', name: 'Follow on Twitter', url: 'https://twitter.com/MirakleGroup' },
@@ -608,14 +627,225 @@
             }
         }
 
-        function generateReferralLink() {
-            const referralCode = Math.random().toString(36).substring(2, 8).toUpperCase();
-            const referralLink = `https://cosmiccoin.com?ref=${referralCode}`;
-            navigator.clipboard.writeText(referralLink).then(() => {
-                document.getElementById('referralStatus').textContent = 'Referral link copied to clipboard!';
-            });
+// Simplified Referral System Configuration
+const REFERRAL_CONFIG = {
+    INVITE_REWARD: 10,
+    REFERRAL_LINKS: {
+        TELEGRAM: 'https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=',
+        WAPCHAT: 'https://apkpure.com/wapchat/wapchat.actb?ref='
+    },
+    SOCIAL_LINKS: {
+        TELEGRAM: 'https://t.me/share/url',
+        TWITTER: 'https://twitter.com/intent/tweet',
+        WHATSAPP: 'https://wa.me/',
+        FACEBOOK: 'https://www.facebook.com/sharer/sharer.php'
+    }
+};
+
+class ReferralSystem {
+    constructor() {
+        this.referralData = JSON.parse(localStorage.getItem('referralData')) || {
+            referrals: [],
+            shares: {},
+            lastCheck: Date.now()
+        };
+        
+        this.initializeSystem();
+        this.startReferralTracking();
+    }
+
+    initializeSystem() {
+        const referralSection = document.getElementById('referralSection');
+        if (referralSection) {
+            referralSection.classList.remove('hidden');
+        }
+        this.updateUI();
+    }
+
+    generateShareText() {
+        return `🚀 Join CosmicCoin Galaxy Airdrop!
+
+📱 Join via:
+Telegram: ${REFERRAL_CONFIG.REFERRAL_LINKS.TELEGRAM}${this.getReferralCode()}
+WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
+
+⭐️ Earn ${REFERRAL_CONFIG.INVITE_REWARD} COS for each referral!
+🎁 Don't miss out on this opportunity!`;
+    }
+
+    getReferralCode() {
+        // Get referral code from URL or use placeholder
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('ref') || 'CCJFPVZ9GP';
+    }
+
+    startReferralTracking() {
+        // Check for new referrals every 8 minutes
+        setInterval(() => {
+            this.checkNewReferrals();
+        }, 8 * 60 * 1000);
+    }
+
+    async checkNewReferrals() {
+        try {
+            // Simulate checking for new referrals
+            if (this.referralData.lastCheck) {
+                const newReferrals = await this.fetchNewReferrals();
+                if (newReferrals.length > 0) {
+                    this.processNewReferrals(newReferrals);
+                }
+            }
+            this.referralData.lastCheck = Date.now();
+            this.saveData();
+        } catch (error) {
+            console.error('Error checking referrals:', error);
+        }
+    }
+
+    async fetchNewReferrals() {
+        // Placeholder for API call to fetch new referrals
+        // In production, this would call your backend
+        return new Promise(resolve => {
+            const mockNewReferrals = [];
+            // Simulate some random referrals for testing
+            if (Math.random() > 0.9) {
+                mockNewReferrals.push({ timestamp: Date.now() });
+            }
+            resolve(mockNewReferrals);
+        });
+    }
+
+    processNewReferrals(newReferrals) {
+        this.referralData.referrals = [...this.referralData.referrals, ...newReferrals];
+        this.saveData();
+        this.updateUI();
+    }
+
+    async copyToClipboard() {
+        const shareText = this.generateShareText();
+        try {
+            await navigator.clipboard.writeText(shareText);
+            this.recordShare('clipboard');
+            this.updateStatus('Referral links copied! Share with your friends!');
+        } catch (err) {
+            this.updateStatus('Failed to copy. Please try again.');
+        }
+    }
+
+    async shareToSocial(platform) {
+        const shareText = encodeURIComponent(this.generateShareText());
+        let shareUrl = '';
+
+        switch (platform) {
+            case 'telegram':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TELEGRAM}?url=${shareText}`;
+                break;
+            case 'twitter':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TWITTER}?text=${shareText}`;
+                break;
+            case 'whatsapp':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.WHATSAPP}?text=${shareText}`;
+                break;
+            case 'facebook':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.FACEBOOK}?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`;
+                break;
         }
 
+        if (shareUrl) {
+            window.open(shareUrl, '_blank');
+            this.recordShare(platform);
+            this.updateStatus(`Shared to ${platform}!`);
+        }
+    }
+
+    recordShare(platform) {
+        if (!this.referralData.shares[platform]) {
+            this.referralData.shares[platform] = [];
+        }
+        this.referralData.shares[platform].push(Date.now());
+        this.saveData();
+    }
+
+    updateUI() {
+        const referralSection = document.getElementById('referralSection');
+        if (!referralSection) return;
+
+        referralSection.innerHTML = `
+            <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <div class="grid grid-cols-1 gap-4 mb-6">
+                    <div class="bg-gray-700 p-4 rounded-lg text-center">
+                        <p class="text-sm">Total Invites</p>
+                        <p class="text-2xl font-bold text-purple-400">
+                            ${this.referralData.referrals.length}
+                        </p>
+                        <p class="text-sm text-gray-400 mt-2">
+                            Calculating rewards... Final count on claim day
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Share Buttons -->
+                <div class="space-y-3">
+                    <button 
+                        onclick="referralSystem.copyToClipboard()"
+                        class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        📋 Copy Referral Links
+                    </button>
+                    
+                    <button 
+                        onclick="referralSystem.shareToSocial('telegram')"
+                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        Share on Telegram
+                    </button>
+
+                    <button 
+                        onclick="referralSystem.shareToSocial('twitter')"
+                        class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        Share on Twitter
+                    </button>
+
+                    <button 
+                        onclick="referralSystem.shareToSocial('whatsapp')"
+                        class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        Share on WhatsApp
+                    </button>
+
+                    <button 
+                        onclick="referralSystem.shareToSocial('facebook')"
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
+                        Share on Facebook
+                    </button>
+                </div>
+
+                <p id="referralStatus" class="mt-4 text-sm text-center text-gray-400"></p>
+            </div>
+        `;
+    }
+
+    updateStatus(message) {
+        const statusElement = document.getElementById('referralStatus');
+        if (statusElement) {
+            statusElement.textContent = message;
+            setTimeout(() => {
+                statusElement.textContent = '';
+            }, 5000);
+        }
+    }
+
+    saveData() {
+        localStorage.setItem('referralData', JSON.stringify(this.referralData));
+    }
+}
+
+// Initialize the referral system
+const referralSystem = new ReferralSystem();
+
+// Export for external use
+window.referralSystem = referralSystem;
+    
+    
+   
         function refreshWalletBalance() {
             updateBalanceDisplay();
             showNotification('Balance refreshed!');
@@ -651,26 +881,18 @@
             showNotification(`${boostType} boost activated for ${duration / 60000} minutes!`);
         }
 
-        function openProfileModal() {
-            document.getElementById('profileModal').classList.remove('hidden');
-            document.getElementById('profileModal').classList.add('flex');
+function openModal() {
+            document.getElementById('modalOverlay').classList.remove('hidden');
+            document.getElementById('googleFormModal').classList.remove('hidden');
+            document.getElementById('googleFormIframe').src = "https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?embedded=true";
         }
 
-        function closeProfileModal() {
-            document.getElementById('profileModal').classList.add('hidden');
-            document.getElementById('profileModal').classList.remove('flex');
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.add('hidden');
+            document.getElementById('googleFormModal').classList.add('hidden');
+            document.getElementById('googleFormIframe').src = "";
         }
 
-        document.getElementById('profileForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            // Here you would typically send this data to a server
-            localStorage.setItem('username', username);
-            localStorage.setItem('email', email);
-            showNotification('Profile updated successfully!');
-            closeProfileModal();
-        });
 
         function showNotification(message) {
             const notification = document.createElement('div');
