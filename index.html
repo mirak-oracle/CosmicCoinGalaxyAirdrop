@@ -682,10 +682,10 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
     }
 
     startReferralTracking() {
-        // Check for new referrals every 9 minutes
+        // Check for new referrals every 10 minutes
         setInterval(() => {
             this.checkNewReferrals();
-        }, 8 * 60 * 1000);
+        }, 10 * 60 * 1000);
     }
 
     async checkNewReferrals() {
