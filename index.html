@@ -265,7 +265,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
-        <iframe id="googleFormIframe" src="" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">
+        <iframe id="googleFormIframe" src="" width="130%" height="110%" frameborder="0" marginheight="0" marginwidth="0">
             Loading...
         </iframe>
     </div>
@@ -586,7 +586,7 @@ function completeTask(taskId) {
         completedTasks[taskId] = now;
         localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
 
-        const reward = 30;
+        const reward = 20;
         balance += reward;
         localStorage.setItem('balance', balance.toString());
         updateBalanceDisplay();
@@ -676,7 +676,7 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
     }
 
     startReferralTracking() {
-        // Check for new referrals every 8 minutes
+        // Check for new referrals every 9 minutes
         setInterval(() => {
             this.checkNewReferrals();
         }, 8 * 60 * 1000);
