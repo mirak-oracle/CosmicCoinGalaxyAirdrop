@@ -279,46 +279,79 @@
         </div>
 
 
-
         <!-- Tasks Section -->
         <div id="tasksSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Tasks</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="activeTasks">
-                <!-- Active tasks will be dynamically inserted here -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="task-item">
+                    <a href="https://t.me/CosmicCoin11" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('join_telegram')">
+                            Join Telegram Channel
+                        </button>
+                    </a>
+                </div>
+                <div class="task-item">
+                    <a href="https://twitter.com/MirakleGroup" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('follow_twitter')">
+                            Follow on Twitter
+                        </button>
+                    </a>
+                </div>
+                   <div class="task-item">
+                    <a href="https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('Subscribe MG Channel')">
+                      Subscribe MG Channel
+                        </button>   
+                    </a>
+                </div>
+                     <div class="task-item">
+                    <a href="https://discord.gg/NpvcBgGt" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('Join Discord')">
+                            Join Discord
+                        </button>
+                    </a>
+                </div>
+                     <div class="task-item">
+                    <a href="https://vm.tiktok.com/ZMkYHF9uc/" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('Follow CosmicCoin on TikTok')">
+                             Follow CosmicCoin on TikTok
+                        </button>
+                    </a>
+                </div>
+                 <div class="task-item">
+                    <a href="https://www.facebook.com/profile.php?id=61557787735701" target="_blank">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('Follow MG Facebook')">
+                             Follow MG Facebook
+                        </button>
+                    </a>
+                </div>
             </div>
-            <h3 class="text-2xl font-bold mt-8 mb-4">Completed Tasks</h3>
-            <div id="completedTasks" class="bg-gray-800 p-4 rounded-lg">
-                <!-- Completed tasks will be dynamically inserted here -->
             </div>
-        </div>
-
-        <!-- Rewards Section -->
+        
+        
+<!-- Rewards Section -->
         <div id="rewardsSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
                 <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
-                <button onclick="claimDailyReward(false)" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2">
-                    Claim Daily Reward
-                </button>
-                <button onclick="claimDailyReward(true)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-                    Get 2x Rewards and View Ads
-                </button>
-            </div>
+<button  onclick="window.open('https://whomeenoaglauns.com/4/5544101', '_blank'); claimDailyReward();" 
+    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
+    Get 2x Rewards and View Ads
+</button>
+        </div>
         </div>
 
-        <!-- Referral Section -->
-        <div id="referralSection" class="hidden">
-            <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <p class="mb-4">Invite your friends and earn bonus CosmicCoins!</p>
-                <button onclick="generateReferralLink()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
-                    Generate Referral Link
-                </button>
-                <p id="referralStatus" class="mt-4 text-sm text-gray-400"></p>
-            </div>
-        </div>
-
+<div id="referralSection" class="hidden">
+    <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
+    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+        <p class="mb-4">Invite your friends and earn bonus CosmicCoins!</p>
+        <button onclick="inviteFriend()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
+            Invite a Friend
+        </button>
+        <p id="referralStatus" class="mt-4 text-sm text-gray-400"></p>
+    </div>
+</div>
         <!-- Wallet Section -->
         <div id="walletSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Wallet</h2>
@@ -331,7 +364,8 @@
             </div>
         </div>
 
-        <!-- Games Section -->
+
+                <!-- Games Section -->
         <div id="gamesSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Cosmic Games Hub</h2>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
@@ -343,7 +377,7 @@
             </div>
         </div>
 
-
+        
         <!-- Profile Section -->
         <div id="profileSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Profile</h2>
@@ -373,21 +407,42 @@
     </div>
 
     
- <script>
+<script>
         // Constants
         const MINING_RATE = 0.00040; // COS per second
-        const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
         // State Management
         let isMining = false;
         let miningEndTime = 0;
         let miningInterval = null;
         let balance = parseFloat(localStorage.getItem('balance')) || 0;
-        let userId = localStorage.getItem('userId') || '';
-        let completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
-        let activeBoosts = {};
+let userId = localStorage.getItem('userId') || '';
 
-        // DOM Elements
+        function generateUniqueId() {
+            return 'COS-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5).toUpperCase();
+        }
+
+        function displayUserId() {
+            const userIdEl = document.getElementById('userId');
+            if (userId) {
+                userIdEl.textContent = userId;
+            } else {
+                userIdEl.textContent = 'No ID generated yet';
+            }
+        }
+
+        function generateNewUserId() {
+            if (userId) {
+                alert('You already have a permanent User ID. It cannot be changed.');
+                return;
+            }
+            userId = generateUniqueId();
+            localStorage.setItem('userId', userId);
+            displayUserId();
+            showStickyNotification('New User ID generated: ' + userId);
+        }
+
+    // DOM Elements
         const balanceEl = document.getElementById('balance');
         const progressEl = document.getElementById('miningProgress');
         const timerEl = document.getElementById('timer');
@@ -402,9 +457,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             updateBalanceDisplay();
             loadMiningState();
-            displayUserId();
-            renderSideMenu();
-            renderTasks();
+            displayUserId(); // Display User ID on page load
             setTimeout(() => {
                 loadingScreen.style.display = 'none';
             }, 2000);
@@ -422,32 +475,10 @@
             }
         });
 
-        function generateUniqueId() {
-            return 'COS-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5).toUpperCase();
-        }
-
-        function displayUserId() {
-            if (userId) {
-                userIdEl.textContent = userId;
-            } else {
-                userIdEl.textContent = 'No ID generated yet';
-            }
-        }
-
-        function generateNewUserId() {
-            if (userId) {
-                alert('You already have a permanent User ID. It cannot be changed.');
-                return;
-            }
-            userId = generateUniqueId();
-            localStorage.setItem('userId', userId);
-            displayUserId();
-            showNotification('New User ID generated: ' + userId);
-        }
 
         function startMining(hours) {
             if (isMining) {
-                showNotification('Mining already in progress!');
+                alert('Mining already in progress!');
                 return;
             }
 
@@ -485,21 +516,10 @@
                 timerEl.textContent = `${hours}h ${minutes}m`;
                 
                 // Update balance
-                const earnedAmount = calculateMiningReward(now - parseInt(localStorage.getItem('miningStartTime')));
+                const earnedAmount = MINING_RATE * ((now - parseInt(localStorage.getItem('miningStartTime'))) / 1000);
                 balance = parseFloat(localStorage.getItem('balance')) + earnedAmount;
                 updateBalanceDisplay();
             }, 1000);
-        }
-
-        function calculateMiningReward(duration) {
-            let rate = MINING_RATE;
-            if (activeBoosts.speed) {
-                rate *= 2;
-            }
-            if (activeBoosts.efficiency) {
-                rate *= 1.5;
-            }
-            return rate * (duration / 1000);
         }
 
         function completeMining() {
@@ -512,7 +532,6 @@
             localStorage.setItem('balance', balance.toString());
             
             updateBalanceDisplay();
-            showNotification('Mining completed!');
         }
 
         function updateBalanceDisplay() {
@@ -540,90 +559,71 @@
             document.getElementById(sectionId).classList.remove('hidden');
         }
 
-function renderTasks() {
-            const tasks = [
-                { id: 'join_telegram', name: 'Join Telegram Channel', url: 'https://t.me/CosmicCoin11' },
-                { id: 'follow_twitter', name: 'Follow on Twitter', url: 'https://twitter.com/MirakleGroup' },
-                { id: 'subscribe_youtube', name: 'Subscribe MG Channel', url: 'https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY' },
-                { id: 'join_discord', name: 'Join Discord', url: 'https://discord.gg/NpvcBgGt' },
-                { id: 'follow_tiktok', name: 'Follow CosmicCoin on TikTok', url: 'https://vm.tiktok.com/ZMkYHF9uc/' },
-                { id: 'follow_facebook', name: 'Follow MG Facebook', url: 'https://www.facebook.com/profile.php?id=61557787735701' }
-            ];
-
-            const activeTasksContainer = document.getElementById('activeTasks');
-            const completedTasksContainer = document.getElementById('completedTasks');
-
-            activeTasksContainer.innerHTML = '';
-            completedTasksContainer.innerHTML = '';
-
-            tasks.forEach(task => {
-                if (completedTasks[task.id]) {
-                    completedTasksContainer.innerHTML += `
-                        <div class="mb-2 p-2 bg-gray-700 rounded">
-                            <span class="text-green-400">✓</span> ${task.name}
-                        </div>
-                    `;
-                } else {
-                    activeTasksContainer.innerHTML += `
-                        <div class="task-item">
-                            <a href="${task.url}" target="_blank">
-                                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('${task.id}')">
-                                    ${task.name}
-                                </button>
-                            </a>
-                        </div>
-                    `;
-                }
-            });
+function completeTask(taskId) {
+            console.log(`Task ${taskId} completed`);
+            alert('Task completed! You earned 10 COS.');
+            balance += 10;
+            localStorage.setItem('balance', balance.toString());
+            updateBalanceDisplay();
         }
+    const cooldownDuration = 5 * 60 * 1000; // 5 minutes in milliseconds
+const completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
 
-        function completeTask(taskId) {
-            const now = Date.now();
+// Function to handle task completion with cooldown
+function completeTask(taskId) {
+    const now = Date.now();
 
-            if (completedTasks[taskId] && now - completedTasks[taskId] < COOLDOWN_DURATION) {
-                const remainingTime = COOLDOWN_DURATION - (now - completedTasks[taskId]);
-                showNotification(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
-                return;
-            }
+    if (completedTasks[taskId] && now - completedTasks[taskId] < cooldownDuration) {
+        const remainingTime = cooldownDuration - (now - completedTasks[taskId]);
+        alert(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
+        return;
+    }
 
-            // Simulate task verification
-            setTimeout(() => {
-                completedTasks[taskId] = now;
-                localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
+    // Mark the task as completed
+    completedTasks[taskId] = now;
+    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
 
-                const reward = 10;
-                balance += reward;
-                localStorage.setItem('balance', balance.toString());
-                updateBalanceDisplay();
+    alert('Task completed! You earned 10 COS.');
 
-                showNotification(`Task completed! You earned ${reward} COS.`);
-                renderTasks();
-            }, 2000);
+    // Optionally, call any other function (e.g., reward logic) here
+}
+
+// Format time in minutes and seconds
+function formatTime(milliseconds) {
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}m ${seconds}s`;
+}
+
+// Initialize cooldown timers on page load (optional)
+function initializeCooldowns() {
+    const now = Date.now();
+    for (const taskId in completedTasks) {
+        const elapsed = now - completedTasks[taskId];
+        if (elapsed < cooldownDuration) {
+            const remainingTime = cooldownDuration - elapsed;
+            console.log(`Task ${taskId} is still on cooldown. ${formatTime(remainingTime)} left.`);
         }
+    }
+}
 
-        function formatTime(milliseconds) {
-            const totalSeconds = Math.floor(milliseconds / 1000);
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            return `${minutes}m ${seconds}s`;
-        }
+// Run initialization when the page loads
+document.addEventListener('DOMContentLoaded', initializeCooldowns);
 
-        function claimDailyReward(viewAds) {
+
+    function claimDailyReward() {
             const lastClaimTime = localStorage.getItem('lastClaimTime');
             const now = Date.now();
             if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
-                showNotification('You have already claimed your daily reward. Come back tomorrow!');
+                alert('You have already claimed your daily reward. Come back tomorrow!');
             } else {
-                let reward = 50;
-                if (viewAds) {
-                    reward *= 2;
-                    window.open('https://whomeenoaglauns.com/4/5544101', '_blank');
-                }
+                const reward = 50;
                 balance += reward;
                 localStorage.setItem('balance', balance.toString());
                 localStorage.setItem('lastClaimTime', now.toString());
                 updateBalanceDisplay();
-                showNotification(`You've claimed ${reward} CosmicCoins as your daily reward!`);
+                alert(`You've claimed ${reward} CosmicCoins as your daily reward!`);
             }
         }
 
@@ -845,40 +845,25 @@ const referralSystem = new ReferralSystem();
 window.referralSystem = referralSystem;
     
     
-   
-        function refreshWalletBalance() {
+    function refreshWalletBalance() {
             updateBalanceDisplay();
-            showNotification('Balance refreshed!');
+            alert('Balance refreshed!');
         }
 
+        // Mining Boosts
         function activateBoost(boostType) {
-            if (activeBoosts[boostType]) {
-                showNotification(`${boostType} boost is already active!`);
-                return;
-            }
-
-            let duration = 0;
-            let multiplier = 1;
-
+            let message = '';
             switch(boostType) {
                 case 'speed':
-                    duration = 60 * 60 * 1000; // 1 hour
-                    multiplier = 2;
+                    message = 'Speed Boost activated! Mining rate doubled for the next hour.';
+                    // Implement the actual boost logic here
                     break;
                 case 'efficiency':
-                    duration = 30 * 60 * 1000; // 30 minutes
-                    multiplier = 1.5;
+                    message = 'Efficiency Boost activated! 50% more COS per mining operation for the next 30 minutes.';
+                    // Implement the actual boost logic here
                     break;
             }
-
-            activeBoosts[boostType] = true;
-
-            setTimeout(() => {
-                activeBoosts[boostType] = false;
-                showNotification(`Your ${boostType} boost has expired.`);
-            }, duration);
-
-            showNotification(`${boostType} boost activated for ${duration / 60000} minutes!`);
+            alert(message);
         }
 
 function openModal() {
@@ -893,25 +878,12 @@ function openModal() {
             document.getElementById('googleFormIframe').src = "";
         }
 
-
-        function showNotification(message) {
-            const notification = document.createElement('div');
-            notification.textContent = message;
-            notification.className = 'fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-lg shadow-lg';
-            document.body.appendChild(notification);
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        // Handle page visibility changes
+       // Handle page visibility changes
         document.addEventListener('visibilitychange', () => {
             if (document.visibilityState === 'visible' && isMining) {
                 updateMiningProgress();
             }
         });
-
-        generateIdBtn.addEventListener('click', generateNewUserId);
     </script>
 </body>
 </html>
