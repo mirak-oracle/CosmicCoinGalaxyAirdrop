@@ -272,6 +272,31 @@
 
     
  <script>
+
+     // Add this at the start of your script
+function initializeApp() {
+    // Initialize balance if not exists
+    if (!localStorage.getItem('balance')) {
+        localStorage.setItem('balance', '0');
+    }
+    
+    // Reset any stuck mining states
+    if (localStorage.getItem('isMining') === 'true') {
+        const miningEndTime = Number(localStorage.getItem('miningEndTime'));
+        if (Date.now() >= miningEndTime) {
+            localStorage.setItem('isMining', 'false');
+        }
+    }
+    
+    // Initialize user ID if needed
+    if (!localStorage.getItem('userId')) {
+        generateNewUserId();
+    }
+}
+
+// Call this when the page loads
+document.addEventListener('DOMContentLoaded', initializeApp);
+     
         // Constants
         const MINING_RATE = 0.00040; // COS per second
         const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
@@ -343,24 +368,32 @@
             showNotification('New User ID generated: ' + userId);
         }
 
-        function startMining(hours) {
-            if (isMining) {
-                showNotification('Mining already in progress!');
-                return;
-            }
+function startMining(hours) {
+    if (isMining) {
+        showNotification('Mining already in progress!');
+        return;
+    }
 
-            isMining = true;
-            const startTime = Date.now();
-            miningEndTime = startTime + (hours * 60 * 60 * 1000);
-            
-            localStorage.setItem('isMining', 'true');
-            localStorage.setItem('miningEndTime', miningEndTime.toString());
-            localStorage.setItem('miningStartTime', startTime.toString());
-            
-            updateMiningProgress();
-            timeLeftContainer.classList.remove('hidden');
-        }
-
+    try {
+        isMining = true;
+        const startTime = Date.now();
+        miningEndTime = startTime + (hours * 60 * 60 * 1000);
+        
+        localStorage.setItem('isMining', 'true');
+        localStorage.setItem('miningEndTime', miningEndTime.toString());
+        localStorage.setItem('miningStartTime', startTime.toString());
+        
+        updateMiningProgress();
+        timeLeftContainer.classList.remove('hidden');
+        
+        showNotification('Mining started successfully!');
+    } catch (error) {
+        console.error('Mining start error:', error);
+        showNotification('Error starting mining. Please try again.');
+        isMining = false;
+    }
+}
+     
         function updateMiningProgress() {
             clearInterval(miningInterval);
             
@@ -941,6 +974,29 @@ function openModal() {
 
         generateIdBtn.addEventListener('click', generateNewUserId);
 
+     function validateState() {
+    const state = {
+        balance: parseFloat(localStorage.getItem('balance')),
+        isMining: localStorage.getItem('isMining') === 'true',
+        miningEndTime: Number(localStorage.getItem('miningEndTime'))
+    };
+
+    if (isNaN(state.balance)) {
+        localStorage.setItem('balance', '0');
+    }
+
+    if (state.isMining && Date.now() >= state.miningEndTime) {
+        localStorage.setItem('isMining', 'false');
+    }
+}
+
+// Call this periodically
+setInterval(validateState, 60000); // Every minute
+
+     // Add this to your existing code
+window.addEventListener('beforeunload', () => {
+    clearInterval(miningInterval);
+});
  </script>
 </body>
 </html>
