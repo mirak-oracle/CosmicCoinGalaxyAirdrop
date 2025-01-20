@@ -272,31 +272,6 @@
 
     
  <script>
-
-     // Add this at the start of your script
-function initializeApp() {
-    // Initialize balance if not exists
-    if (!localStorage.getItem('balance')) {
-        localStorage.setItem('balance', '0');
-    }
-    
-    // Reset any stuck mining states
-    if (localStorage.getItem('isMining') === 'true') {
-        const miningEndTime = Number(localStorage.getItem('miningEndTime'));
-        if (Date.now() >= miningEndTime) {
-            localStorage.setItem('isMining', 'false');
-        }
-    }
-    
-    // Initialize user ID if needed
-    if (!localStorage.getItem('userId')) {
-        generateNewUserId();
-    }
-}
-
-// Call this when the page loads
-document.addEventListener('DOMContentLoaded', initializeApp);
-     
         // Constants
         const MINING_RATE = 0.00040; // COS per second
         const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
@@ -368,32 +343,24 @@ document.addEventListener('DOMContentLoaded', initializeApp);
             showNotification('New User ID generated: ' + userId);
         }
 
-function startMining(hours) {
-    if (isMining) {
-        showNotification('Mining already in progress!');
-        return;
-    }
+        function startMining(hours) {
+            if (isMining) {
+                showNotification('Mining already in progress!');
+                return;
+            }
 
-    try {
-        isMining = true;
-        const startTime = Date.now();
-        miningEndTime = startTime + (hours * 60 * 60 * 1000);
-        
-        localStorage.setItem('isMining', 'true');
-        localStorage.setItem('miningEndTime', miningEndTime.toString());
-        localStorage.setItem('miningStartTime', startTime.toString());
-        
-        updateMiningProgress();
-        timeLeftContainer.classList.remove('hidden');
-        
-        showNotification('Mining started successfully!');
-    } catch (error) {
-        console.error('Mining start error:', error);
-        showNotification('Error starting mining. Please try again.');
-        isMining = false;
-    }
-}
-     
+            isMining = true;
+            const startTime = Date.now();
+            miningEndTime = startTime + (hours * 60 * 60 * 1000);
+            
+            localStorage.setItem('isMining', 'true');
+            localStorage.setItem('miningEndTime', miningEndTime.toString());
+            localStorage.setItem('miningStartTime', startTime.toString());
+            
+            updateMiningProgress();
+            timeLeftContainer.classList.remove('hidden');
+        }
+
         function updateMiningProgress() {
             clearInterval(miningInterval);
             
@@ -433,48 +400,39 @@ function startMining(hours) {
             return rate * (duration / 1000);
         }
 
-function completeMining() {
-    clearInterval(miningInterval);
-    isMining = false;
-    progressEl.style.height = '0%';
-    timeLeftContainer.classList.add('hidden');
-    
-    localStorage.setItem('isMining', 'false');
-    saveUserData();
-    
-    updateBalanceDisplay();
-    showNotification('Mining completed!');
-}
-
-function updateBalanceDisplay() {
-    if (isNaN(balance)) {
-        console.error('Balance is NaN. Attempting to recover...');
-        balance = Number(localStorage.getItem('balance')) || 0;
-        if (isNaN(balance)) {
-            balance = 0;
-            console.error('Failed to recover balance. Resetting to 0.');
+        function completeMining() {
+            clearInterval(miningInterval);
+            isMining = false;
+            progressEl.style.height = '0%';
+            timeLeftContainer.classList.add('hidden');
+            
+            localStorage.setItem('isMining', 'false');
+            localStorage.setItem('balance', balance.toString());
+            
+            updateBalanceDisplay();
+            showNotification('Mining completed!');
         }
-        saveUserData();
-    }
-    balanceEl.textContent = balance.toFixed(2);
-    document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
-    document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
-    document.getElementById('miningRate').textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`;
-}
 
-function loadMiningState() {
-    const storedMining = localStorage.getItem('isMining') === 'true';
-    const storedEndTime = Number(localStorage.getItem('miningEndTime'));
-    
-    if (storedMining && Date.now() < storedEndTime) {
-        isMining = true;
-        miningEndTime = storedEndTime;
-        updateMiningProgress();
-        timeLeftContainer.classList.remove('hidden');
-    }
-}
-     
-     function showSection(sectionId) {
+        function updateBalanceDisplay() {
+            balanceEl.textContent = balance.toFixed(2);
+            document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
+            document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
+            document.getElementById('miningRate').textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`;
+        }
+
+        function loadMiningState() {
+            const storedMining = localStorage.getItem('isMining') === 'true';
+            const storedEndTime = parseInt(localStorage.getItem('miningEndTime'));
+            
+            if (storedMining && Date.now() < storedEndTime) {
+                isMining = true;
+                miningEndTime = storedEndTime;
+                updateMiningProgress();
+                timeLeftContainer.classList.remove('hidden');
+            }
+        }
+
+        function showSection(sectionId) {
             const sections = document.querySelectorAll('#mainContent > div');
             sections.forEach(section => section.classList.add('hidden'));
             document.getElementById(sectionId).classList.remove('hidden');
@@ -571,96 +529,78 @@ function loadMiningState() {
             `;
         }
 
-function renderTasks() {
-    const tasks = [
-        { id: 'join_telegram', name: 'Join Telegram Channel', url: 'https://t.me/CosmicCoin11', category: 'SOCIALS' },
-        { id: 'follow_twitter', name: 'Follow on Twitter', url: 'https://twitter.com/MirakleGroup', category: 'SOCIALS' },
-        { id: 'subscribe_youtube', name: 'Subscribe MG Channel', url: 'https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY', category: 'YOUTUBE' },
-        { id: 'join_discord', name: 'Join Discord', url: 'https://discord.gg/NpvcBgGt', category: 'SOCIALS' },
-        { id: 'follow_tiktok', name: 'Follow CosmicCoin on TikTok', url: 'https://vm.tiktok.com/ZMkYHF9uc/', category: 'SOCIALS' },
-        { id: 'follow_facebook', name: 'Follow MG Facebook', url: 'https://www.facebook.com/profile.php?id=61557787735701', category: 'SOCIALS' },
-        // Add more tasks here
-    ];
+        function renderTasks() {
+            const tasks = [
+                { id: 'join_telegram', name: 'Join Telegram Channel', url: 'https://t.me/CosmicCoin11' },
+                { id: 'follow_twitter', name: 'Follow on Twitter', url: 'https://twitter.com/MirakleGroup' },
+                { id: 'subscribe_youtube', name: 'Subscribe MG Channel', url: 'https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY' },
+                { id: 'join_discord', name: 'Join Discord', url: 'https://discord.gg/eK95cNXM' },
+                { id: 'follow_tiktok', name: 'Follow CosmicCoin on TikTok', url: 'https://vm.tiktok.com/ZMkYHF9uc/' },
+                { id: 'follow_facebook', name: 'Follow MG Facebook', url: 'https://www.facebook.com/profile.php?id=61557787735701' }
+            ];
 
-    const taskCategories = ['ALL', 'SOCIALS', 'YOUTUBE', 'ADS', 'OTHERS'];
-    const taskCategoriesContainer = document.getElementById('taskCategories');
-    const activeTasksContainer = document.getElementById('activeTasks');
-    const completedTasksContainer = document.getElementById('completedTasks');
+            const activeTasksContainer = document.getElementById('activeTasks');
+            const completedTasksContainer = document.getElementById('completedTasks');
 
-    // Render task categories
-    taskCategoriesContainer.innerHTML = taskCategories.map(category => `
-        <button onclick="filterTasks('${category}')" class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600">
-            ${category}
-        </button>
-    `).join('');
+            activeTasksContainer.innerHTML = '';
+            completedTasksContainer.innerHTML = '';
 
-    // Render tasks
-    activeTasksContainer.innerHTML = '';
-    completedTasksContainer.innerHTML = '';
-
-    tasks.forEach(task => {
-        if (completedTasks[task.id]) {
-            completedTasksContainer.innerHTML += `
-                <div class="mb-2 p-2 bg-gray-700 rounded">
-                    <span class="text-green-400">✓</span> ${task.name}
-                </div>
-            `;
-        } else {
-            activeTasksContainer.innerHTML += `
-                <div class="task-item" data-category="${task.category}">
-                    <a href="${task.url}" target="_blank">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('${task.id}')">
-                            ${task.name}
-                        </button>
-                    </a>
-                </div>
-            `;
+            tasks.forEach(task => {
+                if (completedTasks[task.id]) {
+                    completedTasksContainer.innerHTML += `
+                        <div class="mb-2 p-2 bg-gray-700 rounded">
+                            <span class="text-green-400">✓</span> ${task.name}
+                        </div>
+                    `;
+                } else {
+                    activeTasksContainer.innerHTML += `
+                        <div class="task-item">
+                            <a href="${task.url}" target="_blank">
+                                <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('${task.id}')">
+                                    ${task.name}
+                                </button>
+                            </a>
+                        </div>
+                    `;
+                }
+            });
         }
-    });
-}
-
-function filterTasks(category) {
-    const taskItems = document.querySelectorAll('.task-item');
-    taskItems.forEach(item => {
-        if (category === 'ALL' || item.dataset.category === category) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
-    });
-}
 
 function completeTask(taskId) {
     const now = Date.now();
 
+    // Check cooldown period
     if (completedTasks[taskId] && now - completedTasks[taskId] < COOLDOWN_DURATION) {
         const remainingTime = COOLDOWN_DURATION - (now - completedTasks[taskId]);
         showNotification(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
         return;
     }
 
-    // Show verification message
-    showNotification("Verifying task completion...");
+    // Show notification and start countdown
+    const verificationTime = 10000; // 10 seconds for verification
+    showNotification(`Verifying task... Please wait.`);
 
-    // Simulate task verification (replace with actual verification in production)
+    let secondsRemaining = verificationTime / 1000;
+    const countdownInterval = setInterval(() => {
+        secondsRemaining--;
+        showNotification(`Verifying task... ${secondsRemaining}s remaining.`);
+        if (secondsRemaining <= 0) clearInterval(countdownInterval);
+    }, 1000);
+
+    // Simulate task verification
     setTimeout(() => {
-        const isVerified = Math.random() > 0.1; // 90% chance of success for simulation
+        completedTasks[taskId] = now;
+        localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
 
-        if (isVerified) {
-            completedTasks[taskId] = now;
-            saveUserData();
+        const reward = 20;
+        balance += reward;
+        localStorage.setItem('balance', balance.toString());
+        updateBalanceDisplay();
 
-            const reward = 10;
-            balance += reward;
-            saveUserData();
-            updateBalanceDisplay();
-
-            showNotification(`Task completed! You earned ${reward} COS.`);
-            renderTasks();
-        } else {
-            showNotification("Task verification failed. Please try again.");
-        }
-    }, 3000); // 3 seconds for simulated verification
+        // Notify task completion
+        showNotification(`🎉 Task completed! You earned ${reward} COS. Keep going!`);
+        renderTasks();
+    }, verificationTime);
 }
 
 function formatTime(milliseconds) {
@@ -669,8 +609,8 @@ function formatTime(milliseconds) {
     const seconds = totalSeconds % 60;
     return `${minutes}m ${seconds}s`;
 }
-     
-     function claimDailyReward(viewAds) {
+
+        function claimDailyReward(viewAds) {
             const lastClaimTime = localStorage.getItem('lastClaimTime');
             const now = Date.now();
             if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
@@ -742,10 +682,10 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
     }
 
     startReferralTracking() {
-        // Check for new referrals every 10 minutes
+        // Check for new referrals every 9 minutes
         setInterval(() => {
             this.checkNewReferrals();
-        }, 10 * 60 * 1000);
+        }, 8 * 60 * 1000);
     }
 
     async checkNewReferrals() {
@@ -973,31 +913,7 @@ function openModal() {
         });
 
         generateIdBtn.addEventListener('click', generateNewUserId);
-
-     function validateState() {
-    const state = {
-        balance: parseFloat(localStorage.getItem('balance')),
-        isMining: localStorage.getItem('isMining') === 'true',
-        miningEndTime: Number(localStorage.getItem('miningEndTime'))
-    };
-
-    if (isNaN(state.balance)) {
-        localStorage.setItem('balance', '0');
-    }
-
-    if (state.isMining && Date.now() >= state.miningEndTime) {
-        localStorage.setItem('isMining', 'false');
-    }
-}
-
-// Call this periodically
-setInterval(validateState, 60000); // Every minute
-
-     // Add this to your existing code
-window.addEventListener('beforeunload', () => {
-    clearInterval(miningInterval);
-});
- </script>
+    </script>
 </body>
 </html>
 
