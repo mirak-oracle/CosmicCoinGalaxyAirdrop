@@ -941,59 +941,7 @@ function openModal() {
 
         generateIdBtn.addEventListener('click', generateNewUserId);
 
-     // Initialize balance check
-function initializeBalanceCheck() {
-    const storedBalance = localStorage.getItem('balance');
-    if (storedBalance === null || isNaN(Number(storedBalance))) {
-        localStorage.setItem('balance', '0');
-        balance = 0;
-    } else {
-        balance = Number(storedBalance);
-    }
-    updateBalanceDisplay();
-}
-
-// Call this function when the app starts
-initializeBalanceCheck();
-
-// Function to handle NaN balance
-function handleNaNBalance() {
-    if (isNaN(balance)) {
-        console.error("Balance is NaN. Resetting to 0.");
-        balance = 0;
-        saveUserData();
-        updateBalanceDisplay();
-    }
-}
-
-// Call this function periodically or after balance updates
-setInterval(handleNaNBalance, 60000); // Check every minute
-
-// Load user data from localStorage
-function loadUserData() {
-    balance = Number(localStorage.getItem('balance')) || 0;
-    userId = localStorage.getItem('userId') || '';
-    completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
-}
-
-// Save user data to localStorage
-function saveUserData() {
-    localStorage.setItem('balance', balance.toString());
-    localStorage.setItem('userId', userId);
-    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
-}
-
-// Initialize the application
-loadUserData();
-initializeBalanceCheck();
-updateBalanceDisplay();
-loadMiningState();
-displayUserId();
-renderSideMenu();
-renderTasks();
-
-console.log("CosmicCoin Galaxy Airdrop application initialized successfully!");
-    </script>
+ </script>
 </body>
 </html>
 
