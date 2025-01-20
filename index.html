@@ -343,94 +343,158 @@
             showNotification('New User ID generated: ' + userId);
         }
 
-        function startMining(hours) {
-            if (isMining) {
-                showNotification('Mining already in progress!');
-                return;
-            }
 
-            isMining = true;
-            const startTime = Date.now();
-            miningEndTime = startTime + (hours * 60 * 60 * 1000);
-            
-            localStorage.setItem('isMining', 'true');
-            localStorage.setItem('miningEndTime', miningEndTime.toString());
-            localStorage.setItem('miningStartTime', startTime.toString());
-            
-            updateMiningProgress();
-            timeLeftContainer.classList.remove('hidden');
+// DOM Elements
+const progressEl = document.getElementById('progressBar');
+const timerEl = document.getElementById('timer');
+const timeLeftContainer = document.getElementById('timeLeftContainer');
+const balanceEl = document.getElementById('balanceDisplay');
+
+// Active boosts (optional)
+const activeBoosts = {
+    speed: false,
+    efficiency: false
+};
+
+// Initialize app and localStorage values
+function initializeApp() {
+    if (localStorage.getItem('balance') === null) {
+        localStorage.setItem('balance', '0'); // Default balance
+    }
+    if (localStorage.getItem('isMining') === null) {
+        localStorage.setItem('isMining', 'false');
+    }
+    if (localStorage.getItem('miningEndTime') === null) {
+        localStorage.setItem('miningEndTime', '0');
+    }
+    if (localStorage.getItem('miningStartTime') === null) {
+        localStorage.setItem('miningStartTime', '0');
+    }
+
+    // Load existing balance
+    balance = getNumericValue('balance');
+    updateBalanceDisplay();
+    loadMiningState();
+}
+
+// Get numeric value from localStorage with a fallback
+function getNumericValue(key, defaultValue = 0) {
+    const value = parseFloat(localStorage.getItem(key));
+    return isNaN(value) ? defaultValue : value;
+}
+
+// Start mining process
+function startMining(hours) {
+    if (isMining) {
+        showNotification('Mining already in progress!');
+        return;
+    }
+
+    isMining = true;
+    const startTime = Date.now();
+    miningEndTime = startTime + (hours * 60 * 60 * 1000);
+
+    localStorage.setItem('isMining', 'true');
+    localStorage.setItem('miningEndTime', miningEndTime.toString());
+    localStorage.setItem('miningStartTime', startTime.toString());
+
+    updateMiningProgress();
+    timeLeftContainer.classList.remove('hidden');
+}
+
+// Update mining progress
+function updateMiningProgress() {
+    clearInterval(miningInterval);
+
+    miningInterval = setInterval(() => {
+        const now = Date.now();
+        const timeLeft = miningEndTime - now;
+
+        if (timeLeft <= 0) {
+            completeMining();
+            return;
         }
 
-        function updateMiningProgress() {
-            clearInterval(miningInterval);
-            
-            miningInterval = setInterval(() => {
-                const now = Date.now();
-                const timeLeft = miningEndTime - now;
-                
-                if (timeLeft <= 0) {
-                    completeMining();
-                    return;
-                }
+        // Update progress bar
+        const totalDuration = miningEndTime - parseInt(localStorage.getItem('miningStartTime')) || 1; // Prevent division by zero
+        const progress = 100 - ((timeLeft / totalDuration) * 100);
+        progressEl.style.height = `${progress}%`;
 
-                // Update progress bar
-                const progress = 100 - ((timeLeft / (24 * 60 * 60 * 1000)) * 100);
-                progressEl.style.height = `${progress}%`;
-                
-                // Update timer
-                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
-                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-                timerEl.textContent = `${hours}h ${minutes}m`;
-                
-                // Update balance
-                const earnedAmount = calculateMiningReward(now - parseInt(localStorage.getItem('miningStartTime')));
-                balance = parseFloat(localStorage.getItem('balance')) + earnedAmount;
-                updateBalanceDisplay();
-            }, 1000);
-        }
+        // Update timer
+        const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        timerEl.textContent = `${hours}h ${minutes}m`;
 
-        function calculateMiningReward(duration) {
-            let rate = MINING_RATE;
-            if (activeBoosts.speed) {
-                rate *= 2;
-            }
-            if (activeBoosts.efficiency) {
-                rate *= 1.5;
-            }
-            return rate * (duration / 1000);
-        }
+        // Update balance
+        const earnedAmount = calculateMiningReward(now - parseInt(localStorage.getItem('miningStartTime')));
+        balance = getNumericValue('balance') + earnedAmount;
+        updateBalanceDisplay();
+    }, 1000);
+}
 
-        function completeMining() {
-            clearInterval(miningInterval);
-            isMining = false;
-            progressEl.style.height = '0%';
-            timeLeftContainer.classList.add('hidden');
-            
-            localStorage.setItem('isMining', 'false');
-            localStorage.setItem('balance', balance.toString());
-            
-            updateBalanceDisplay();
-            showNotification('Mining completed!');
-        }
+// Calculate mining reward based on duration
+function calculateMiningReward(duration) {
+    let rate = MINING_RATE;
+    if (activeBoosts.speed) {
+        rate *= 2;
+    }
+    if (activeBoosts.efficiency) {
+        rate *= 1.5;
+    }
+    return rate * (duration / 1000); // Convert milliseconds to seconds
+}
 
-        function updateBalanceDisplay() {
-            balanceEl.textContent = balance.toFixed(2);
-            document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
-            document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
-            document.getElementById('miningRate').textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`;
-        }
+// Complete mining process
+function completeMining() {
+    clearInterval(miningInterval);
+    isMining = false;
+    progressEl.style.height = '0%';
+    timeLeftContainer.classList.add('hidden');
 
-        function loadMiningState() {
-            const storedMining = localStorage.getItem('isMining') === 'true';
-            const storedEndTime = parseInt(localStorage.getItem('miningEndTime'));
-            
-            if (storedMining && Date.now() < storedEndTime) {
-                isMining = true;
-                miningEndTime = storedEndTime;
-                updateMiningProgress();
-                timeLeftContainer.classList.remove('hidden');
-            }
-        }
+    localStorage.setItem('isMining', 'false');
+    localStorage.setItem('balance', balance.toString());
+
+    updateBalanceDisplay();
+    showNotification('Mining completed!');
+}
+
+// Update balance display
+function updateBalanceDisplay() {
+    balanceEl.textContent = balance.toFixed(2);
+    document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
+    document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
+    document.getElementById('miningRate').textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`;
+}
+
+// Load mining state from localStorage
+function loadMiningState() {
+    const storedMining = localStorage.getItem('isMining') === 'true';
+    const storedEndTime = parseInt(localStorage.getItem('miningEndTime')) || 0;
+
+    if (storedMining && Date.now() < storedEndTime) {
+        isMining = true;
+        miningEndTime = storedEndTime;
+        updateMiningProgress();
+        timeLeftContainer.classList.remove('hidden');
+    } else {
+        // Reset mining state if expired or not active
+        localStorage.setItem('isMining', 'false');
+        timeLeftContainer.classList.add('hidden');
+    }
+
+    // Ensure balance is initialized properly
+    balance = getNumericValue('balance');
+    updateBalanceDisplay();
+}
+
+// Show notifications to the user
+function showNotification(message) {
+    alert(message); // Replace with a custom notification UI if desired
+}
+
+// Initialize the app
+initializeApp();
+     
 
         function showSection(sectionId) {
             const sections = document.querySelectorAll('#mainContent > div');
