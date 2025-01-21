@@ -267,7 +267,7 @@
 
     <script>
       // Constants
-const MINING_RATE = 0.000090; // COS per second
+const MINING_RATE = 0.00040; // COS per second
 const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 // State Management
@@ -410,10 +410,10 @@ function updateMiningProgress() {
 function calculateMiningReward(duration) {
     let rate = MINING_RATE;
     if (activeBoosts.speed) {
-        rate *= 1.3;
+        rate *= 2;
     }
     if (activeBoosts.efficiency) {
-        rate *= 1.1;
+        rate *= 1.3;
     }
     return rate * (duration / 1000);
 }
@@ -444,7 +444,7 @@ function updateBalanceDisplay() {
     balanceEl.textContent = balance.toFixed(2);
     document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
     document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
-    document.getElementById('miningRate').textContent = `${(MINING_RATE * 510).toFixed(3)} COS/h`;
+    document.getElementById('miningRate').textContent = `${(MINING_RATE * 550).toFixed(3)} COS/h`;
 }
 
 function loadMiningState() {
@@ -562,7 +562,37 @@ function renderTasks() {
         { id: 'subscribe_youtube', name: 'Subscribe MG Channel', url: 'https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY', category: 'YOUTUBE' },
         { id: 'join_discord', name: 'Join Discord', url: 'https://discord.gg/eK95cNXM', category: 'SOCIALS' },
         { id: 'follow_tiktok', name: 'Follow CosmicCoin on TikTok', url: 'https://vm.tiktok.com/ZMkYHF9uc/', category: 'SOCIALS' },
-        { id: 'follow_facebook', name: 'Follow MG Facebook', url: 'https://www.facebook.com/profile.php?id=61557787735701', category: 'SOCIALS' }
+        { id: 'follow_facebook', name: 'Follow MG Facebook', url: 'https://www.facebook.com/profile.php?id=61557787735701', category: 'SOCIALS' },
+        
+        // View Ads
+        { id: 'view_ad_1', name: 'View Ad 1', url: 'https://poawooptugroo.com/4/5766972', category: 'OTHERS' },
+        { id: 'view_ad_2', name: 'View Ad 2', url: 'https://poawooptugroo.com/4/5544101', category: 'OTHERS' },
+        { id: 'view_ad_3', name: 'View Ad 3', url: 'https://poawooptugroo.com/4/6252558', category: 'OTHERS' },
+
+        // Watch and Like TikTok Videos
+        { id: 'like_tiktok_video_1', name: 'Watch and Like TikTok Video 1', url: 'https://www.tiktok.com/@cosmiccoingalaxy/video/7458336987582319878?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718', category: 'TIKTOK' },
+        { id: 'like_tiktok_video_2', name: 'Watch and Like TikTok Video 2', url: 'https://www.tiktok.com/@cosmiccoingalaxy/video/7456501980782120197?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718', category: 'TIKTOK' },
+        { id: 'like_tiktok_photo', name: 'Like TikTok Photo', url: 'https://www.tiktok.com/@cosmiccoingalaxy/photo/7458338434210450694?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718', category: 'TIKTOK' },
+
+        // React on Instagram
+        { id: 'react_instagram_1', name: 'React on Instagram Reel 1', url: 'https://www.instagram.com/mirakle.group/reel/DEutsCTt0i6/', category: 'INSTAGRAM' },
+        { id: 'react_instagram_2', name: 'React on Instagram Reel 2', url: 'https://www.instagram.com/mirakle.group/reel/DEpusJRtMhV/', category: 'INSTAGRAM' },
+        { id: 'react_instagram_3', name: 'React on Instagram Reel 3', url: 'https://www.instagram.com/mirakle.group/reel/DEdBHMhta2O/', category: 'INSTAGRAM' },
+        { id: 'react_instagram_4', name: 'React on Instagram Reel 4', url: 'https://www.instagram.com/mirakle.group/reel/DBuN3kisLVM/', category: 'INSTAGRAM' },
+
+        // Watch YouTube Videos
+        { id: 'watch_youtube_1', name: 'Watch and Like YouTube Video 1', url: 'https://youtu.be/yCKEdtFgvbE?si=1SN3d5iAMr2uQn1a', category: 'YOUTUBE' },
+        { id: 'watch_youtube_2', name: 'Watch and Like YouTube Video 2', url: 'https://youtu.be/fJQT-IgKs-Y?si=RuS9s2IfUCPuU4Q7', category: 'YOUTUBE' },
+        { id: 'watch_youtube_3', name: 'Watch and Like YouTube Video 3', url: 'https://youtu.be/EiE5uyx1M8o?si=t2LIis7UFJ4ozzNU', category: 'YOUTUBE' },
+        { id: 'watch_youtube_short_1', name: 'Watch and Like YouTube Short 1', url: 'https://youtube.com/shorts/tZTywe49D9s?si=QnV_rvV_E3ifHdTk', category: 'YOUTUBE' },
+        { id: 'watch_youtube_short_2', name: 'Watch and Like YouTube Short 2', url: 'https://youtube.com/shorts/WCur6cW7I-M?si=RIItvGIIF3znbOLv', category: 'YOUTUBE' },
+        { id: 'watch_youtube_short_3', name: 'Watch and Like YouTube Short 3', url: 'https://youtube.com/shorts/0leX4JZ9kyU?si=9TvkVf6sonh7IBh8', category: 'YOUTUBE' },
+        { id: 'watch_youtube_short_4', name: 'Watch and Like YouTube Short 4', url: 'https://youtube.com/shorts/OCaR-FoqAHM?si=F_zRR-on2UktO1sn', category: 'YOUTUBE' }
+    ];
+
+
+}
+
         // Add more tasks here
     ];
 
