@@ -51,7 +51,7 @@
             background-color: #1a202c;
             padding: 1.5rem;
             border-radius: 0.5rem;
-            z-index: 9998;
+            z-index: 9999;
             width: 90%;
             max-width: 500px;
             max-height: 90vh;
@@ -93,7 +93,7 @@
     </button>
 
     <div id="sideMenu" class="fixed left-0 top-0 h-full w-64 bg-gray-900 transform -translate-x-full transition-transform duration-200 ease-in-out z-40">
-        <!-- Side menu content -->
+        <!-- Side menu content will be dynamically inserted here -->
     </div>
 
     <div id="mainContent" class="p-4 sm:ml-64">
@@ -181,6 +181,9 @@
         <!-- Tasks Section -->
         <div id="tasksSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Tasks</h2>
+            <div id="taskCategories" class="flex justify-center space-x-2 mb-4">
+                <!-- Task categories will be dynamically inserted here -->
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" id="activeTasks">
                 <!-- Active tasks will be dynamically inserted here -->
             </div>
@@ -190,31 +193,24 @@
             </div>
         </div>
 
-<!-- Rewards Section -->
-<div id="rewardsSection" class="hidden">
-    <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
-    <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-        <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
-        <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
-        <button onclick="claimDailyReward(false)" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2">
-            Claim Daily Reward
-        </button>
-        <button onclick="claimDailyReward(true)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">
-            Get 2x Rewards and View Ads
-        </button>
-    </div>
-</div>
+        <!-- Rewards Section -->
+        <div id="rewardsSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
+                <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
+                <button onclick="claimDailyReward(false)" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2">
+                    Claim Daily Reward
+                </button>
+                <button onclick="claimDailyReward(true)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">
+                    Get 2x Rewards and View Ads
+                </button>
+            </div>
+        </div>
 
         <!-- Referral Section -->
         <div id="referralSection" class="hidden">
-            <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <p class="mb-4">Invite your friends and earn bonus CosmicCoins!</p>
-                <button onclick="generateReferralLink()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
-                    Generate Referral Link
-                </button>
-                <p id="referralStatus" class="mt-4 text-sm text-gray-400"></p>
-            </div>
+            <!-- Referral content will be dynamically inserted here -->
         </div>
 
         <!-- Wallet Section -->
@@ -241,7 +237,6 @@
             </div>
         </div>
 
-
         <!-- Profile Section -->
         <div id="profileSection" class="hidden">
             <h2 class="text-3xl font-bold mb-6 text-center">Profile</h2>
@@ -265,213 +260,213 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
         </button>
-        <iframe id="googleFormIframe" src="" width="120%" height="120%" frameborder="0" marginheight="0" marginwidth="0">
+        <iframe id="googleFormIframe" src="" width="100%" height="100%" frameborder="0" marginheight="0" marginwidth="0">
             Loading...
         </iframe>
     </div>
 
-   <script> 
-// Constants
-const MINING_RATE = 0.0004 // COS per second
-const COOLDOWN_DURATION = 5 * 60 * 1000 // 5 minutes in milliseconds
+    <script>
+      // Constants
+const MINING_RATE = 0.00040; // COS per second
+const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 // State Management
-let isMining = false
-let miningEndTime = 0
-let miningInterval = null
-let balance = 0
-let userId = ""
-let completedTasks = {}
-const activeBoosts = {}
+let isMining = false;
+let miningEndTime = 0;
+let miningInterval = null;
+let balance = 0;
+let userId = '';
+let completedTasks = {};
+const activeBoosts = {};
 
 // DOM Elements
-const balanceEl = document.getElementById("balance")
-const progressEl = document.getElementById("miningProgress")
-const timerEl = document.getElementById("timer")
-const timeLeftContainer = document.getElementById("timeLeft")
-const menuBtn = document.getElementById("menuBtn")
-const sideMenu = document.getElementById("sideMenu")
-const loadingScreen = document.getElementById("loadingScreen")
-const userIdEl = document.getElementById("userId")
-const generateIdBtn = document.getElementById("generateIdBtn")
+const balanceEl = document.getElementById('balance');
+const progressEl = document.getElementById('miningProgress');
+const timerEl = document.getElementById('timer');
+const timeLeftContainer = document.getElementById('timeLeft');
+const menuBtn = document.getElementById('menuBtn');
+const sideMenu = document.getElementById('sideMenu');
+const loadingScreen = document.getElementById('loadingScreen');
+const userIdEl = document.getElementById('userId');
+const generateIdBtn = document.getElementById('generateIdBtn');
 
 // Initialize
-document.addEventListener("DOMContentLoaded", () => {
-  initializeApp()
-  loadUserData()
-  updateBalanceDisplay()
-  loadMiningState()
-  displayUserId()
-  renderSideMenu()
-  renderTasks()
-  setTimeout(() => {
-    loadingScreen.style.display = "none"
-  }, 2000)
-})
+document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
+    loadUserData();
+    updateBalanceDisplay();
+    loadMiningState();
+    displayUserId();
+    renderSideMenu();
+    renderTasks();
+    setTimeout(() => {
+        loadingScreen.style.display = 'none';
+    }, 2000);
+});
 
 // Menu Toggle
-menuBtn.addEventListener("click", () => {
-  sideMenu.classList.toggle("-translate-x-full")
-})
+menuBtn.addEventListener('click', () => {
+    sideMenu.classList.toggle('-translate-x-full');
+});
 
 // Click outside menu to close
-document.addEventListener("click", (e) => {
-  if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-    sideMenu.classList.add("-translate-x-full")
-  }
-})
+document.addEventListener('click', (e) => {
+    if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+        sideMenu.classList.add('-translate-x-full');
+    }
+});
 
 function initializeApp() {
-  if (localStorage.getItem("balance") === null) {
-    localStorage.setItem("balance", "0")
-  }
-  if (localStorage.getItem("isMining") === null) {
-    localStorage.setItem("isMining", "false")
-  }
-  if (localStorage.getItem("miningEndTime") === null) {
-    localStorage.setItem("miningEndTime", "0")
-  }
-  if (localStorage.getItem("miningStartTime") === null) {
-    localStorage.setItem("miningStartTime", "0")
-  }
-  balance = getNumericValue("balance")
+    if (localStorage.getItem('balance') === null) {
+        localStorage.setItem('balance', '0');
+    }
+    if (localStorage.getItem('isMining') === null) {
+        localStorage.setItem('isMining', 'false');
+    }
+    if (localStorage.getItem('miningEndTime') === null) {
+        localStorage.setItem('miningEndTime', '0');
+    }
+    if (localStorage.getItem('miningStartTime') === null) {
+        localStorage.setItem('miningStartTime', '0');
+    }
+    balance = getNumericValue('balance');
 }
 
 function getNumericValue(key, defaultValue = 0) {
-  const value = Number.parseFloat(localStorage.getItem(key))
-  return isNaN(value) ? defaultValue : value
+    const value = parseFloat(localStorage.getItem(key));
+    return isNaN(value) ? defaultValue : value;
 }
 
 function generateUniqueId() {
-  return "COS-" + Date.now().toString(36) + Math.random().toString(36).substr(2, 5).toUpperCase()
+    return 'COS-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5).toUpperCase();
 }
 
 function displayUserId() {
-  if (userId) {
-    userIdEl.textContent = userId
-  } else {
-    userIdEl.textContent = "No ID generated yet"
-  }
+    if (userId) {
+        userIdEl.textContent = userId;
+    } else {
+        userIdEl.textContent = 'No ID generated yet';
+    }
 }
 
 function generateNewUserId() {
-  if (userId) {
-    showNotification("You already have a permanent User ID. It cannot be changed.")
-    return
-  }
-  userId = generateUniqueId()
-  localStorage.setItem("userId", userId)
-  displayUserId()
-  showNotification("New User ID generated: " + userId)
+    if (userId) {
+        showNotification('You already have a permanent User ID. It cannot be changed.');
+        return;
+    }
+    userId = generateUniqueId();
+    localStorage.setItem('userId', userId);
+    displayUserId();
+    showNotification('New User ID generated: ' + userId);
 }
 
 function startMining(hours) {
-  if (isMining) {
-    showNotification("Mining already in progress!")
-    return
-  }
+    if (isMining) {
+        showNotification('Mining already in progress!');
+        return;
+    }
 
-  isMining = true
-  const startTime = Date.now()
-  miningEndTime = startTime + hours * 60 * 60 * 1000
-
-  localStorage.setItem("isMining", "true")
-  localStorage.setItem("miningEndTime", miningEndTime.toString())
-  localStorage.setItem("miningStartTime", startTime.toString())
-
-  updateMiningProgress()
-  timeLeftContainer.classList.remove("hidden")
+    isMining = true;
+    const startTime = Date.now();
+    miningEndTime = startTime + (hours * 60 * 60 * 1000);
+    
+    localStorage.setItem('isMining', 'true');
+    localStorage.setItem('miningEndTime', miningEndTime.toString());
+    localStorage.setItem('miningStartTime', startTime.toString());
+    
+    updateMiningProgress();
+    timeLeftContainer.classList.remove('hidden');
 }
 
 function updateMiningProgress() {
-  clearInterval(miningInterval)
+    clearInterval(miningInterval);
+    
+    miningInterval = setInterval(() => {
+        const now = Date.now();
+        const timeLeft = miningEndTime - now;
+        
+        if (timeLeft <= 0) {
+            completeMining();
+            return;
+        }
 
-  miningInterval = setInterval(() => {
-    const now = Date.now()
-    const timeLeft = miningEndTime - now
-
-    if (timeLeft <= 0) {
-      completeMining()
-      return
-    }
-
-    // Update progress bar
-    const totalDuration = miningEndTime - Number.parseInt(localStorage.getItem("miningStartTime"))
-    const progress = 100 - (timeLeft / totalDuration) * 100
-    progressEl.style.height = `${progress}%`
-
-    // Update timer
-    const hours = Math.floor(timeLeft / (1000 * 60 * 60))
-    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60))
-    timerEl.textContent = `${hours}h ${minutes}m`
-
-    // Update balance
-    const earnedAmount = calculateMiningReward(now - Number.parseInt(localStorage.getItem("miningStartTime")))
-    balance += earnedAmount
-    updateBalanceDisplay()
-  }, 1000)
+        // Update progress bar
+        const totalDuration = miningEndTime - parseInt(localStorage.getItem('miningStartTime'));
+        const progress = 100 - ((timeLeft / totalDuration) * 100);
+        progressEl.style.height = `${progress}%`;
+        
+        // Update timer
+        const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        timerEl.textContent = `${hours}h ${minutes}m`;
+        
+        // Update balance
+        const earnedAmount = calculateMiningReward(now - parseInt(localStorage.getItem('miningStartTime')));
+        balance += earnedAmount;
+        updateBalanceDisplay();
+    }, 1000);
 }
 
 function calculateMiningReward(duration) {
-  let rate = MINING_RATE
-  if (activeBoosts.speed) {
-    rate *= 2
-  }
-  if (activeBoosts.efficiency) {
-    rate *= 1.5
-  }
-  return rate * (duration / 1000)
+    let rate = MINING_RATE;
+    if (activeBoosts.speed) {
+        rate *= 2;
+    }
+    if (activeBoosts.efficiency) {
+        rate *= 1.5;
+    }
+    return rate * (duration / 1000);
 }
 
 function completeMining() {
-  clearInterval(miningInterval)
-  isMining = false
-  progressEl.style.height = "0%"
-  timeLeftContainer.classList.add("hidden")
-
-  localStorage.setItem("isMining", "false")
-  saveUserData()
-
-  updateBalanceDisplay()
-  showNotification("Mining completed!")
+    clearInterval(miningInterval);
+    isMining = false;
+    progressEl.style.height = '0%';
+    timeLeftContainer.classList.add('hidden');
+    
+    localStorage.setItem('isMining', 'false');
+    saveUserData();
+    
+    updateBalanceDisplay();
+    showNotification('Mining completed!');
 }
 
 function updateBalanceDisplay() {
-  if (isNaN(balance)) {
-    console.error("Balance is NaN. Attempting to recover...")
-    balance = getNumericValue("balance")
     if (isNaN(balance)) {
-      balance = 0
-      console.error("Failed to recover balance. Resetting to 0.")
+        console.error('Balance is NaN. Attempting to recover...');
+        balance = getNumericValue('balance');
+        if (isNaN(balance)) {
+            balance = 0;
+            console.error('Failed to recover balance. Resetting to 0.');
+        }
+        saveUserData();
     }
-    saveUserData()
-  }
-  balanceEl.textContent = balance.toFixed(2)
-  document.getElementById("walletBalance").textContent = `${balance.toFixed(2)} COS`
-  document.getElementById("totalMined").textContent = `${balance.toFixed(2)} COS`
-  document.getElementById("miningRate").textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`
+    balanceEl.textContent = balance.toFixed(2);
+    document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
+    document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
+    document.getElementById('miningRate').textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`;
 }
 
 function loadMiningState() {
-  const storedMining = localStorage.getItem("isMining") === "true"
-  const storedEndTime = Number.parseInt(localStorage.getItem("miningEndTime"))
-
-  if (storedMining && Date.now() < storedEndTime) {
-    isMining = true
-    miningEndTime = storedEndTime
-    updateMiningProgress()
-    timeLeftContainer.classList.remove("hidden")
-  }
+    const storedMining = localStorage.getItem('isMining') === 'true';
+    const storedEndTime = parseInt(localStorage.getItem('miningEndTime'));
+    
+    if (storedMining && Date.now() < storedEndTime) {
+        isMining = true;
+        miningEndTime = storedEndTime;
+        updateMiningProgress();
+        timeLeftContainer.classList.remove('hidden');
+    }
 }
 
 function showSection(sectionId) {
-  const sections = document.querySelectorAll("#mainContent > div")
-  sections.forEach((section) => section.classList.add("hidden"))
-  document.getElementById(sectionId).classList.remove("hidden")
+    const sections = document.querySelectorAll('#mainContent > div');
+    sections.forEach(section => section.classList.add('hidden'));
+    document.getElementById(sectionId).classList.remove('hidden');
 }
 
 function renderSideMenu() {
-  sideMenu.innerHTML = `
+    sideMenu.innerHTML = `
         <div class="p-4 border-b border-gray-800">
             <h2 class="text-xl font-bold">Menu</h2>
         </div>
@@ -557,64 +552,45 @@ function renderSideMenu() {
                 </a>
             </div>
         </div>
-    `
+    `;
 }
 
 function renderTasks() {
-  const tasks = [
-    { id: "join_telegram", name: "Join Telegram Channel", url: "https://t.me/CosmicCoin11", category: "SOCIALS" },
-    { id: "follow_twitter", name: "Follow on Twitter", url: "https://twitter.com/MirakleGroup", category: "SOCIALS" },
-    {
-      id: "subscribe_youtube",
-      name: "Subscribe MG Channel",
-      url: "https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY",
-      category: "YOUTUBE",
-    },
-    { id: "join_discord", name: "Join Discord", url: "https://discord.gg/eK95cNXM", category: "SOCIALS" },
-    {
-      id: "follow_tiktok",
-      name: "Follow CosmicCoin on TikTok",
-      url: "https://vm.tiktok.com/ZMkYHF9uc/",
-      category: "SOCIALS",
-    },
-    {
-      id: "follow_facebook",
-      name: "Follow MG Facebook",
-      url: "https://www.facebook.com/profile.php?id=61557787735701",
-      category: "SOCIALS",
-    },
-    // Add more tasks here
-  ]
+    const tasks = [
+        { id: 'join_telegram', name: 'Join Telegram Channel', url: 'https://t.me/CosmicCoin11', category: 'SOCIALS' },
+        { id: 'follow_twitter', name: 'Follow on Twitter', url: 'https://twitter.com/MirakleGroup', category: 'SOCIALS' },
+        { id: 'subscribe_youtube', name: 'Subscribe MG Channel', url: 'https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY', category: 'YOUTUBE' },
+        { id: 'join_discord', name: 'Join Discord', url: 'https://discord.gg/eK95cNXM', category: 'SOCIALS' },
+        { id: 'follow_tiktok', name: 'Follow CosmicCoin on TikTok', url: 'https://vm.tiktok.com/ZMkYHF9uc/', category: 'SOCIALS' },
+        { id: 'follow_facebook', name: 'Follow MG Facebook', url: 'https://www.facebook.com/profile.php?id=61557787735701', category: 'SOCIALS' }
+        // Add more tasks here
+    ];
 
-  const taskCategories = ["ALL", "SOCIALS", "YOUTUBE", "ADS", "OTHERS"]
-  const taskCategoriesContainer = document.getElementById("taskCategories")
-  const activeTasksContainer = document.getElementById("activeTasks")
-  const completedTasksContainer = document.getElementById("completedTasks")
+    const taskCategories = ['ALL', 'SOCIALS', 'YOUTUBE', 'ADS', 'OTHERS'];
+    const taskCategoriesContainer = document.getElementById('taskCategories');
+    const activeTasksContainer = document.getElementById('activeTasks');
+    const completedTasksContainer = document.getElementById('completedTasks');
 
-  // Render task categories
-  taskCategoriesContainer.innerHTML = taskCategories
-    .map(
-      (category) => `
+    // Render task categories
+    taskCategoriesContainer.innerHTML = taskCategories.map(category => `
         <button onclick="filterTasks('${category}')" class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600">
             ${category}
         </button>
-    `,
-    )
-    .join("")
+    `).join('');
 
-  // Render tasks
-  activeTasksContainer.innerHTML = ""
-  completedTasksContainer.innerHTML = ""
+    // Render tasks
+    activeTasksContainer.innerHTML = '';
+    completedTasksContainer.innerHTML = '';
 
-  tasks.forEach((task) => {
-    if (completedTasks[task.id]) {
-      completedTasksContainer.innerHTML += `
+    tasks.forEach(task => {
+        if (completedTasks[task.id]) {
+            completedTasksContainer.innerHTML += `
                 <div class="mb-2 p-2 bg-gray-700 rounded">
                     <span class="text-green-400">✓</span> ${task.name}
                 </div>
-            `
-    } else {
-      activeTasksContainer.innerHTML += `
+            `;
+        } else {
+            activeTasksContainer.innerHTML += `
                 <div class="task-item" data-category="${task.category}">
                     <a href="${task.url}" target="_blank">
                         <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('${task.id}')">
@@ -622,227 +598,224 @@ function renderTasks() {
                         </button>
                     </a>
                 </div>
-            `
-    }
-  })
+            `;
+        }
+    });
 }
 
 function filterTasks(category) {
-  const taskItems = document.querySelectorAll(".task-item")
-  taskItems.forEach((item) => {
-    if (category === "ALL" || item.dataset.category === category) {
-      item.style.display = "block"
-    } else {
-      item.style.display = "none"
-    }
-  })
+    const taskItems = document.querySelectorAll('.task-item');
+    taskItems.forEach(item => {
+        if (category === 'ALL' || item.dataset.category === category) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
 }
 
 function completeTask(taskId) {
-  const now = Date.now()
+    const now = Date.now();
 
-  if (completedTasks[taskId] && now - completedTasks[taskId] < COOLDOWN_DURATION) {
-    const remainingTime = COOLDOWN_DURATION - (now - completedTasks[taskId])
-    showNotification(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`)
-    return
-  }
-
-  // Show verification message
-  showNotification("Verifying task completion...")
-
-  // Simulate task verification (replace with actual verification in production)
-  setTimeout(() => {
-    const isVerified = Math.random() > 0.1 // 90% chance of success for simulation
-
-    if (isVerified) {
-      completedTasks[taskId] = now
-      saveUserData()
-
-      const reward = 10
-      balance += reward
-      saveUserData()
-      updateBalanceDisplay()
-
-      showNotification(`Task completed! You earned ${reward} COS.`)
-      renderTasks()
-    } else {
-      showNotification("Task verification failed. Please try again.")
+    if (completedTasks[taskId] && now - completedTasks[taskId] < COOLDOWN_DURATION) {
+        const remainingTime = COOLDOWN_DURATION - (now - completedTasks[taskId]);
+        showNotification(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
+        return;
     }
-  }, 3000) // 3 seconds for simulated verification
+
+    // Show verification message
+    showNotification("Verifying task completion...");
+
+    // Simulate task verification (replace with actual verification in production)
+    setTimeout(() => {
+        const isVerified = Math.random() > 0.1; // 90% chance of success for simulation
+
+        if (isVerified) {
+            completedTasks[taskId] = now;
+            saveUserData();
+
+            const reward = 10;
+            balance += reward;
+            saveUserData();
+            updateBalanceDisplay();
+
+            showNotification(`Task completed! You earned ${reward} COS.`);
+            renderTasks();
+        } else {
+            showNotification("Task verification failed. Please try again.");
+        }
+    }, 3000); // 3 seconds for simulated verification
 }
 
 function formatTime(milliseconds) {
-  const totalSeconds = Math.floor(milliseconds / 1000)
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${minutes}m ${seconds}s`
+    const totalSeconds = Math.floor(milliseconds / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes}m ${seconds}s`;
 }
 
 function claimDailyReward(viewAds) {
-  const lastClaimTime = localStorage.getItem("lastClaimTime")
-  const now = Date.now()
-  if (lastClaimTime && now - Number.parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
-    showNotification("You have already claimed your daily reward. Come back tomorrow!")
-  } else {
-    let reward = 50
-    if (viewAds) {
-      reward *= 2
-      window.open("https://whomeenoaglauns.com/4/55544101", "_blank")
+    const lastClaimTime = localStorage.getItem('lastClaimTime');
+    const now = Date.now();
+    if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
+        showNotification("You have already claimed your daily reward. Come back tomorrow!");
+    } else {
+        let reward = 50;
+        if (viewAds) {
+            reward *= 2;
+            window.open("https://whomeenoaglauns.com/4/5544101", "_blank");
+        }
+        balance += reward;
+        saveUserData();
+        localStorage.setItem('lastClaimTime', now.toString());
+        updateBalanceDisplay();
+        showNotification(`You've claimed ${reward} CosmicCoins as your daily reward!`);
     }
-    balance += reward
-    saveUserData()
-    localStorage.setItem("lastClaimTime", now.toString())
-    updateBalanceDisplay()
-    showNotification(`You've claimed ${reward} CosmicCoins as your daily reward!`)
-  }
 }
 
 // Referral System
 const REFERRAL_CONFIG = {
-  INVITE_REWARD: 10,
-  REFERRAL_LINKS: {
-    TELEGRAM: "https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=",
-    WAPCHAT: "https://apkpure.com/wapchat/wapchat.actb?ref=",
-  },
-  SOCIAL_LINKS: {
-    TELEGRAM: "https://t.me/share/url",
-    TWITTER: "https://twitter.com/intent/tweet",
-    WHATSAPP: "https://wa.me/",
-    FACEBOOK: "https://www.facebook.com/sharer/sharer.php",
-  },
-}
+    INVITE_REWARD: 10,
+    REFERRAL_LINKS: {
+        TELEGRAM: 'https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=',
+        WAPCHAT: 'https://apkpure.com/wapchat/wapchat.actb?ref='
+    },
+    SOCIAL_LINKS: {
+        TELEGRAM: 'https://t.me/share/url',
+        TWITTER: 'https://twitter.com/intent/tweet',
+        WHATSAPP: 'https://wa.me/',
+        FACEBOOK: 'https://www.facebook.com/sharer/sharer.php'
+    }
+};
 
 class ReferralSystem {
-  constructor() {
-    this.referralData = JSON.parse(localStorage.getItem("referralData")) || {
-      referrals: [],
-      shares: {},
-      lastCheck: Date.now(),
+    constructor() {
+        this.referralData = JSON.parse(localStorage.getItem('referralData')) || {
+            referrals: [],
+            shares: {},
+            lastCheck: Date.now()
+        };
+        
+        this.initializeSystem();
+        this.startReferralTracking();
     }
 
-    this.initializeSystem()
-    this.startReferralTracking()
-  }
-
-  initializeSystem() {
-    const referralSection = document.getElementById("referralSection")
-    if (referralSection) {
-      referralSection.classList.remove("hidden")
+    initializeSystem() {
+        const referralSection = document.getElementById('referralSection');
+        if (referralSection) {
+            referralSection.classList.remove('hidden');
+        }
+        this.updateUI();
     }
-    this.updateUI()
-  }
 
-  generateShareText() {
-    return `🚀 Join CosmicCoin Galaxy Airdrop!
+    generateShareText() {
+        return `🚀 Join CosmicCoin Galaxy Airdrop!
 
 📱 Join via:
 Telegram: ${REFERRAL_CONFIG.REFERRAL_LINKS.TELEGRAM}${this.getReferralCode()}
 WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
 
 ⭐️ Earn ${REFERRAL_CONFIG.INVITE_REWARD} COS for each referral!
-🎁 Don't miss out on this opportunity!`
-  }
+🎁 Don't miss out on this opportunity!`;
+    }
 
-  getReferralCode() {
-    const urlParams = new URLSearchParams(window.location.search)
-    return urlParams.get("ref") || "CCJFPVZ9GP"
-  }
+    getReferralCode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get('ref') || 'CCJFPVZ9GP';
+    }
 
-  startReferralTracking() {
-    // Check for new referrals every 10 minutes
-    setInterval(
-      () => {
-        this.checkNewReferrals()
-      },
-      10 * 60 * 1000,
-    )
-  }
+    startReferralTracking() {
+        // Check for new referrals every 10 minutes
+        setInterval(() => {
+            this.checkNewReferrals();
+        }, 10 * 60 * 1000);
+    }
 
-  async checkNewReferrals() {
-    try {
-      // Simulate checking for new referrals
-      if (this.referralData.lastCheck) {
-        const newReferrals = await this.fetchNewReferrals()
-        if (newReferrals.length > 0) {
-          this.processNewReferrals(newReferrals)
+    async checkNewReferrals() {
+        try {
+            // Simulate checking for new referrals
+            if (this.referralData.lastCheck) {
+                const newReferrals = await this.fetchNewReferrals();
+                if (newReferrals.length > 0) {
+                    this.processNewReferrals(newReferrals);
+                }
+            }
+            this.referralData.lastCheck = Date.now();
+            this.saveData();
+        } catch (error) {
+            console.error('Error checking referrals:', error);
         }
-      }
-      this.referralData.lastCheck = Date.now()
-      this.saveData()
-    } catch (error) {
-      console.error("Error checking referrals:", error)
-    }
-  }
-
-  async fetchNewReferrals() {
-    // Placeholder for API call to fetch new referrals
-    // In production, this would call your backend
-    return new Promise((resolve) => {
-      const mockNewReferrals = []
-      // Simulate some random referrals for testing
-      if (Math.random() > 0.9) {
-        mockNewReferrals.push({ timestamp: Date.now() })
-      }
-      resolve(mockNewReferrals)
-    })
-  }
-
-  processNewReferrals(newReferrals) {
-    this.referralData.referrals = [...this.referralData.referrals, ...newReferrals]
-    this.saveData()
-    this.updateUI()
-  }
-
-  async copyToClipboard() {
-    const shareText = this.generateShareText()
-    try {
-      await navigator.clipboard.writeText(shareText)
-      this.recordShare("clipboard")
-      this.updateStatus("Referral links copied! Share with your friends!")
-    } catch (err) {
-      this.updateStatus("Failed to copy. Please try again.")
-    }
-  }
-
-  async shareToSocial(platform) {
-    const shareText = encodeURIComponent(this.generateShareText())
-    let shareUrl = ""
-
-    switch (platform) {
-      case "telegram":
-        shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TELEGRAM}?url=${shareText}`
-        break
-      case "twitter":
-        shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TWITTER}?text=${shareText}`
-        break
-      case "whatsapp":
-        shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.WHATSAPP}?text=${shareText}`
-        break
-      case "facebook":
-        shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.FACEBOOK}?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`
-        break
     }
 
-    if (shareUrl) {
-      window.open(shareUrl, "_blank")
-      this.recordShare(platform)
-      this.updateStatus(`Shared to ${platform}!`)
+    async fetchNewReferrals() {
+        // Placeholder for API call to fetch new referrals
+        // In production, this would call your backend
+        return new Promise(resolve => {
+            const mockNewReferrals = [];
+            // Simulate some random referrals for testing
+            if (Math.random() > 0.9) {
+                mockNewReferrals.push({ timestamp: Date.now() });
+            }
+            resolve(mockNewReferrals);
+        });
     }
-  }
 
-  recordShare(platform) {
-    if (!this.referralData.shares[platform]) {
-      this.referralData.shares[platform] = []
+    processNewReferrals(newReferrals) {
+        this.referralData.referrals = [...this.referralData.referrals, ...newReferrals];
+        this.saveData();
+        this.updateUI();
     }
-    this.referralData.shares[platform].push(Date.now())
-    this.saveData()
-  }
 
-  updateUI() {
-    const referralSection = document.getElementById("referralSection")
-    if (!referralSection) return
+    async copyToClipboard() {
+        const shareText = this.generateShareText();
+        try {
+            await navigator.clipboard.writeText(shareText);
+            this.recordShare('clipboard');
+            this.updateStatus('Referral links copied! Share with your friends!');
+        } catch (err) {
+            this.updateStatus('Failed to copy. Please try again.');
+        }
+    }
 
-    referralSection.innerHTML = `
+    async shareToSocial(platform) {
+        const shareText = encodeURIComponent(this.generateShareText());
+        let shareUrl = '';
+
+        switch (platform) {
+            case 'telegram':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TELEGRAM}?url=${shareText}`;
+                break;
+            case 'twitter':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TWITTER}?text=${shareText}`;
+                break;
+            case 'whatsapp':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.WHATSAPP}?text=${shareText}`;
+                break;
+            case 'facebook':
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.FACEBOOK}?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`;
+                break;
+        }
+
+        if (shareUrl) {
+            window.open(shareUrl, '_blank');
+            this.recordShare(platform);
+            this.updateStatus(`Shared to ${platform}!`);
+        }
+    }
+
+    recordShare(platform) {
+        if (!this.referralData.shares[platform]) {
+            this.referralData.shares[platform] = [];
+        }
+        this.referralData.shares[platform].push(Date.now());
+        this.saveData();
+    }
+
+    updateUI() {
+        const referralSection = document.getElementById('referralSection');
+        if (!referralSection) return;
+
+        referralSection.innerHTML = `
             <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <div class="grid grid-cols-1 gap-4 mb-6">
@@ -892,120 +865,120 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
 
                 <p id="referralStatus" class="mt-4 text-sm text-center text-gray-400"></p>
             </div>
-        `
-  }
-
-  updateStatus(message) {
-    const statusElement = document.getElementById("referralStatus")
-    if (statusElement) {
-      statusElement.textContent = message
-      setTimeout(() => {
-        statusElement.textContent = ""
-      }, 5000)
+        `;
     }
-  }
 
-  saveData() {
-    localStorage.setItem("referralData", JSON.stringify(this.referralData))
-  }
+    updateStatus(message) {
+        const statusElement = document.getElementById('referralStatus');
+        if (statusElement) {
+            statusElement.textContent = message;
+            setTimeout(() => {
+                statusElement.textContent = '';
+            }, 5000);
+        }
+    }
+
+    saveData() {
+        localStorage.setItem('referralData', JSON.stringify(this.referralData));
+    }
 }
 
 // Initialize the referral system
-const referralSystem = new ReferralSystem()
+const referralSystem = new ReferralSystem();
 
 // Export for external use
-window.referralSystem = referralSystem
+window.referralSystem = referralSystem;
 
 function refreshWalletBalance() {
-  updateBalanceDisplay()
-  showNotification("Balance refreshed!")
+    updateBalanceDisplay();
+    showNotification('Balance refreshed!');
 }
 
 function activateBoost(boostType) {
-  if (activeBoosts[boostType]) {
-    showNotification(`${boostType} boost is already active!`)
-    return
-  }
+    if (activeBoosts[boostType]) {
+        showNotification(`${boostType} boost is already active!`);
+        return;
+    }
 
-  let duration = 0
-  let multiplier = 1
+    let duration = 0;
+    let multiplier = 1;
 
-  switch (boostType) {
-    case "speed":
-      duration = 60 * 60 * 1000 // 1 hour
-      multiplier = 2
-      break
-    case "efficiency":
-      duration = 30 * 60 * 1000 // 30 minutes
-      multiplier = 1.5
-      break
-  }
+    switch(boostType) {
+        case 'speed':
+            duration = 60 * 60 * 1000; // 1 hour
+            multiplier = 2;
+            break;
+        case 'efficiency':
+            duration = 30 * 60 * 1000; // 30 minutes
+            multiplier = 1.5;
+            break;
+    }
 
-  activeBoosts[boostType] = true
+    activeBoosts[boostType] = true;
 
-  setTimeout(() => {
-    activeBoosts[boostType] = false
-    showNotification(`Your ${boostType} boost has expired.`)
-  }, duration)
+    setTimeout(() => {
+        activeBoosts[boostType] = false;
+        showNotification(`Your ${boostType} boost has expired.`);
+    }, duration);
 
-  showNotification(`${boostType} boost activated for ${duration / 60000} minutes!`)
+    showNotification(`${boostType} boost activated for ${duration / 60000} minutes!`);
 }
 
 function openModal() {
-  document.getElementById("modalOverlay").classList.remove("hidden")
-  document.getElementById("googleFormModal").classList.remove("hidden")
-  document.getElementById("googleFormIframe").src =
-    "https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?embedded=true"
+    document.getElementById('modalOverlay').classList.remove('hidden');
+    document.getElementById('googleFormModal').classList.remove('hidden');
+    document.getElementById('googleFormIframe').src = "https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?embedded=true";
 }
 
 function closeModal() {
-  document.getElementById("modalOverlay").classList.add("hidden")
-  document.getElementById("googleFormModal").classList.add("hidden")
-  document.getElementById("googleFormIframe").src = ""
+    document.getElementById('modalOverlay').classList.add('hidden');
+    document.getElementById('googleFormModal').classList.add('hidden');
+    document.getElementById('googleFormIframe').src = "";
 }
 
 function showNotification(message) {
-  const notification = document.createElement("div")
-  notification.textContent = message
-  notification.className = "fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-lg shadow-lg"
-  document.body.appendChild(notification)
-  setTimeout(() => {
-    notification.remove()
-  }, 3000)
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.className = 'fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-lg shadow-lg';
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.remove();
+    }, 3000);
 }
 
 // Handle page visibility changes
-document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && isMining) {
-    updateMiningProgress()
-  }
-})
+document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && isMining) {
+        updateMiningProgress();
+    }
+});
 
-generateIdBtn.addEventListener("click", generateNewUserId)
+generateIdBtn.addEventListener('click', generateNewUserId);
 
 // Load user data from localStorage
 function loadUserData() {
-  balance = getNumericValue("balance")
-  userId = localStorage.getItem("userId") || ""
-  completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || {}
+    balance = getNumericValue('balance');
+    userId = localStorage.getItem('userId') || '';
+    completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
 }
 
 // Save user data to localStorage
 function saveUserData() {
-  localStorage.setItem("balance", balance.toString())
-  localStorage.setItem("userId", userId)
-  localStorage.setItem("completedTasks", JSON.stringify(completedTasks))
+    localStorage.setItem('balance', balance.toString());
+    localStorage.setItem('userId', userId);
+    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
 }
 
 // Initialize the application
-initializeApp()
-loadUserData()
-updateBalanceDisplay()
-loadMiningState()
-displayUserId()
-renderSideMenu()
-renderTasks()
+initializeApp();
+loadUserData();
+updateBalanceDisplay();
+loadMiningState();
+displayUserId();
+renderSideMenu();
+renderTasks();
 
-console.log("CosmicCoin Galaxy Airdrop application initialized successfully!")
-
-</script> 
+console.log("CosmicCoin Galaxy Airdrop application initialized successfully!");  
+    </script>
+</body>
+</html>
