@@ -597,25 +597,25 @@ function renderTasks() {
     const activeTasksContainer = document.getElementById('activeTasks');
     const completedTasksContainer = document.getElementById('completedTasks');
 
-    // Render task categories
-    taskCategoriesContainer.innerHTML = taskCategories.map(category => `
-        <button onclick="filterTasks('${category}')" class="px-4 py-2 bg-gray-700 rounded hover:bg-gray-600">
-            ${category}
-        </button>
-    `).join('');
-
     // Render tasks
     activeTasksContainer.innerHTML = '';
     completedTasksContainer.innerHTML = '';
 
     tasks.forEach(task => {
         if (completedTasks[task.id]) {
+            // Render completed task but show "Already Completed"
             completedTasksContainer.innerHTML += `
                 <div class="mb-2 p-2 bg-gray-700 rounded">
-                    <span class="text-green-400">✓</span> ${task.name}
+                    <span class="text-green-400">✓</span> ${task.name} (No rewards)
+                    <a href="${task.url}" target="_blank">
+                        <button class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-1 px-2 rounded shadow-md mt-1">
+                            Open Again
+                        </button>
+                    </a>
                 </div>
             `;
         } else {
+            // Render active task
             activeTasksContainer.innerHTML += `
                 <div class="task-item" data-category="${task.category}">
                     <a href="${task.url}" target="_blank">
@@ -654,7 +654,7 @@ function completeTask(taskId) {
 
     // Simulate task verification (replace with actual verification in production)
     setTimeout(() => {
-        const isVerified = Math.random() > 0.1; // 90% chance of success for simulation
+        const isVerified = Math.random() > 0.3; // 90% chance of success for simulation
 
         if (isVerified) {
             completedTasks[taskId] = now;
