@@ -471,7 +471,93 @@ function showSection(sectionId) {
 }
 
 function renderSideMenu() {
-  // ... (keep the existing renderSideMenu function)
+  sideMenu.innerHTML = `
+        <div class="p-4 border-b border-gray-800">
+            <h2 class="text-xl font-bold">Menu</h2>
+        </div>
+        <nav class="p-4">
+            <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('mainSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                Home
+            </a>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('tasksSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                    <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
+                </svg>
+                Tasks
+            </a>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('rewardsSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd" />
+                    <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z" />
+                </svg>
+                Rewards
+            </a>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('referralSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                </svg>
+                Invite
+            </a>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('walletSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M2 5a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm14 1a1 1 0 11-2 0 1 1 0 012 0zM2 13a2 2 0 012-2h12a2 2 0 012 2v2a2 2 0 01-2 2H4a2 2 0 01-2-2v-2zm14 1a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" />
+                </svg>
+                Wallet
+            </a>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('gamesSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z" />
+                </svg>
+                Games
+            </a>
+            <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('profileSection')">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                </svg>
+                Profile
+            </a>
+        </nav>
+        <div class="flex flex-col items-center space-y-4 py-4">
+            <a href="#" class="text-blue-400 hover:underline">Terms of Service</a>
+            <a href="#" class="text-blue-400 hover:underline">Privacy Policy</a>
+            <a href="#" class="text-blue-400 hover:underline">FAQ</a>
+            <a href="#" class="text-blue-400 hover:underline">Contact Us</a>
+        </div>
+        <div class="mt-auto p-4 border-t border-gray-800">
+            <h4 class="text-lg font-semibold mb-2 text-center">Follow Us</h4>
+            <div class="flex justify-center space-x-4">
+                <a href="https://x.com/MirakleGroup" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
+                    </svg>
+                </a>
+                <a href="https://www.facebook.com/profile.php?id=61557787735701" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
+                    </svg>
+                </a>
+                <a href="https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
+                    </svg>
+                </a>
+                <a href="https://t.me/CosmicCoin11" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/>
+                    </svg>
+                </a>
+                <a href="https://discord.gg/eK95cNXM" class="text-blue-400 hover:text-blue-300 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4229 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5496-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.197.3728.2914a.077.077 0 0 1-.0066.1276 12.2982 12.2982 0 0 1-1.8732.8923.0766.0766 0 0 0-.0406.1067c.3608.698.7723 1.3638 1.225 1.9932a.0766.0766 0 0 0 .0842.0286c1.961-.6065 3.9495-1.5218 6.0022-3.0294a.0762.0762 0 0 0 .0312-.0551c.5004-5.177-.8387-9.657-3.5485-13.6605a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1552-1.0857-2.1552-2.419 0-1.3332.9555-2.4189 2.1552-2.4189 1.2117 0 2.1763 1.0957 2.1552 2.419 0 1.3332-.9555 2.4189-2.1552 2.4189zm7.9748 0c-1.1825 0-2.1552-1.0857-2.1552-2.419 0-1.3332.9554-2.4189 2.1552-2.4189 1.2117 0 2.1763 1.0957 2.1552 2.419 0 1.3332-.9435 2.4189-2.1552 2.4189z"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    `
 }
 
 function renderTasks() {
@@ -601,7 +687,7 @@ function claimDailyReward(viewAds) {
     let reward = 50
     if (viewAds) {
       reward *= 2
-      window.open("https://whomeenoaglauns.com/4/5544101", "_blank")
+      window.open("https://whomeenoaglauns.com/4/55544101", "_blank")
     }
     balance += reward
     saveUserData()
@@ -921,4 +1007,5 @@ renderSideMenu()
 renderTasks()
 
 console.log("CosmicCoin Galaxy Airdrop application initialized successfully!")
+
 </script> 
