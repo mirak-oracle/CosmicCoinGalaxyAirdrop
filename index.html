@@ -267,7 +267,7 @@
 
     <script>
       // Constants
-const MINING_RATE = 0.0000040; // COS per second
+const MINING_RATE = 0.00030; // COS per second
 const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
 
 // State Management
@@ -413,7 +413,7 @@ function calculateMiningReward(duration) {
         rate *= 1.5;
     }
     if (activeBoosts.efficiency) {
-        rate *= 1;
+        rate *= 1.1;
     }
     return rate * (duration / 1000);
 }
@@ -444,7 +444,7 @@ function updateBalanceDisplay() {
     balanceEl.textContent = balance.toFixed(2);
     document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
     document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
-    document.getElementById('miningRate').textContent = `${(MINING_RATE * 400).toFixed(2)} COS/h`;
+    document.getElementById('miningRate').textContent = `${(MINING_RATE * 520).toFixed(3)} COS/h`;
 }
 
 function loadMiningState() {
