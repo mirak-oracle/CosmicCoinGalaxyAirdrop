@@ -21,7 +21,7 @@ _About_
 Secure, transparent, and efficient token distribution platform.
 
 _Availability_
-The CosmicCoin Airdrop is exclusively available on Wapchat, a social networking platform (coming soon on Play Store).
+The CosmicCoin Airdrop is exclusively available on Wapchat, a social networking platform (Live On ApkPure).
 
 _License_
 GNU General Public License v3.0 (GPL-3.0)
@@ -29,5 +29,5 @@ GNU General Public License v3.0 (GPL-3.0)
 _Contact_
 miraklegroupinfo@gmail.com 
 
-Note: To participate in the CosmicCoin Airdrop, please access it through the Wapchat app, coming soon to the Play Store.
+Note: To participate in the CosmicCoin Airdrop, please access it through the Wapchat app, Live On ApkPure.
 
