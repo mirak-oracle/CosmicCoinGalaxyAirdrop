@@ -444,7 +444,7 @@ function updateBalanceDisplay() {
     balanceEl.textContent = balance.toFixed(2);
     document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
     document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
-    document.getElementById('miningRate').textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`;
+    document.getElementById('miningRate').textContent = `${(MINING_RATE * 550).toFixed(3)} COS/h`;
 }
 
 function loadMiningState() {
@@ -752,7 +752,8 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
         return urlParams.get('ref') || 'CCJFPVZ9GP';
     }
 
-    // Check for new referrals every 10 minutes
+    startReferralTracking() {
+        // Check for new referrals every 10 minutes
         setInterval(() => {
             this.checkNewReferrals();
         }, 10 * 60 * 1000);
@@ -792,7 +793,8 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
         this.saveData();
         this.updateUI();
     }
-        async copyToClipboard() {
+
+    async copyToClipboard() {
         const shareText = this.generateShareText();
         try {
             await navigator.clipboard.writeText(shareText);
