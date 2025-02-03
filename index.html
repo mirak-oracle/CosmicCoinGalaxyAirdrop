@@ -444,7 +444,7 @@ function updateBalanceDisplay() {
     balanceEl.textContent = balance.toFixed(2);
     document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
     document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
-    document.getElementById('miningRate').textContent = `${(MINING_RATE * 550).toFixed(3)} COS/h`;
+    document.getElementById('miningRate').textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`;
 }
 
 function loadMiningState() {
