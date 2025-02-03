@@ -752,26 +752,7 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
         return urlParams.get('ref') || 'CCJFPVZ9GP';
     }
 
-    startReferralTracking() {
-        // Check for new referrals every 10 minutes
-        setInterval(() => {
-            this.checkNewReferrals();
-        }, 10 * 60 * 1000);
-    }
-
-    class ReferralSystem {
-    constructor() {
-        this.referralData = {
-            referrals: [],
-            lastCheck: null,
-            totalRewards: 0
-        };
-        this.loadData();
-    }
-
-    startReferralTracking() {
-        // Check for new referrals every 10 minutes
-        this.checkNewReferrals(); // Initial check
+    // Check for new referrals every 10 minutes
         setInterval(() => {
             this.checkNewReferrals();
         }, 10 * 60 * 1000);
@@ -779,107 +760,38 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
 
     async checkNewReferrals() {
         try {
-            const currentTime = Date.now();
-            if (!this.referralData.lastCheck || (currentTime - this.referralData.lastCheck) >= 10 * 60 * 1000) {
+            // Simulate checking for new referrals
+            if (this.referralData.lastCheck) {
                 const newReferrals = await this.fetchNewReferrals();
                 if (newReferrals.length > 0) {
-                    await this.processNewReferrals(newReferrals);
+                    this.processNewReferrals(newReferrals);
                 }
-                this.referralData.lastCheck = currentTime;
-                this.saveData();
             }
+            this.referralData.lastCheck = Date.now();
+            this.saveData();
         } catch (error) {
             console.error('Error checking referrals:', error);
-            this.showNotification('Failed to check for new referrals. Please try again later.', 'error');
         }
     }
 
     async fetchNewReferrals() {
-        try {
-            // In production, replace this with an actual API call
-            const response = await fetch('/api/referrals');
-            if (!response.ok) {
-                throw new Error('Failed to fetch referrals');
+        // Placeholder for API call to fetch new referrals
+        // In production, this would call your backend
+        return new Promise(resolve => {
+            const mockNewReferrals = [];
+            // Simulate some random referrals for testing
+            if (Math.random() > 0.9) {
+                mockNewReferrals.push({ timestamp: Date.now() });
             }
-            return await response.json();
-        } catch (error) {
-            console.error('Error fetching referrals:', error);
-            return [];
-        }
+            resolve(mockNewReferrals);
+        });
     }
 
-    async processNewReferrals(newReferrals) {
-        for (const referral of newReferrals) {
-            if (this.isValidReferral(referral)) {
-                const reward = this.calculateReward(referral);
-                this.referralData.referrals.push({
-                    ...referral,
-                    processedAt: Date.now(),
-                    reward
-                });
-                this.referralData.totalRewards += reward;
-                await this.creditReward(reward);
-            }
-        }
+    processNewReferrals(newReferrals) {
+        this.referralData.referrals = [...this.referralData.referrals, ...newReferrals];
         this.saveData();
         this.updateUI();
-        this.showNotification(`Processed ${newReferrals.length} new referrals!`, 'success');
     }
-
-    isValidReferral(referral) {
-        // Add validation logic here
-        return referral && referral.userId && referral.timestamp;
-    }
-
-    calculateReward(referral) {
-        // Add your reward calculation logic here
-        return 10; // Example: fixed reward of 10 tokens
-    }
-
-    async creditReward(amount) {
-        try {
-            // In production, replace this with an actual API call to credit the user's account
-            const response = await fetch('/api/credit-reward', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ amount })
-            });
-            if (!response.ok) {
-                throw new Error('Failed to credit reward');
-            }
-        } catch (error) {
-            console.error('Error crediting reward:', error);
-            this.showNotification('Failed to credit reward. Please contact support.', 'error');
-        }
-    }
-
-    loadData() {
-        const savedData = localStorage.getItem('referralData');
-        if (savedData) {
-            this.referralData = JSON.parse(savedData);
-        }
-    }
-
-    saveData() {
-        localStorage.setItem('referralData', JSON.stringify(this.referralData));
-    }
-
-    updateUI() {
-        // Update UI elements with the latest referral data
-        document.getElementById('totalReferrals').textContent = this.referralData.referrals.length;
-        document.getElementById('totalRewards').textContent = this.referralData.totalRewards.toFixed(2);
-    }
-
-    showNotification(message, type = 'info') {
-        // Implement your notification system here
-        console.log(`[${type.toUpperCase()}] ${message}`);
-    }
-}
-
-// Usage
-const referralSystem = new ReferralSystem();
-referralSystem.startReferralTracking();
-        
         async copyToClipboard() {
         const shareText = this.generateShareText();
         try {
