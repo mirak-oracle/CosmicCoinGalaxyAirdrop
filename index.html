@@ -214,25 +214,9 @@
 </html>
 
 <!-- Referral Section -->
-<div id="referralSection" class="hidden">
-    <!-- Referral content will be dynamically inserted here -->
-</div>
+<div id="referralSection" class="hidden"></div>
 
 <script>
-const REFERRAL_CONFIG = {
-    INVITE_REWARD: 50,
-    REFERRAL_LINKS: {
-        TELEGRAM: "https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=",
-        WAPCHAT: "https://apkpure.com/wapchat/wapchat.actb?ref=",
-    },
-    SOCIAL_LINKS: {
-        TELEGRAM: "https://t.me/share/url",
-        TWITTER: "https://twitter.com/intent/tweet",
-        WHATSAPP: "https://wa.me/",
-        FACEBOOK: "https://www.facebook.com/sharer/sharer.php",
-    },
-};
-
 class ReferralSystem {
     constructor() {
         this.referralData = JSON.parse(localStorage.getItem("referralData")) || {
@@ -246,11 +230,19 @@ class ReferralSystem {
     }
 
     initializeSystem() {
+        // Check if the current page is the referral page
+        const allowedPages = ["/referral.html", "/invite.html"]; // ✅ Modify to match your referral page URLs
+        const currentPath = window.location.pathname;
+
+        if (!allowedPages.includes(currentPath)) {
+            return; // ❌ Exit if the page is not for referrals
+        }
+
         const referralSection = document.getElementById("referralSection");
         if (referralSection) {
             referralSection.classList.remove("hidden");
+            this.updateUI();
         }
-        this.updateUI();
     }
 
     getReferralCode() {
@@ -260,10 +252,8 @@ class ReferralSystem {
 
     generateShareText() {
         return `🚀 Join CosmicCoin Galaxy Airdrop!
-📱 Join via:
-Telegram: ${REFERRAL_CONFIG.REFERRAL_LINKS.TELEGRAM}${this.getReferralCode()}
-WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
-⭐️ Earn ${REFERRAL_CONFIG.INVITE_REWARD} COS for each referral!
+📱 Join via: https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=${this.getReferralCode()}
+⭐️ Earn 50 COS for each referral!
 🎁 Don't miss out on this opportunity!`;
     }
 
@@ -319,16 +309,16 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
 
         switch (platform) {
             case "telegram":
-                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TELEGRAM}?url=${shareText}`;
+                shareUrl = `https://t.me/share/url?url=${shareText}`;
                 break;
             case "twitter":
-                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TWITTER}?text=${shareText}`;
+                shareUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
                 break;
             case "whatsapp":
-                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.WHATSAPP}?text=${shareText}`;
+                shareUrl = `https://wa.me/?text=${shareText}`;
                 break;
             case "facebook":
-                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.FACEBOOK}?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`;
+                shareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`;
                 break;
         }
 
@@ -410,11 +400,16 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
     }
 }
 
-const referralSystem = new ReferralSystem();
-window.referralSystem = referralSystem;
+// Initialize referral system only if the referral section exists
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById("referralSection")) {
+        window.referralSystem = new ReferralSystem();
+    }
+});
 </script>
 
-  <script>
+
+ <script>
 // Constants
 const DAILY_REWARD = 50 // COS per day
 const COOLDOWN_DURATION = 5 * 60 * 1000 // 5 minutes in milliseconds
