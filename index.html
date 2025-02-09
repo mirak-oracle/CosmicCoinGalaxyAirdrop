@@ -110,40 +110,7 @@
                 </button>
             </div>
 
-            <!-- Mining Section -->
-            <div class="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-6">
-                <!-- Mining Circle -->
-                <div class="relative aspect-square rounded-full border border-gray-800 mb-6">
-                    <div class="absolute inset-0 world-map opacity-20"></div>
-                    <div id="miningProgress" class="absolute bottom-0 w-full mining-progress opacity-20" style="height: 0%"></div>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
-                        <div id="balance" class="text-4xl font-bold">0.00</div>
-                        <div class="text-sm text-gray-400">$COS</div>
-                        <div id="timeLeft" class="flex items-center mt-2 text-sm text-gray-400 hidden">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span id="timer">0h 0m</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mining Controls -->
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="startMining(12)" class="flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
-                        </svg>
-                        Mine 12h
-                    </button>
-                    <button onclick="startMining(24)" class="flex items-center justify-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd" />
-                        </svg>
-                        Mine 24h
-                    </button>
-                </div>
-            </div>
+            
 
             <!-- Mining Stats -->
             <div class="mt-8 w-full max-w-md">
@@ -164,19 +131,7 @@
                 </div>
             </div>
 
-            <!-- Mining Boosts -->
-            <div class="mt-8 w-full max-w-md">
-                <h3 class="text-xl font-bold mb-4">Mining Boosts</h3>
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="activateBoost('speed')" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">
-                        Speed Boost (2x)
-                    </button>
-                    <button onclick="activateBoost('efficiency')" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded">
-                        Efficiency Boost (1.5x)
-                    </button>
-                </div>
-            </div>
-        </div>
+            
 
         <!-- Tasks Section -->
         <div id="tasksSection" class="hidden">
