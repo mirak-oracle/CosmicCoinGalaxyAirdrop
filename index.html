@@ -214,165 +214,176 @@
         </iframe>
     </div>
 
-    <script src="app.js"></script>
 </body>
 </html>
   <script>
-      // Constants
-const MINING_RATE = 0.00060; // COS per second
-const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+// Constants
+const DAILY_REWARD = 30 // COS per day
+const COOLDOWN_DURATION = 5 * 60 * 1000 // 5 minutes in milliseconds
+const MAX_BALANCE = 1000000 // Maximum balance allowed
 
 // State Management
-let isMining = false;
-let miningEndTime = 0;
-let miningInterval = null;
-let balance = 0;
-let userId = '';
-let completedTasks = {};
-const activeBoosts = {};
+let balance = 0
+let userId = ""
+let completedTasks = {}
+const activeBoosts = {}
+let lastClaimTime = 0
 
 // DOM Elements
-const balanceEl = document.getElementById('balance');
-const progressEl = document.getElementById('miningProgress');
-const timerEl = document.getElementById('timer');
-const timeLeftContainer = document.getElementById('timeLeft');
-const menuBtn = document.getElementById('menuBtn');
-const sideMenu = document.getElementById('sideMenu');
-const loadingScreen = document.getElementById('loadingScreen');
-const userIdEl = document.getElementById('userId');
-const generateIdBtn = document.getElementById('generateIdBtn');
+const balanceEl = document.getElementById("balance")
+const menuBtn = document.getElementById("menuBtn")
+const sideMenu = document.getElementById("sideMenu")
+const loadingScreen = document.getElementById("loadingScreen")
+const userIdEl = document.getElementById("userId")
+const generateIdBtn = document.getElementById("generateIdBtn")
+const nextClaimTimeEl = document.getElementById("nextClaimTime")
 
 // Initialize
-document.addEventListener('DOMContentLoaded', () => {
-    initializeApp();
-    loadUserData();
-    updateBalanceDisplay();
-    loadMiningState();
-    displayUserId();
-    renderSideMenu();
-    renderTasks();
-    setTimeout(() => {
-        loadingScreen.style.display = 'none';
-    }, 2000);
-});
+document.addEventListener("DOMContentLoaded", () => {
+  initializeApp()
+  loadUserData()
+  updateBalanceDisplay()
+  displayUserId()
+  renderSideMenu()
+  renderTasks()
+  updateNextClaimTime()
+  setInterval(updateNextClaimTime, 1000) // Update every second
+  setTimeout(() => {
+    loadingScreen.style.display = "none"
+  }, 2000)
+})
 
 // Menu Toggle
-menuBtn.addEventListener('click', () => {
-    sideMenu.classList.toggle('-translate-x-full');
-});
+menuBtn.addEventListener("click", () => {
+  sideMenu.classList.toggle("-translate-x-full")
+})
 
 // Click outside menu to close
-document.addEventListener('click', (e) => {
-    if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
-        sideMenu.classList.add('-translate-x-full');
-    }
-});
+document.addEventListener("click", (e) => {
+  if (!sideMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+    sideMenu.classList.add("-translate-x-full")
+  }
+})
 
 function initializeApp() {
-    if (localStorage.getItem('balance') === null) {
-        localStorage.setItem('balance', '0');
-    }
-    if (localStorage.getItem('isMining') === null) {
-        localStorage.setItem('isMining', 'false');
-    }
-    if (localStorage.getItem('miningEndTime') === null) {
-        localStorage.setItem('miningEndTime', '0');
-    }
-    if (localStorage.getItem('miningStartTime') === null) {
-        localStorage.setItem('miningStartTime', '0');
-    }
-    balance = getNumericValue('balance');
+  if (localStorage.getItem("balance") === null) {
+    localStorage.setItem("balance", "0")
+  }
+  if (localStorage.getItem("lastClaimTime") === null) {
+    localStorage.setItem("lastClaimTime", "0")
+  }
+  balance = getNumericValue("balance")
+  lastClaimTime = getNumericValue("lastClaimTime")
 }
 
 function getNumericValue(key, defaultValue = 0) {
-    const value = parseFloat(localStorage.getItem(key));
-    return isNaN(value) ? defaultValue : value;
+  const value = Number.parseFloat(localStorage.getItem(key))
+  return isNaN(value) ? defaultValue : value
 }
 
 function generateUniqueId() {
-    return 'COS-' + Date.now().toString(36) + Math.random().toString(36).substr(2, 5).toUpperCase();
+  return "COS-" + Date.now().toString(36) + Math.random().toString(36).substr(2, 5).toUpperCase()
 }
 
 function displayUserId() {
-    if (userId) {
-        userIdEl.textContent = userId;
-    } else {
-        userIdEl.textContent = 'No ID generated yet';
-    }
+  if (userId) {
+    userIdEl.textContent = userId
+  } else {
+    userIdEl.textContent = "No ID generated yet"
+  }
 }
 
 function generateNewUserId() {
-    if (userId) {
-        showNotification('You already have a permanent User ID. It cannot be changed.');
-        return;
-    }
-    userId = generateUniqueId();
-    localStorage.setItem('userId', userId);
-    displayUserId();
-    showNotification('New User ID generated: ' + userId);
+  if (userId) {
+    showNotification("You already have a permanent User ID. It cannot be changed.")
+    return
+  }
+  userId = generateUniqueId()
+  localStorage.setItem("userId", userId)
+  displayUserId()
+  showNotification("New User ID generated: " + userId)
 }
 
-function calculateMiningReward(duration) {
-    let rate = MINING_RATE;
-    if (activeBoosts.speed) {
-        rate *= 2;
-    }
-    if (activeBoosts.efficiency) {
-        rate *= 1.3;
-    }
-    return rate * (duration / 1000);
+function claimDailyReward(viewAds) {
+  const now = Date.now()
+  const timeSinceLastClaim = now - lastClaimTime
+  const oneDayInMs = 24 * 60 * 60 * 1000
+
+  if (timeSinceLastClaim < oneDayInMs) {
+    const timeLeft = oneDayInMs - timeSinceLastClaim
+    showNotification(`You can claim again in ${formatTime(timeLeft)}`)
+    return
+  }
+
+  let reward = DAILY_REWARD
+  if (viewAds) {
+    reward *= 2
+    window.open("https://whomeenoaglauns.com/4/5544101", "_blank")
+  }
+
+  addToBalance(reward)
+  lastClaimTime = now
+  saveUserData()
+  updateBalanceDisplay()
+  showNotification(`You've claimed ${reward} CosmicCoins as your daily reward!`)
+  updateNextClaimTime()
 }
 
-function completeMining() {
-    clearInterval(miningInterval);
-    isMining = false;
-    progressEl.style.height = '0%';
-    timeLeftContainer.classList.add('hidden');
-    
-    localStorage.setItem('isMining', 'false');
-    saveUserData();
-    
-    updateBalanceDisplay();
-    showNotification('Mining completed!');
+function addToBalance(amount) {
+  balance = Math.min(balance + amount, MAX_BALANCE)
+  saveUserData()
 }
 
 function updateBalanceDisplay() {
+  if (isNaN(balance)) {
+    console.error("Balance is NaN. Attempting to recover...")
+    balance = getNumericValue("balance")
     if (isNaN(balance)) {
-        console.error('Balance is NaN. Attempting to recover...');
-        balance = getNumericValue('balance');
-        if (isNaN(balance)) {
-            balance = 0;
-            console.error('Failed to recover balance. Resetting to 0.');
-        }
-        saveUserData();
+      balance = 0
+      console.error("Failed to recover balance. Resetting to 0.")
     }
-    balanceEl.textContent = balance.toFixed(2);
-    document.getElementById('walletBalance').textContent = `${balance.toFixed(2)} COS`;
-    document.getElementById('totalMined').textContent = `${balance.toFixed(2)} COS`;
-    document.getElementById('miningRate').textContent = `${(MINING_RATE * 3600).toFixed(4)} COS/h`;
+    saveUserData()
+  }
+  balanceEl.textContent = balance.toFixed(2)
+  document.getElementById("walletBalance").textContent = `${balance.toFixed(2)} COS`
+  document.getElementById("totalEarned").textContent = `${balance.toFixed(2)} COS`
+  document.getElementById("dailyRewardAmount").textContent = `${DAILY_REWARD.toFixed(2)} COS`
 }
 
-function loadMiningState() {
-    const storedMining = localStorage.getItem('isMining') === 'true';
-    const storedEndTime = parseInt(localStorage.getItem('miningEndTime'));
-    
-    if (storedMining && Date.now() < storedEndTime) {
-        isMining = true;
-        miningEndTime = storedEndTime;
-        updateMiningProgress();
-        timeLeftContainer.classList.remove('hidden');
-    }
+function updateNextClaimTime() {
+  const nextClaimTime = lastClaimTime + 24 * 60 * 60 * 1000
+  const timeLeft = nextClaimTime - Date.now()
+  if (nextClaimTimeEl) {
+    nextClaimTimeEl.textContent = formatTime(timeLeft)
+  }
 }
-        function showSection(sectionId) {
-    const sections = document.querySelectorAll('#mainContent > div');
-    sections.forEach(section => section.classList.add('hidden'));
-    document.getElementById(sectionId).classList.remove('hidden');
+
+function formatTime(milliseconds) {
+  const totalSeconds = Math.floor(milliseconds / 1000)
+  const hours = Math.floor(totalSeconds / 3600)
+  const minutes = Math.floor((totalSeconds % 3600) / 60)
+  const seconds = totalSeconds % 60
+  return `${hours}h ${minutes}m ${seconds}s`
+}
+
+function loadUserData() {
+  balance = getNumericValue("balance")
+  userId = localStorage.getItem("userId") || ""
+  completedTasks = JSON.parse(localStorage.getItem("completedTasks")) || {}
+  lastClaimTime = getNumericValue("lastClaimTime")
+}
+
+function saveUserData() {
+  localStorage.setItem("balance", balance.toString())
+  localStorage.setItem("userId", userId)
+  localStorage.setItem("completedTasks", JSON.stringify(completedTasks))
+  localStorage.setItem("lastClaimTime", lastClaimTime.toString())
 }
 
 function renderSideMenu() {
-    sideMenu.innerHTML = `
+  sideMenu.innerHTML = `
         <div class="p-4 border-b border-gray-800">
-            <h2 class="text-xl font-bold"></h2>
+            <h2 class="text-xl font-bold">Menu</h2>
         </div>
         <nav class="p-4">
             <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('mainSection')">
@@ -387,13 +398,6 @@ function renderSideMenu() {
                     <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd" />
                 </svg>
                 Tasks
-            </a>
-            <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('rewardsSection')">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5 5a3 3 0 015-2.236A3 3 0 0114.83 6H16a2 2 0 110 4h-5V9a1 1 0 10-2 0v1H4a2 2 0 110-4h1.17C5.06 5.687 5 5.35 5 5zm4 1V5a1 1 0 10-1 1h1zm3 0a1 1 0 10-1-1v1h1z" clip-rule="evenodd" />
-                    <path d="M9 11H3v5a2 2 0 002 2h4v-7zM11 18h4a2 2 0 002-2v-5h-6v7z" />
-                </svg>
-                Rewards
             </a>
             <a href="#" class="block py-2 px-4 hover:bg-gray-800 rounded flex items-center" onclick="showSection('referralSection')">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -420,497 +424,255 @@ function renderSideMenu() {
                 Profile
             </a>
         </nav>
-        <div class="flex flex-col items-center space-y-4 py-4">
-            <a href="https://www.termsfeed.com/live/7b41ac44-611d-44d8-b3d1-6dc418a042c1" class="text-blue-400 hover:underline">Terms of Service</a>
-            <a href="https://www.termsfeed.com/live/7b41ac44-611d-44d8-b3d1-6dc418a042c1" class="text-blue-400 hover:underline">Privacy Policy</a>
-            <a href="http://t.me/CosmicCareBot" class="text-blue-400 hover:underline">FAQ</a>
-            <a href="mailto:info.cosmic.cos@gmail.com" class="text-blue-400 hover:underline">Contact Us</a>
-        </div>
-        <div class="mt-auto p-4 border-t border-gray-800">
-            <h4 class="text-lg font-semibold mb-2 text-center">Follow Us</h4>
-            <div class="flex justify-center space-x-4">
-                <a href="https://x.com/MirakleGroup" class="text-blue-400 hover:text-blue-300 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
-                    </svg>
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=61557787735701" class="text-blue-400 hover:text-blue-300 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/>
-                    </svg>
-                </a>
-                <a href="https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY" class="text-blue-400 hover:text-blue-300 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                    </svg>
-                </a>
-                <a href="https://t.me/CosmicCoin11" class="text-blue-400 hover:text-blue-300 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.665 3.717l-17.73 6.837c-1.21.486-1.203 1.161-.222 1.462l4.552 1.42 10.532-6.645c.498-.303.953-.14.579.192l-8.533 7.701h-.002l.002.001-.314 4.692c.46 0 .663-.211.921-.46l2.211-2.15 4.599 3.397c.848.467 1.457.227 1.668-.785l3.019-14.228c.309-1.239-.473-1.8-1.282-1.434z"/>
-                    </svg>
-                </a>
-                <a href="https://discord.gg/twSddHSAwd" class="text-blue-400 hover:text-blue-300 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M20.317 4.3698a19.7913 19.7913 0 0 0-4.8851-1.5152.0741.0741 0 0 0-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 0 0-.0785-.037 19.7363 19.7363 0 0 0-4.8852 1.515.0699.0699 0 0 0-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 0 0 .0312.0561c2.0528 1.5076 4.0413 2.4229 5.9929 3.0294a.0777.0777 0 0 0 .0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 0 0-.0416-.1057c-.6528-.2476-1.2743-.5496-1.8722-.8923a.077.077 0 0 1-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 0 1 .0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 0 1 .0785.0095c.1202.099.246.197.3728.2914a.077.077 0 0 1-.0066.1276 12.2982 12.2982 0 0 1-1.8732.8923.0766.0766 0 0 0-.0406.1067c.3608.698.7723 1.3638 1.225 1.9932a.0766.0766 0 0 0 .0842.0286c1.961-.6065 3.9495-1.5218 6.0022-3.0294a.0762.0762 0 0 0 .0312-.0551c.5004-5.177-.8387-9.657-3.5485-13.6605a.061.061 0 0 0-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1552-1.0857-2.1552-2.419 0-1.3332.9555-2.4189 2.1552-2.4189 1.2117 0 2.1763 1.0957 2.1552 2.419 0 1.3332-.9555 2.4189-2.1552 2.4189zm7.9748 0c-1.1825 0-2.1552-1.0857-2.1552-2.419 0-1.3332.9554-2.4189 2.1552-2.4189 1.2117 0 2.1763 1.0957 2.1552 2.419 0 1.3332-.9435 2.4189-2.1552 2.4189z"/>
-                    </svg>
-                </a>
-            </div>
-        </div>
-    `;
+    `
+}
+
+function showSection(sectionId) {
+  const sections = document.querySelectorAll("#mainContent > div")
+  sections.forEach((section) => section.classList.add("hidden"))
+  document.getElementById(sectionId).classList.remove("hidden")
 }
 
 function renderTasks() {
-    const tasks = [
-        { id: 'join_telegram', name: 'Join Telegram Channel', url: 'https://t.me/CosmicCoin11', category: 'SOCIALS' },
-        { id: 'follow_twitter', name: 'Follow on Twitter', url: 'https://twitter.com/MirakleGroup', category: 'SOCIALS' },
-        { id: 'subscribe_youtube', name: 'Subscribe MG Channel', url: 'https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY', category: 'YOUTUBE' },
-        { id: 'join_discord', name: 'Join Discord', url: 'https://discord.gg/twSddHSAwd', category: 'SOCIALS' },
-        { id: 'follow_tiktok', name: 'Follow CosmicCoin on TikTok', url: 'https://vm.tiktok.com/ZMkYHF9uc/', category: 'SOCIALS' },
-        { id: 'follow_facebook', name: 'Follow MG Facebook', url: 'https://www.facebook.com/profile.php?id=61557787735701', category: 'SOCIALS' },
-        
-        // View Ads
-        { id: 'view_ad_1', name: 'View Ad 1', url: 'https://poawooptugroo.com/4/5766972', category: 'OTHERS' },
-        { id: 'view_ad_2', name: 'View Ad 2', url: 'https://poawooptugroo.com/4/5544101', category: 'OTHERS' },
-        { id: 'view_ad_3', name: 'View Ad 3', url: 'https://poawooptugroo.com/4/6252558', category: 'OTHERS' },
-{ id: 'Daily Share', name: 'Daily Share', url: 'https://t.me/Harbor1/s/10', category: 'OTHERS' },
+  const tasks = [
+    { id: "join_telegram", name: "Join Telegram Channel", url: "https://t.me/CosmicCoin11", category: "SOCIALS" },
+    { id: "follow_twitter", name: "Follow on Twitter", url: "https://twitter.com/MirakleGroup", category: "SOCIALS" },
+    {
+      id: "subscribe_youtube",
+      name: "Subscribe MG Channel",
+      url: "https://youtube.com/@MirakleGroup?si=L_kk9-UNUVZDCurY",
+      category: "YOUTUBE",
+    },
+    { id: "join_discord", name: "Join Discord", url: "https://discord.gg/twSddHSAwd", category: "SOCIALS" },
+    {
+      id: "follow_tiktok",
+      name: "Follow CosmicCoin on TikTok",
+      url: "https://vm.tiktok.com/ZMkYHF9uc/",
+      category: "SOCIALS",
+    },
+    {
+      id: "follow_facebook",
+      name: "Follow MG Facebook",
+      url: "https://www.facebook.com/profile.php?id=61557787735701",
+      category: "SOCIALS",
+    },
+    { id: "view_ad_1", name: "View Ad 1", url: "https://poawooptugroo.com/4/5766972", category: "OTHERS" },
+    { id: "view_ad_2", name: "View Ad 2", url: "https://poawooptugroo.com/4/5544101", category: "OTHERS" },
+    { id: "view_ad_3", name: "View Ad 3", url: "https://poawooptugroo.com/4/6252558", category: "OTHERS" },
+    { id: "daily_share", name: "Daily Share", url: "https://t.me/Harbor1/s/10", category: "OTHERS" },
+    {
+      id: "like_tiktok_video_1",
+      name: "Watch and Like TikTok Video 1",
+      url: "https://www.tiktok.com/@cosmiccoingalaxy/video/7458336987582319878?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718",
+      category: "OTHER",
+    },
+    {
+      id: "like_tiktok_video_2",
+      name: "Watch and Like TikTok Video 2",
+      url: "https://www.tiktok.com/@cosmiccoingalaxy/video/7456501980782120197?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718",
+      category: "OTHER",
+    },
+    {
+      id: "like_tiktok_photo",
+      name: "Like TikTok Photo",
+      url: "https://www.tiktok.com/@cosmiccoingalaxy/photo/7458338434210450694?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718",
+      category: "OTHER",
+    },
+    {
+      id: "react_instagram_1",
+      name: "React on Instagram Reel 1",
+      url: "https://www.instagram.com/mirakle.group/reel/DEutsCTt0i6/",
+      category: "SOCIALS",
+    },
+    {
+      id: "react_instagram_2",
+      name: "React on Instagram Reel 2",
+      url: "https://www.instagram.com/mirakle.group/reel/DEpusJRtMhV/",
+      category: "SOCIALS",
+    },
+    {
+      id: "react_instagram_3",
+      name: "React on Instagram Reel 3",
+      url: "https://www.instagram.com/mirakle.group/reel/DEdBHMhta2O/",
+      category: "SOCIALS",
+    },
+    {
+      id: "react_instagram_4",
+      name: "React on Instagram Reel 4",
+      url: "https://www.instagram.com/mirakle.group/reel/DBuN3kisLVM/",
+      category: "SOCIALS",
+    },
+    {
+      id: "watch_youtube_1",
+      name: "Watch and Like YouTube Video 1",
+      url: "https://youtu.be/yCKEdtFgvbE?si=1SN3d5iAMr2uQn1a",
+      category: "YOUTUBE",
+    },
+    {
+      id: "watch_youtube_2",
+      name: "Watch and Like YouTube Video 2",
+      url: "https://youtu.be/fJQT-IgKs-Y?si=RuS9s2IfUCPuU4Q7",
+      category: "YOUTUBE",
+    },
+    {
+      id: "watch_youtube_3",
+      name: "Watch and Like YouTube Video 3",
+      url: "https://youtu.be/EiE5uyx1M8o?si=t2LIis7UFJ4ozzNU",
+      category: "YOUTUBE",
+    },
+    {
+      id: "watch_youtube_short_1",
+      name: "Watch and Like YouTube Short 1",
+      url: "https://youtube.com/shorts/tZTywe49D9s?si=QnV_rvV_E3ifHdTk",
+      category: "YOUTUBE",
+    },
+    {
+      id: "watch_youtube_short_2",
+      name: "Watch and Like YouTube Short 2",
+      url: "https://youtube.com/shorts/WCur6cW7I-M?si=RIItvGIIF3znbOLv",
+      category: "YOUTUBE",
+    },
+    {
+      id: "watch_youtube_short_3",
+      name: "Watch and Like YouTube Short 3",
+      url: "https://youtube.com/shorts/0leX4JZ9kyU?si=9TvkVf6sonh7IBh8",
+      category: "YOUTUBE",
+    },
+    {
+      id: "watch_youtube_short_4",
+      name: "Watch and Like YouTube Short 4",
+      url: "https://youtube.com/shorts/OCaR-FoqAHM?si=F_zRR-on2UktO1sn",
+      category: "YOUTUBE",
+    },
+  ]
 
+  const taskCategories = ["SOCIALS", "YOUTUBE", "OTHERS"]
+  const taskCategoriesContainer = document.getElementById("taskCategories")
+  const activeTasksContainer = document.getElementById("activeTasks")
+  const completedTasksContainer = document.getElementById("completedTasks")
 
-        // Watch and Like TikTok Videos
-        { id: 'like_tiktok_video_1', name: 'Watch and Like TikTok Video 1', url: 'https://www.tiktok.com/@cosmiccoingalaxy/video/7458336987582319878?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718', category: 'OTHER' },
-        { id: 'like_tiktok_video_2', name: 'Watch and Like TikTok Video 2', url: 'https://www.tiktok.com/@cosmiccoingalaxy/video/7456501980782120197?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718', category: 'OTHER' },
-        { id: 'like_tiktok_photo', name: 'Like TikTok Photo', url: 'https://www.tiktok.com/@cosmiccoingalaxy/photo/7458338434210450694?is_from_webapp=1&sender_device=pc&web_id=7459095383471539718', category: 'OTHER' },
+  // Render task categories
+  taskCategoriesContainer.innerHTML = `
+        <button onclick="filterTasks('ALL')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+            All
+        </button>
+    `
+  taskCategories.forEach((category) => {
+    taskCategoriesContainer.innerHTML += `
+            <button onclick="filterTasks('${category}')" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+                ${category}
+            </button>
+        `
+  })
 
-        // React on Instagram
-        { id: 'react_instagram_1', name: 'React on Instagram Reel 1', url: 'https://www.instagram.com/mirakle.group/reel/DEutsCTt0i6/', category: 'SOCIALS' },
-        { id: 'react_instagram_2', name: 'React on Instagram Reel 2', url: 'https://www.instagram.com/mirakle.group/reel/DEpusJRtMhV/', category: 'SOCIALS' },
-        { id: 'react_instagram_3', name: 'React on Instagram Reel 3', url: 'https://www.instagram.com/mirakle.group/reel/DEdBHMhta2O/', category: 'SOCIALS' },
-        { id: 'react_instagram_4', name: 'React on Instagram Reel 4', url: 'https://www.instagram.com/mirakle.group/reel/DBuN3kisLVM/', category: 'SOCIALS' },
+  // Render tasks
+  activeTasksContainer.innerHTML = ""
+  completedTasksContainer.innerHTML = ""
 
-        // Watch YouTube Videos
-        { id: 'watch_youtube_1', name: 'Watch and Like YouTube Video 1', url: 'https://youtu.be/yCKEdtFgvbE?si=1SN3d5iAMr2uQn1a', category: 'YOUTUBE' },
-        { id: 'watch_youtube_2', name: 'Watch and Like YouTube Video 2', url: 'https://youtu.be/fJQT-IgKs-Y?si=RuS9s2IfUCPuU4Q7', category: 'YOUTUBE' },
-        { id: 'watch_youtube_3', name: 'Watch and Like YouTube Video 3', url: 'https://youtu.be/EiE5uyx1M8o?si=t2LIis7UFJ4ozzNU', category: 'YOUTUBE' },
-        { id: 'watch_youtube_short_1', name: 'Watch and Like YouTube Short 1', url: 'https://youtube.com/shorts/tZTywe49D9s?si=QnV_rvV_E3ifHdTk', category: 'YOUTUBE' },
-        { id: 'watch_youtube_short_2', name: 'Watch and Like YouTube Short 2', url: 'https://youtube.com/shorts/WCur6cW7I-M?si=RIItvGIIF3znbOLv', category: 'YOUTUBE' },
-        { id: 'watch_youtube_short_3', name: 'Watch and Like YouTube Short 3', url: 'https://youtube.com/shorts/0leX4JZ9kyU?si=9TvkVf6sonh7IBh8', category: 'YOUTUBE' },
-        { id: 'watch_youtube_short_4', name: 'Watch and Like YouTube Short 4', url: 'https://youtube.com/shorts/OCaR-FoqAHM?si=F_zRR-on2UktO1sn', category: 'YOUTUBE' }
-    
-
-    ];
-
-    const taskCategories = [ 'SOCIALS', 'YOUTUBE', 'OTHERS'];
-    const taskCategoriesContainer = document.getElementById('taskCategories');
-    const activeTasksContainer = document.getElementById('activeTasks');
-    const completedTasksContainer = document.getElementById('completedTasks');
-
-    // Render tasks
-    activeTasksContainer.innerHTML = '';
-    completedTasksContainer.innerHTML = '';
-
-    tasks.forEach(task => {
-        if (completedTasks[task.id]) {
-            // Render completed task but show "Already Completed"
-            completedTasksContainer.innerHTML += `
+  tasks.forEach((task) => {
+    if (completedTasks[task.id]) {
+      completedTasksContainer.innerHTML += `
                 <div class="mb-2 p-2 bg-gray-700 rounded">
-                    <span class="text-green-400">✓</span> ${task.name} ()
-                    <a href="${task.url}" target="_blank">
-                        <button class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-1 px-2 rounded shadow-md mt-1">
-                            Open Again
-                        </button>
-                    </a>
+                    <span class="text-green-400">✓</span> ${task.name}
+                    <a href="${task.url}" target="_blank" class="text-blue-400 hover:underline ml-2">Open Again</a>
                 </div>
-            `;
-        } else {
-            // Render active task
-            activeTasksContainer.innerHTML += `
+            `
+    } else {
+      activeTasksContainer.innerHTML += `
                 <div class="task-item" data-category="${task.category}">
-                    <a href="${task.url}" target="_blank">
-                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded shadow-md w-full" onclick="completeTask('${task.id}')">
+                    <a href="${task.url}" target="_blank" onclick="completeTask('${task.id}')">
+                        <button class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md w-full">
                             ${task.name}
                         </button>
                     </a>
                 </div>
-            `;
-        }
-    });
+            `
+    }
+  })
 }
 
 function filterTasks(category) {
-    const taskItems = document.querySelectorAll('.task-item');
-    taskItems.forEach(item => {
-        if (category === 'ALL' || item.dataset.category === category) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
-    });
+  const taskItems = document.querySelectorAll(".task-item")
+  taskItems.forEach((item) => {
+    if (category === "ALL" || item.dataset.category === category) {
+      item.style.display = "block"
+    } else {
+      item.style.display = "none"
+    }
+  })
 }
 
 function completeTask(taskId) {
-    const now = Date.now();
+  const now = Date.now()
 
-    if (completedTasks[taskId] && now - completedTasks[taskId] < COOLDOWN_DURATION) {
-        const remainingTime = COOLDOWN_DURATION - (now - completedTasks[taskId]);
-        showNotification(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`);
-        return;
-    }
+  if (completedTasks[taskId] && now - completedTasks[taskId] < COOLDOWN_DURATION) {
+    const remainingTime = COOLDOWN_DURATION - (now - completedTasks[taskId])
+    showNotification(`Task is on cooldown. Try again in ${formatTime(remainingTime)}.`)
+    return
+  }
 
-    // Show verification message
-    showNotification("Verifying task completion...");
+  showNotification("Verifying task completion...")
 
-    // Simulate task verification (replace with actual verification in production)
-    setTimeout(() => {
-        const isVerified = Math.random() > 0.3; // 90% chance of success for simulation
+  setTimeout(() => {
+    const isVerified = Math.random() > 0.1 // 90% chance of success for simulation
 
-        if (isVerified) {
-            completedTasks[taskId] = now;
-            saveUserData();
+    if (isVerified) {
+      completedTasks[taskId] = now
+      saveUserData()
 
-            const reward = 20;
-            balance += reward;
-            saveUserData();
-            updateBalanceDisplay();
+      const reward = 20
+      addToBalance(reward)
+      updateBalanceDisplay()
 
-            showNotification(`Task completed! You earned ${reward} COS.`);
-            renderTasks();
-        } else {
-            showNotification("Task verification failed. Please try again.");
-        }
-    }, 3000); // 3 seconds for simulated verification
-}
-
-function formatTime(milliseconds) {
-    const totalSeconds = Math.floor(milliseconds / 1000);
-    const minutes = Math.floor(totalSeconds / 60);
-    const seconds = totalSeconds % 60;
-    return `${minutes}m ${seconds}s`;
-}
-
-function claimDailyReward(viewAds) {
-    const lastClaimTime = localStorage.getItem('lastClaimTime');
-    const now = Date.now();
-    if (lastClaimTime && now - parseInt(lastClaimTime) < 24 * 60 * 60 * 1000) {
-        showNotification("You have already claimed your daily reward. Come back tomorrow!");
+      showNotification(`Task completed! You earned ${reward} COS.`)
+      renderTasks()
     } else {
-        let reward = 30;
-        if (viewAds) {
-            reward *= 2;
-            window.open("https://whomeenoaglauns.com/4/5544101", "_blank");
-        }
-        balance += reward;
-        saveUserData();
-        localStorage.setItem('lastClaimTime', now.toString());
-        updateBalanceDisplay();
-        showNotification(`You've claimed ${reward} CosmicCoins as your daily reward!`);
+      showNotification("Task verification failed. Please try again.")
     }
+  }, 3000)
 }
-
-// Referral System
-const REFERRAL_CONFIG = {
-    INVITE_REWARD: 50,
-    REFERRAL_LINKS: {
-        TELEGRAM: 'https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=',
-        WAPCHAT: 'https://apkpure.com/wapchat/wapchat.actb?ref='
-    },
-    SOCIAL_LINKS: {
-        TELEGRAM: 'https://t.me/share/url',
-        TWITTER: 'https://twitter.com/intent/tweet',
-        WHATSAPP: 'https://wa.me/',
-        FACEBOOK: 'https://www.facebook.com/sharer/sharer.php'
-    }
-};
-
-class ReferralSystem {
-    constructor() {
-        this.referralData = JSON.parse(localStorage.getItem('referralData')) || {
-            referrals: [],
-            shares: {},
-            lastCheck: Date.now()
-        };
-        
-        this.initializeSystem();
-        this.startReferralTracking();
-    }
-
-    initializeSystem() {
-        const referralSection = document.getElementById('referralSection');
-        if (referralSection) {
-            referralSection.classList.remove('hidden');
-        }
-        this.updateUI();
-    }
-
-    generateShareText() {
-        return `🚀 Join CosmicCoin Galaxy Airdrop!
-
-📱 Join via:
-Telegram: ${REFERRAL_CONFIG.REFERRAL_LINKS.TELEGRAM}${this.getReferralCode()}
-WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
-
-⭐️ Earn ${REFERRAL_CONFIG.INVITE_REWARD} COS for each referral!
-🎁 Don't miss out on this opportunity!`;
-    }
-
-    getReferralCode() {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('ref') || 'CCJFPVZ9GP';
-    }
-
-    startReferralTracking() {
-        // Check for new referrals every 10 minutes
-        setInterval(() => {
-            this.checkNewReferrals();
-        }, 10 * 60 * 1000);
-    }
-
-    async checkNewReferrals() {
-        try {
-            // Simulate checking for new referrals
-            if (this.referralData.lastCheck) {
-                const newReferrals = await this.fetchNewReferrals();
-                if (newReferrals.length > 0) {
-                    this.processNewReferrals(newReferrals);
-                }
-            }
-            this.referralData.lastCheck = Date.now();
-            this.saveData();
-        } catch (error) {
-            console.error('Error checking referrals:', error);
-        }
-    }
-
-    async fetchNewReferrals() {
-        // Placeholder for API call to fetch new referrals
-        // In production, this would call your backend
-        return new Promise(resolve => {
-            const mockNewReferrals = [];
-            // Simulate some random referrals for testing
-            if (Math.random() > 0.9) {
-                mockNewReferrals.push({ timestamp: Date.now() });
-            }
-            resolve(mockNewReferrals);
-        });
-    }
-
-    processNewReferrals(newReferrals) {
-        this.referralData.referrals = [...this.referralData.referrals, ...newReferrals];
-        this.saveData();
-        this.updateUI();
-    }
-
-    async copyToClipboard() {
-        const shareText = this.generateShareText();
-        try {
-            await navigator.clipboard.writeText(shareText);
-            this.recordShare('clipboard');
-            this.updateStatus('Referral links copied! Share with your friends!');
-        } catch (err) {
-            this.updateStatus('Failed to copy. Please try again.');
-        }
-    }
-
-    async shareToSocial(platform) {
-        const shareText = encodeURIComponent(this.generateShareText());
-        let shareUrl = '';
-
-        switch (platform) {
-            case 'telegram':
-                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TELEGRAM}?url=${shareText}`;
-                break;
-            case 'twitter':
-                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TWITTER}?text=${shareText}`;
-                break;
-            case 'whatsapp':
-                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.WHATSAPP}?text=${shareText}`;
-                break;
-            case 'facebook':
-                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.FACEBOOK}?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`;
-                break;
-        }
-
-        if (shareUrl) {
-            window.open(shareUrl, '_blank');
-            this.recordShare(platform);
-            this.updateStatus(`Shared to ${platform}!`);
-        }
-    }
-
-    recordShare(platform) {
-        if (!this.referralData.shares[platform]) {
-            this.referralData.shares[platform] = [];
-        }
-        this.referralData.shares[platform].push(Date.now());
-        this.saveData();
-    }
-
-    updateUI() {
-        const referralSection = document.getElementById('referralSection');
-        if (!referralSection) return;
-
-        referralSection.innerHTML = `
-            <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <div class="grid grid-cols-1 gap-4 mb-6">
-                    <div class="bg-gray-700 p-4 rounded-lg text-center">
-                        <p class="text-sm">Total Invites</p>
-                        <p class="text-2xl font-bold text-purple-400">
-                            ${this.referralData.referrals.length}
-                        </p>
-                        <p class="text-sm text-gray-400 mt-2">
-                            Calculating rewards... Final count on claim day
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Share Buttons -->
-                <div class="space-y-3">
-                    <button 
-                        onclick="referralSystem.copyToClipboard()"
-                        class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
-                        📋 Copy Referral Links
-                    </button>
-                    
-                    <button 
-                        onclick="referralSystem.shareToSocial('telegram')"
-                        class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
-                        Share on Telegram
-                    </button>
-
-                    <button 
-                        onclick="referralSystem.shareToSocial('twitter')"
-                        class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
-                        Share on Twitter
-                    </button>
-
-                    <button 
-                        onclick="referralSystem.shareToSocial('whatsapp')"
-                        class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
-                        Share on WhatsApp
-                    </button>
-
-                    <button 
-                        onclick="referralSystem.shareToSocial('facebook')"
-                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
-                        Share on Facebook
-                    </button>
-                </div>
-
-                <p id="referralStatus" class="mt-4 text-sm text-center text-gray-400"></p>
-            </div>
-        `;
-    }
-
-    updateStatus(message) {
-        const statusElement = document.getElementById('referralStatus');
-        if (statusElement) {
-            statusElement.textContent = message;
-            setTimeout(() => {
-                statusElement.textContent = '';
-            }, 5000);
-        }
-    }
-
-    saveData() {
-        localStorage.setItem('referralData', JSON.stringify(this.referralData));
-    }
-}
-
-// Initialize the referral system
-const referralSystem = new ReferralSystem();
-
-// Export for external use
-window.referralSystem = referralSystem;
 
 function refreshWalletBalance() {
-    updateBalanceDisplay();
-    showNotification('Balance refreshed!');
-}
-
-function activateBoost(boostType) {
-    if (activeBoosts[boostType]) {
-        showNotification(`${boostType} boost is already active!`);
-        return;
-    }
-
-    let duration = 0;
-    let multiplier = 1;
-
-    switch(boostType) {
-        case 'speed':
-            duration = 60 * 60 * 1000; // 1 hour
-            multiplier = 2;
-            break;
-        case 'efficiency':
-            duration = 30 * 60 * 1000; // 30 minutes
-            multiplier = 1.5;
-            break;
-    }
-
-    activeBoosts[boostType] = true;
-
-    setTimeout(() => {
-        activeBoosts[boostType] = false;
-        showNotification(`Your ${boostType} boost has expired.`);
-    }, duration);
-
-    showNotification(`${boostType} boost activated for ${duration / 60000} minutes!`);
+  updateBalanceDisplay()
+  showNotification("Balance refreshed!")
 }
 
 function openModal() {
-    document.getElementById('modalOverlay').classList.remove('hidden');
-    document.getElementById('googleFormModal').classList.remove('hidden');
-    document.getElementById('googleFormIframe').src = "https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?embedded=true";
+  document.getElementById("modalOverlay").classList.remove("hidden")
+  document.getElementById("googleFormModal").classList.remove("hidden")
+  document.getElementById("googleFormIframe").src =
+    "https://docs.google.com/forms/d/e/1FAIpQLSf9y-cJSKZkCC82uTjB_nzHFggRWceY1csU5sAyAMZ8uUkFhw/viewform?embedded=true"
 }
 
 function closeModal() {
-    document.getElementById('modalOverlay').classList.add('hidden');
-    document.getElementById('googleFormModal').classList.add('hidden');
-    document.getElementById('googleFormIframe').src = "";
+  document.getElementById("modalOverlay").classList.add("hidden")
+  document.getElementById("googleFormModal").classList.add("hidden")
+  document.getElementById("googleFormIframe").src = ""
 }
 
 function showNotification(message) {
-    const notification = document.createElement('div');
-    notification.textContent = message;
-    notification.className = 'fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-lg shadow-lg';
-    document.body.appendChild(notification);
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+  const notification = document.createElement("div")
+  notification.textContent = message
+  notification.className = "fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-lg shadow-lg"
+  document.body.appendChild(notification)
+  setTimeout(() => {
+    notification.remove()
+  }, 3000)
 }
 
-// Handle page visibility changes
-document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible' && isMining) {
-        updateMiningProgress();
-    }
-});
-
-generateIdBtn.addEventListener('click', generateNewUserId);
-
-// Load user data from localStorage
-function loadUserData() {
-    balance = getNumericValue('balance');
-    userId = localStorage.getItem('userId') || '';
-    completedTasks = JSON.parse(localStorage.getItem('completedTasks')) || {};
-}
-
-// Save user data to localStorage
-function saveUserData() {
-    localStorage.setItem('balance', balance.toString());
-    localStorage.setItem('userId', userId);
-    localStorage.setItem('completedTasks', JSON.stringify(completedTasks));
-}
+generateIdBtn.addEventListener("click", generateNewUserId)
 
 // Initialize the application
-initializeApp();
-loadUserData();
-updateBalanceDisplay();
-loadMiningState();
-displayUserId();
-renderSideMenu();
-renderTasks();
+initializeApp()
+loadUserData()
+updateBalanceDisplay()
+displayUserId()
+renderSideMenu()
+renderTasks()
 
-console.log("CosmicCoin Galaxy Airdrop application initialized successfully!");  
+console.log("CosmicCoin Galaxy Airdrop application initialized successfully!")
+
+  
     </script>
 </body>
 </html>
