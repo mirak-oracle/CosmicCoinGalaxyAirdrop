@@ -225,23 +225,22 @@ class ReferralSystem {
             lastCheck: Date.now(),
         };
 
-        this.initializeSystem();
+        this.checkPageAndInitialize();
         this.startReferralTracking();
     }
 
-    initializeSystem() {
-        // Check if the current page is the referral page
-        const allowedPages = ["/referral.html", "/invite.html"]; // ✅ Modify to match your referral page URLs
+    checkPageAndInitialize() {
+        const allowedPages = ["/referral.html", "/invite.html"]; // ✅ Modify this based on your setup
         const currentPath = window.location.pathname;
 
         if (!allowedPages.includes(currentPath)) {
-            return; // ❌ Exit if the page is not for referrals
+            return; // ❌ Exit if not on the correct page
         }
 
         const referralSection = document.getElementById("referralSection");
         if (referralSection) {
-            referralSection.classList.remove("hidden");
-            this.updateUI();
+            referralSection.classList.remove("hidden"); // ✅ Show the referral section
+            this.updateUI(); // ✅ Ensure the UI is populated
         }
     }
 
@@ -400,16 +399,16 @@ class ReferralSystem {
     }
 }
 
-// Initialize referral system only if the referral section exists
+// ✅ Ensure referral system initializes when the correct page loads
 document.addEventListener("DOMContentLoaded", () => {
-    if (document.getElementById("referralSection")) {
+    const referralSection = document.getElementById("referralSection");
+    if (referralSection) {
         window.referralSystem = new ReferralSystem();
     }
 });
 </script>
 
-
- <script>
+<script>
 // Constants
 const DAILY_REWARD = 50 // COS per day
 const COOLDOWN_DURATION = 5 * 60 * 1000 // 5 minutes in milliseconds
