@@ -157,6 +157,18 @@
             </div>
         </div>
 
+                <!-- Referral Section -->
+        <div id="referralSection" class="hidden">
+            <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
+            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
+                <p class="mb-4">Invite your friends and earn bonus CosmicCoins!</p>
+                <button onclick="generateReferralLink()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
+                    Generate Referral Link
+                </button>
+                <p id="referralStatus" class="mt-4 text-sm text-gray-400"></p>
+            </div>
+        </div>
+
 
         <!-- Wallet Section -->
         <div id="walletSection" class="hidden">
@@ -214,17 +226,6 @@
 </html>
 
 
-        <!-- Referral Section -->
-        <div id="referralSection" class="hidden">
-            <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <p class="mb-4">Invite your friends and earn bonus CosmicCoins!</p>
-                <button onclick="generateReferralLink()" class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
-                    Generate Referral Link
-                </button>
-                <p id="referralStatus" class="mt-4 text-sm text-gray-400"></p>
-            </div>
-        </div>
 
 <script>
 // Simplified Referral System Configuration
