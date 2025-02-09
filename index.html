@@ -157,10 +157,6 @@
             </div>
         </div>
 
-        <!-- Referral Section -->
-        <div id="referralSection" class="hidden">
-            <!-- Referral content will be dynamically inserted here -->
-        </div>
 
         <!-- Wallet Section -->
         <div id="walletSection" class="hidden">
@@ -217,157 +213,145 @@
 </body>
 </html>
 
+<!-- Referral Section -->
+<div id="referralSection" class="hidden">
+    <!-- Referral content will be dynamically inserted here -->
+</div>
+
 <script>
-    // Referral System
 const REFERRAL_CONFIG = {
-  INVITE_REWARD: 50,
-  REFERRAL_LINKS: {
-    TELEGRAM: "https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=",
-    WAPCHAT: "https://apkpure.com/wapchat/wapchat.actb?ref=",
-  },
-  SOCIAL_LINKS: {
-    TELEGRAM: "https://t.me/share/url",
-    TWITTER: "https://twitter.com/intent/tweet",
-    WHATSAPP: "https://wa.me/",
-    FACEBOOK: "https://www.facebook.com/sharer/sharer.php",
-  },
-}
+    INVITE_REWARD: 50,
+    REFERRAL_LINKS: {
+        TELEGRAM: "https://t.me/CosmicCoinGalaxyAirdrop_Bot?start=",
+        WAPCHAT: "https://apkpure.com/wapchat/wapchat.actb?ref=",
+    },
+    SOCIAL_LINKS: {
+        TELEGRAM: "https://t.me/share/url",
+        TWITTER: "https://twitter.com/intent/tweet",
+        WHATSAPP: "https://wa.me/",
+        FACEBOOK: "https://www.facebook.com/sharer/sharer.php",
+    },
+};
 
 class ReferralSystem {
-  referralData: {
-    referrals: any[]
-    shares: Record<string, number[]>
-    lastCheck: number
-  }
+    constructor() {
+        this.referralData = JSON.parse(localStorage.getItem("referralData")) || {
+            referrals: [],
+            shares: {},
+            lastCheck: Date.now(),
+        };
 
-  constructor() {
-    this.referralData = JSON.parse(localStorage.getItem("referralData") || "{}") || {
-      referrals: [],
-      shares: {},
-      lastCheck: Date.now(),
+        this.initializeSystem();
+        this.startReferralTracking();
     }
 
-    this.initializeSystem()
-    this.startReferralTracking()
-  }
-
-  initializeSystem() {
-    const referralSection = document.getElementById("referralSection")
-    if (referralSection) {
-      referralSection.classList.remove("hidden")
+    initializeSystem() {
+        const referralSection = document.getElementById("referralSection");
+        if (referralSection) {
+            referralSection.classList.remove("hidden");
+        }
+        this.updateUI();
     }
-    this.updateUI()
-  }
 
-  generateShareText() {
-    return `🚀 Join CosmicCoin Galaxy Airdrop!
+    getReferralCode() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get("ref") || "CCJFPVZ9GP"; // Default referral code
+    }
+
+    generateShareText() {
+        return `🚀 Join CosmicCoin Galaxy Airdrop!
 📱 Join via:
 Telegram: ${REFERRAL_CONFIG.REFERRAL_LINKS.TELEGRAM}${this.getReferralCode()}
 WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
 ⭐️ Earn ${REFERRAL_CONFIG.INVITE_REWARD} COS for each referral!
-🎁 Don't miss out on this opportunity!`
-  }
+🎁 Don't miss out on this opportunity!`;
+    }
 
-  getReferralCode() {
-    const urlParams = new URLSearchParams(window.location.search)
-    return urlParams.get("ref") || "CCJFPVZ9GP"
-  }
+    startReferralTracking() {
+        setInterval(() => {
+            this.checkNewReferrals();
+        }, 10 * 60 * 1000);
+    }
 
-  startReferralTracking() {
-    // Check for new referrals every 10 minutes
-    setInterval(
-      () => {
-        this.checkNewReferrals()
-      },
-      10 * 60 * 1000,
-    )
-  }
-
-  async checkNewReferrals() {
-    try {
-      // Simulate checking for new referrals
-      if (this.referralData.lastCheck) {
-        const newReferrals = await this.fetchNewReferrals()
-        if (newReferrals.length > 0) {
-          this.processNewReferrals(newReferrals)
+    async checkNewReferrals() {
+        try {
+            const newReferrals = await this.fetchNewReferrals();
+            if (newReferrals.length > 0) {
+                this.processNewReferrals(newReferrals);
+            }
+            this.referralData.lastCheck = Date.now();
+            this.saveData();
+        } catch (error) {
+            console.error("Error checking referrals:", error);
         }
-      }
-      this.referralData.lastCheck = Date.now()
-      this.saveData()
-    } catch (error) {
-      console.error("Error checking referrals:", error)
-    }
-  }
-
-  async fetchNewReferrals() {
-    // Placeholder for API call to fetch new referrals
-    // In production, this would call your backend
-    return new Promise<any[]>((resolve) => {
-      const mockNewReferrals: any[] = []
-      // Simulate some random referrals for testing
-      if (Math.random() > 0.9) {
-        mockNewReferrals.push({ timestamp: Date.now() })
-      }
-      resolve(mockNewReferrals)
-    })
-  }
-
-  processNewReferrals(newReferrals: any[]) {
-    this.referralData.referrals = [...this.referralData.referrals, ...newReferrals]
-    this.saveData()
-    this.updateUI()
-  }
-
-  async copyToClipboard() {
-    const shareText = this.generateShareText()
-    try {
-      await navigator.clipboard.writeText(shareText)
-      this.recordShare("clipboard")
-      this.updateStatus("Referral links copied! Share with your friends!")
-    } catch (err) {
-      this.updateStatus("Failed to copy. Please try again.")
-    }
-  }
-
-  async shareToSocial(platform: "telegram" | "twitter" | "whatsapp" | "facebook") {
-    const shareText = encodeURIComponent(this.generateShareText())
-    let shareUrl = ""
-
-    switch (platform) {
-      case "telegram":
-        shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TELEGRAM}?url=${shareText}`
-        break
-      case "twitter":
-        shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TWITTER}?text=${shareText}`
-        break
-      case "whatsapp":
-        shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.WHATSAPP}?text=${shareText}`
-        break
-      case "facebook":
-        shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.FACEBOOK}?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`
-        break
     }
 
-    if (shareUrl) {
-      window.open(shareUrl, "_blank")
-      this.recordShare(platform)
-      this.updateStatus(`Shared to ${platform}!`)
+    async fetchNewReferrals() {
+        return new Promise((resolve) => {
+            let mockNewReferrals = [];
+            if (Math.random() > 0.9) {
+                mockNewReferrals.push({ timestamp: Date.now() });
+            }
+            resolve(mockNewReferrals);
+        });
     }
-  }
 
-  recordShare(platform: string) {
-    if (!this.referralData.shares[platform]) {
-      this.referralData.shares[platform] = []
+    processNewReferrals(newReferrals) {
+        this.referralData.referrals.push(...newReferrals);
+        this.saveData();
+        this.updateUI();
     }
-    this.referralData.shares[platform].push(Date.now())
-    this.saveData()
-  }
 
-  updateUI() {
-    const referralSection = document.getElementById("referralSection")
-    if (!referralSection) return
+    async copyToClipboard() {
+        const shareText = this.generateShareText();
+        try {
+            await navigator.clipboard.writeText(shareText);
+            this.recordShare("clipboard");
+            this.updateStatus("Referral links copied! Share with your friends!");
+        } catch (err) {
+            this.updateStatus("Failed to copy. Please try again.");
+        }
+    }
 
-    referralSection.innerHTML = `
+    async shareToSocial(platform) {
+        const shareText = encodeURIComponent(this.generateShareText());
+        let shareUrl = "";
+
+        switch (platform) {
+            case "telegram":
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TELEGRAM}?url=${shareText}`;
+                break;
+            case "twitter":
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.TWITTER}?text=${shareText}`;
+                break;
+            case "whatsapp":
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.WHATSAPP}?text=${shareText}`;
+                break;
+            case "facebook":
+                shareUrl = `${REFERRAL_CONFIG.SOCIAL_LINKS.FACEBOOK}?u=${encodeURIComponent(window.location.href)}&quote=${shareText}`;
+                break;
+        }
+
+        if (shareUrl) {
+            window.open(shareUrl, "_blank");
+            this.recordShare(platform);
+            this.updateStatus(`Shared to ${platform}!`);
+        }
+    }
+
+    recordShare(platform) {
+        if (!this.referralData.shares[platform]) {
+            this.referralData.shares[platform] = [];
+        }
+        this.referralData.shares[platform].push(Date.now());
+        this.saveData();
+    }
+
+    updateUI() {
+        const referralSection = document.getElementById("referralSection");
+        if (!referralSection) return;
+
+        referralSection.innerHTML = `
             <h2 class="text-3xl font-bold mb-6 text-center">Invite Friends</h2>
             <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
                 <div class="grid grid-cols-1 gap-4 mb-6">
@@ -384,32 +368,23 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
 
                 <!-- Share Buttons -->
                 <div class="space-y-3">
-                    <button 
-                        onclick="referralSystem.copyToClipboard()"
+                    <button onclick="referralSystem.copyToClipboard()"
                         class="w-full bg-purple-500 hover:bg-purple-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
                         📋 Copy Referral Links
                     </button>
-                    
-                    <button 
-                        onclick="referralSystem.shareToSocial('telegram')"
+                    <button onclick="referralSystem.shareToSocial('telegram')"
                         class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
                         Share on Telegram
                     </button>
-
-                    <button 
-                        onclick="referralSystem.shareToSocial('twitter')"
+                    <button onclick="referralSystem.shareToSocial('twitter')"
                         class="w-full bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
                         Share on Twitter
                     </button>
-
-                    <button 
-                        onclick="referralSystem.shareToSocial('whatsapp')"
+                    <button onclick="referralSystem.shareToSocial('whatsapp')"
                         class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
                         Share on WhatsApp
                     </button>
-
-                    <button 
-                        onclick="referralSystem.shareToSocial('facebook')"
+                    <button onclick="referralSystem.shareToSocial('facebook')"
                         class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded flex items-center justify-center">
                         Share on Facebook
                     </button>
@@ -417,36 +392,31 @@ WapChat: ${REFERRAL_CONFIG.REFERRAL_LINKS.WAPCHAT}${this.getReferralCode()}
 
                 <p id="referralStatus" class="mt-4 text-sm text-center text-gray-400"></p>
             </div>
-        `
-  }
-
-  updateStatus(message: string) {
-    const statusElement = document.getElementById("referralStatus")
-    if (statusElement) {
-      statusElement.textContent = message
-      setTimeout(() => {
-        statusElement.textContent = ""
-      }, 5000)
+        `;
     }
-  }
 
-  saveData() {
-    localStorage.setItem("referralData", JSON.stringify(this.referralData))
-  }
+    updateStatus(message) {
+        const statusElement = document.getElementById("referralStatus");
+        if (statusElement) {
+            statusElement.textContent = message;
+            setTimeout(() => {
+                statusElement.textContent = "";
+            }, 5000);
+        }
+    }
+
+    saveData() {
+        localStorage.setItem("referralData", JSON.stringify(this.referralData));
+    }
 }
 
-// Initialize the referral system
-const referralSystem = new ReferralSystem()
-
-// Export for external use
-;(window as any).referralSystem = referralSystem
-
-
+const referralSystem = new ReferralSystem();
+window.referralSystem = referralSystem;
 </script>
 
   <script>
 // Constants
-const DAILY_REWARD = 40 // COS per day
+const DAILY_REWARD = 50 // COS per day
 const COOLDOWN_DURATION = 5 * 60 * 1000 // 5 minutes in milliseconds
 const MAX_BALANCE = 1000000 // Maximum balance allowed
 
