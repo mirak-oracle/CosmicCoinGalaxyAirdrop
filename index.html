@@ -13,14 +13,6 @@
         gtag('config', 'G-ES3NKKYCS7');
     </script>
     <style>
-        .mining-circle {
-            clip-path: circle(50% at 50% 50%);
-            transition: clip-path 0.3s ease;
-        }
-        .mining-progress {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            transition: height 1s linear;
-        }
         .world-map {
             background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"><path d="M3 12h18M12 3v18M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>');
             background-repeat: no-repeat;
@@ -110,27 +102,45 @@
                 </button>
             </div>
 
-
-            <!-- Mining Stats -->
-            <div class="mt-8 w-full max-w-md">
-                <h3 class="text-xl font-bold mb-4">Mining Statistics</h3>
-                <div class="bg-gray-800 rounded-lg p-4">
-                    <div class="flex justify-between mb-2">
-                        <span>Total Mined:</span>
-                        <span id="totalMined">0.00 COS</span>
-                    </div>
-                    <div class="flex justify-between mb-2">
-                        <span>Mining Rate:</span>
-                        <span id="miningRate">0.00 COS/h</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span>Next Reward:</span>
-                        <span id="nextReward">12h</span>
-                    </div>
+            <!-- Balance Display -->
+            <div class="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-6 mb-8">
+                <div class="text-center">
+                    <div id="balance" class="text-4xl font-bold">0.00</div>
+                    <div class="text-sm text-gray-400">$COS</div>
                 </div>
             </div>
 
-            
+            <!-- Daily Reward Section -->
+            <div class="w-full max-w-md bg-gray-900 rounded-xl border border-gray-800 p-6 mb-8">
+                <h3 class="text-xl font-bold mb-4">Daily Reward</h3>
+                <p class="mb-4">Next claim available in: <span id="nextClaimTime"></span></p>
+                <button onclick="claimDailyReward(false)" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2">
+                    Claim Daily Reward
+                </button>
+                <button onclick="claimDailyReward(true)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">
+                    Get 2x Rewards and View Ads
+                </button>
+            </div>
+
+            <!-- Rewards Statistics -->
+            <div class="w-full max-w-md">
+                <h3 class="text-xl font-bold mb-4">Rewards Statistics</h3>
+                <div class="bg-gray-800 rounded-lg p-4">
+                    <div class="flex justify-between mb-2">
+                        <span>Total Earned:</span>
+                        <span id="totalEarned">0.00 COS</span>
+                    </div>
+                    <div class="flex justify-between mb-2">
+                        <span>Daily Reward:</span>
+                        <span id="dailyRewardAmount">30.00 COS</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Next Reward:</span>
+                        <span id="nextReward">24h</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Tasks Section -->
         <div id="tasksSection" class="hidden">
@@ -144,21 +154,6 @@
             <h3 class="text-2xl font-bold mt-8 mb-4">Completed Tasks</h3>
             <div id="completedTasks" class="bg-gray-800 p-4 rounded-lg">
                 <!-- Completed tasks will be dynamically inserted here -->
-            </div>
-        </div>
-
-        <!-- Rewards Section -->
-        <div id="rewardsSection" class="hidden">
-            <h2 class="text-3xl font-bold mb-6 text-center">Rewards</h2>
-            <div class="bg-gray-800 p-6 rounded-lg shadow-lg">
-                <h3 class="text-xl font-semibold mb-4">Daily Reward</h3>
-                <p class="mb-4">Claim your daily reward and boost your CosmicCoin balance!</p>
-                <button onclick="claimDailyReward(false)" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded mr-2">
-                    Claim Daily Reward
-                </button>
-                <button onclick="claimDailyReward(true)" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4">
-                    Get 2x Rewards and View Ads
-                </button>
             </div>
         </div>
 
@@ -219,7 +214,10 @@
         </iframe>
     </div>
 
-    <script>
+    <script src="app.js"></script>
+</body>
+</html>
+  <script>
       // Constants
 const MINING_RATE = 0.00060; // COS per second
 const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
